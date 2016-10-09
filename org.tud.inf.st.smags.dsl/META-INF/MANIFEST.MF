@@ -16,11 +16,11 @@ Require-Bundle: org.tud.inf.st.smags.model,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.tud.inf.st.smags.dsl,
  org.tud.inf.st.smags.dsl.formatting,
- org.tud.inf.st.smags.dsl.scoping,
- org.tud.inf.st.smags.dsl.validation,
- org.tud.inf.st.smags.dsl.services,
+ org.tud.inf.st.smags.dsl.generator,
  org.tud.inf.st.smags.dsl.parser.antlr,
  org.tud.inf.st.smags.dsl.parser.antlr.internal,
+ org.tud.inf.st.smags.dsl.scoping,
  org.tud.inf.st.smags.dsl.serializer,
- org.tud.inf.st.smags.dsl.generator
+ org.tud.inf.st.smags.dsl.services,
+ org.tud.inf.st.smags.dsl.validation
 Import-Package: org.apache.log4j

@@ -24,7 +24,7 @@ Workflow {
 		}
 		language = StandardLanguage {
 			name = "org.tud.inf.st.smags.dsl.DSL"
-			fileExtensions = "smapgs"
+			fileExtensions = "smags"
 			referencedResource = "platform:/resource/org.tud.inf.st.smags.model/model/model.genmodel"
 			
 			fragment = ecore2xtext.Ecore2XtextValueConverterServiceFragment2 auto-inject {}
