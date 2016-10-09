@@ -9,3 +9,6 @@ Require-Bundle: org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
  org.tud.inf.st.smags.dsl;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.tud.inf.st.smags.dsl.ide.contentassist.antlr,
+ org.tud.inf.st.smags.dsl.ide.contentassist.antlr.internal
+

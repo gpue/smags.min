@@ -152,7 +152,7 @@
                     definitionId="org.tud.inf.st.smags.dsl.DSL.Editor.opened">
                 </reference>
             </visibleWhen>
-         </command>  
+         </command>
          </menuContribution>
          <!-- copy qualified name -->
          <menuContribution locationURI="popup:#TextEditorContext?after=copy">
@@ -332,6 +332,22 @@
                 value="true">
             </attribute>
         </markerResolutionGenerator>
+    </extension>
+    <extension
+          point="org.eclipse.ui.popupMenus">
+       <objectContribution
+             adaptable="false"
+             id="org.tud.inf.st.smags.dsl.ui.generationcontrib"
+             nameFilter="*.smags"
+             objectClass="org.eclipse.core.resources.IFile">
+          <action
+                class="org.tud.inf.st.smags.dsl.ui.generate.GenerateAction"
+                enablesFor="1"
+                id="org.tud.inf.st.smags.dsl.ui.generate"
+                label="Generate code"
+                menubarPath="additions">
+          </action>
+       </objectContribution>
     </extension>
 
 </plugin>
