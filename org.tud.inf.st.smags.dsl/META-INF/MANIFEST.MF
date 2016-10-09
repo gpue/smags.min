@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.tud.inf.st.smags.dsl
+Bundle-Vendor: TU Dresden Software Technology Group
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.tud.inf.st.smags.dsl;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.tud.inf.st.smags.model,
+ org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.xtext.util,
+ org.antlr.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: org.tud.inf.st.smags.dsl,
+ org.tud.inf.st.smags.dsl.formatting,
+ org.tud.inf.st.smags.dsl.scoping,
+ org.tud.inf.st.smags.dsl.validation,
+ org.tud.inf.st.smags.dsl.services,
+ org.tud.inf.st.smags.dsl.parseTreeConstruction,
+ org.tud.inf.st.smags.dsl.parser.antlr,
+ org.tud.inf.st.smags.dsl.parser.antlr.internal
+Import-Package: org.apache.log4j

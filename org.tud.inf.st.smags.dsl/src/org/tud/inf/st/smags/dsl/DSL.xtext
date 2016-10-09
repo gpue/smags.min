@@ -1,0 +1,107 @@
+grammar org.tud.inf.st.smags.dsl.DSL with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://st.inf.tu-dresden.de/smags" as smags
+
+SmagsModel returns smags::SmagsModel:
+	{smags::SmagsModel}
+	('imports' '{'
+	imports+=Import*
+	'}')?
+	elements+=SmagsElement*;
+
+SmagsElement returns smags::SmagsElement:
+	MetaArchitecture | Architecture;
+
+Import returns smags::Import:
+	importURI=STRING ';';
+
+MetaArchitecture returns smags::MetaArchitecture:
+	'MetaArchitecture' name=EString
+	'{'
+	types+=Type*
+	'}'
+	'{'
+	elements+=MetaArchitectureElement*
+	'}';
+
+MetaArchitectureElement returns smags::MetaArchitectureElement:
+	ComponentType | PortType | RoleModel;
+
+Type returns smags::Type:
+	ExternalType | PrimitiveType;
+
+ExternalType returns smags::ExternalType:
+	'Type' name=EString';';
+
+PrimitiveType returns smags::PrimitiveType:
+	'Primitive' name=EString ';';
+
+Variable returns smags::Variable:
+	type=[smags::Type|EString] name=EString;
+
+AnonymousVariable returns smags::Variable:
+	type=[smags::Type|EString];
+
+Method returns smags::Method:
+	returnType=AnonymousVariable name=EString '(' (args+=Variable ("," args+=Variable)*)? ')';
+
+PortTypeElement returns smags::PortTypeElement:
+	(Variable | Method) ';';
+
+CompositionOperator returns smags::CompositionOperator:
+	BindOperator;
+
+EString returns ecore::EString:
+	STRING | ID;
+
+ComponentType returns smags::ComponentType:
+	{smags::ComponentType}
+	'ComponentType'
+	name=EString ';';
+
+PortType returns smags::PortType:
+	{smags::PortType}
+	'PortType'
+	name=EString '{' elements+=PortTypeElement* '}';
+
+RoleModel returns smags::RoleModel:
+	{smags::RoleModel}
+	'RoleModel'
+	name=EString ('(' slots+=RoleModelSlot ("," slots+=RoleModelSlot)* ')')?
+	'{'
+	initialization+=CompositionOperator*
+	'}';
+
+RoleModelSlot returns smags::RoleModelSlot:
+	{smags::RoleModelSlot}
+	type=[smags::ComponentType|EString] name=EString;
+
+BindOperator returns smags::BindOperator:
+	{smags::BindOperator}
+	'bind' 'role' to=[smags::PortType|EString]
+	'to' slot=[smags::RoleModelSlot|EString] ';';
+
+Architecture returns smags::Architecture:
+	'Architecture' name=EString '::' type=[smags::MetaArchitecture|EString] 
+	'{'
+		typeBindings+=TypeBinding*	
+	'}'	
+	'{'
+		elements+=ArchitectureElement*	
+	'}';
+	
+ArchitectureElement returns smags::ArchitectureElement: 
+	Component | Port
+;
+
+Component returns smags::Component:
+	'Component' name=EString '::' type=[smags::ComponentType|EString] ';';
+
+Port returns smags::Port:
+	'Port' name=EString '::' type=[smags::PortType|EString] ';';
+	
+TypeBinding returns smags::TypeBinding: 
+	 type=[smags::Type|EString] '=' implementation=EString ';'
+;
+

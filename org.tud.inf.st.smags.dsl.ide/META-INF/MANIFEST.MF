@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.tud.inf.st.smags.dsl.ide
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.tud.inf.st.smags.dsl.ide;singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.tud.inf.st.smags.dsl;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
