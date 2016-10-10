@@ -4,15 +4,19 @@
 package org.tud.inf.st.smags.dsl.generator;
 
 import com.google.common.collect.Iterables;
-import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.tud.inf.st.smags.model.smags.Architecture;
+import org.tud.inf.st.smags.model.smags.ArchitectureElement;
+import org.tud.inf.st.smags.model.smags.Component;
+import org.tud.inf.st.smags.model.smags.SmagsElement;
+import org.tud.inf.st.smags.model.smags.SmagsModel;
 
 /**
  * Generates code from your model files on save.
@@ -23,14 +27,33 @@ import org.tud.inf.st.smags.model.smags.Architecture;
 public class DSLGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
-    TreeIterator<EObject> _allContents = resource.getAllContents();
-    Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_allContents);
-    Iterable<Architecture> _filter = Iterables.<Architecture>filter(_iterable, Architecture.class);
-    for (final Architecture a : _filter) {
-      String _name = a.getName();
-      String _plus = (_name + ".java");
-      CharSequence _compile = this.compile(a);
-      fsa.generateFile(_plus, _compile);
+    EList<EObject> _contents = resource.getContents();
+    Iterable<SmagsModel> _filter = Iterables.<SmagsModel>filter(_contents, SmagsModel.class);
+    for (final SmagsModel m : _filter) {
+      EList<SmagsElement> _elements = m.getElements();
+      Iterable<Architecture> _filter_1 = Iterables.<Architecture>filter(_elements, Architecture.class);
+      for (final Architecture a : _filter_1) {
+        {
+          String _name = a.getName();
+          String archName = _name.toLowerCase();
+          String _name_1 = a.getName();
+          String _firstUpper = StringExtensions.toFirstUpper(_name_1);
+          String _plus = ((archName + "/") + _firstUpper);
+          String _plus_1 = (_plus + ".java");
+          CharSequence _compile = this.compile(a);
+          fsa.generateFile(_plus_1, _compile);
+          EList<ArchitectureElement> _elements_1 = a.getElements();
+          Iterable<Component> _filter_2 = Iterables.<Component>filter(_elements_1, Component.class);
+          for (final Component c : _filter_2) {
+            String _name_2 = c.getName();
+            String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+            String _plus_2 = ((archName + "/") + _firstUpper_1);
+            String _plus_3 = (_plus_2 + ".java");
+            CharSequence _compile_1 = this.compile(c);
+            fsa.generateFile(_plus_3, _compile_1);
+          }
+        }
+      }
     }
   }
   
@@ -38,7 +61,23 @@ public class DSLGenerator extends AbstractGenerator {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("public class ");
     String _name = a.getName();
-    _builder.append(_name, "");
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("Architecture {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile(final Component c) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("public class ");
+    String _name = c.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");

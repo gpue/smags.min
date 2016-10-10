@@ -8,6 +8,8 @@ import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.tud.inf.st.smags.model.smags.Architecture
+import org.tud.inf.st.smags.model.smags.SmagsModel
+import org.tud.inf.st.smags.model.smags.Component
 
 /**
  * Generates code from your model files on save.
@@ -17,13 +19,29 @@ import org.tud.inf.st.smags.model.smags.Architecture
 class DSLGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		for(a: resource.allContents.toIterable.filter(Architecture)) {
-			fsa.generateFile(a.name+".java",a.compile)
+				
+		for(m: resource.contents.filter(SmagsModel)) {
+			for(a : m.elements.filter(Architecture)){
+				
+				var archName = a.name.toLowerCase;
+				
+				fsa.generateFile(archName+"/"+a.name.toFirstUpper+".java",a.compile)	
+				
+				for(c: a.elements.filter(Component)){
+					fsa.generateFile(archName+"/"+c.name.toFirstUpper+".java",c.compile)	
+				}			
+			}
 		}
 	}
 	
 	def compile(Architecture a) '''
-		public class «a.name» {
+		public class «a.name.toFirstUpper»Architecture {
+			
+		}
+	'''
+	
+	def compile(Component c) '''
+		public class «c.name.toFirstUpper» {
 			
 		}
 	'''
