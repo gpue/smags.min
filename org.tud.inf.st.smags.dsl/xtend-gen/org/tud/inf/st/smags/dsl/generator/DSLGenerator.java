@@ -15,6 +15,7 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.tud.inf.st.smags.model.smags.Architecture;
 import org.tud.inf.st.smags.model.smags.ArchitectureElement;
 import org.tud.inf.st.smags.model.smags.Component;
+import org.tud.inf.st.smags.model.smags.MetaArchitecture;
 import org.tud.inf.st.smags.model.smags.SmagsElement;
 import org.tud.inf.st.smags.model.smags.SmagsModel;
 
@@ -30,40 +31,61 @@ public class DSLGenerator extends AbstractGenerator {
     EList<EObject> _contents = resource.getContents();
     Iterable<SmagsModel> _filter = Iterables.<SmagsModel>filter(_contents, SmagsModel.class);
     for (final SmagsModel m : _filter) {
-      EList<SmagsElement> _elements = m.getElements();
-      Iterable<Architecture> _filter_1 = Iterables.<Architecture>filter(_elements, Architecture.class);
-      for (final Architecture a : _filter_1) {
-        {
-          String _name = a.getName();
-          String archName = _name.toLowerCase();
-          String _name_1 = a.getName();
-          String _firstUpper = StringExtensions.toFirstUpper(_name_1);
-          String _plus = ((archName + "/") + _firstUpper);
-          String _plus_1 = (_plus + ".java");
-          CharSequence _compile = this.compile(a);
-          fsa.generateFile(_plus_1, _compile);
-          EList<ArchitectureElement> _elements_1 = a.getElements();
-          Iterable<Component> _filter_2 = Iterables.<Component>filter(_elements_1, Component.class);
-          for (final Component c : _filter_2) {
-            String _name_2 = c.getName();
-            String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
-            String _plus_2 = ((archName + "/") + _firstUpper_1);
-            String _plus_3 = (_plus_2 + ".java");
-            CharSequence _compile_1 = this.compile(c);
-            fsa.generateFile(_plus_3, _compile_1);
+      {
+        EList<SmagsElement> _elements = m.getElements();
+        Iterable<MetaArchitecture> _filter_1 = Iterables.<MetaArchitecture>filter(_elements, MetaArchitecture.class);
+        for (final MetaArchitecture a : _filter_1) {
+          {
+            String _name = a.getName();
+            String archName = _name.toLowerCase();
+            String _name_1 = a.getName();
+            String _firstUpper = StringExtensions.toFirstUpper(_name_1);
+            String _plus = ((archName + "/") + _firstUpper);
+            String _plus_1 = (_plus + "MetaArchitecture.java");
+            CharSequence _compile = this.compile(archName, a);
+            fsa.generateFile(_plus_1, _compile);
+          }
+        }
+        EList<SmagsElement> _elements_1 = m.getElements();
+        Iterable<Architecture> _filter_2 = Iterables.<Architecture>filter(_elements_1, Architecture.class);
+        for (final Architecture a_1 : _filter_2) {
+          {
+            String _name = a_1.getName();
+            String archName = _name.toLowerCase();
+            String _name_1 = a_1.getName();
+            String _firstUpper = StringExtensions.toFirstUpper(_name_1);
+            String _plus = ((archName + "/") + _firstUpper);
+            String _plus_1 = (_plus + "Architecture.java");
+            CharSequence _compile = this.compile(archName, a_1);
+            fsa.generateFile(_plus_1, _compile);
+            EList<ArchitectureElement> _elements_2 = a_1.getElements();
+            Iterable<Component> _filter_3 = Iterables.<Component>filter(_elements_2, Component.class);
+            for (final Component c : _filter_3) {
+              String _name_2 = c.getName();
+              String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+              String _plus_2 = ((archName + "/") + _firstUpper_1);
+              String _plus_3 = (_plus_2 + ".java");
+              CharSequence _compile_1 = this.compile(archName, c);
+              fsa.generateFile(_plus_3, _compile_1);
+            }
           }
         }
       }
     }
   }
   
-  public CharSequence compile(final Architecture a) {
+  public CharSequence compile(final String pkg, final MetaArchitecture a) {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
     _builder.append("public class ");
     String _name = a.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);
     _builder.append(_firstUpper, "");
-    _builder.append("Architecture {");
+    _builder.append("MetaArchitecture {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.newLine();
@@ -72,8 +94,51 @@ public class DSLGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final Component c) {
+  public CharSequence compile(final String pkg, final Architecture a) {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("import ");
+    MetaArchitecture _type = a.getType();
+    String _name = _type.getName();
+    String _lowerCase = _name.toLowerCase();
+    _builder.append(_lowerCase, "");
+    _builder.append(".");
+    MetaArchitecture _type_1 = a.getType();
+    String _name_1 = _type_1.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name_1);
+    _builder.append(_firstUpper, "");
+    _builder.append("MetaArchitecture;");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public class ");
+    String _name_2 = a.getName();
+    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+    _builder.append(_firstUpper_1, "");
+    _builder.append("Architecture extends ");
+    MetaArchitecture _type_2 = a.getType();
+    String _name_3 = _type_2.getName();
+    String _firstUpper_2 = StringExtensions.toFirstUpper(_name_3);
+    _builder.append(_firstUpper_2, "");
+    _builder.append("MetaArchitecture{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile(final String pkg, final Component c) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
     _builder.append("public class ");
     String _name = c.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);

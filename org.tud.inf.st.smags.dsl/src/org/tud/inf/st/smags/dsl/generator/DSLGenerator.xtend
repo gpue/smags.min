@@ -10,6 +10,7 @@ import org.eclipse.xtext.generator.IGeneratorContext
 import org.tud.inf.st.smags.model.smags.Architecture
 import org.tud.inf.st.smags.model.smags.SmagsModel
 import org.tud.inf.st.smags.model.smags.Component
+import org.tud.inf.st.smags.model.smags.MetaArchitecture
 
 /**
  * Generates code from your model files on save.
@@ -21,26 +22,47 @@ class DSLGenerator extends AbstractGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 				
 		for(m: resource.contents.filter(SmagsModel)) {
+			for(a: m.elements.filter(MetaArchitecture)) {
+				var archName = a.name.toLowerCase;
+				
+				fsa.generateFile(archName+"/"+a.name.toFirstUpper+"MetaArchitecture.java",compile(archName,a))	
+				
+			}			
+			
 			for(a : m.elements.filter(Architecture)){
 				
 				var archName = a.name.toLowerCase;
 				
-				fsa.generateFile(archName+"/"+a.name.toFirstUpper+".java",a.compile)	
+				fsa.generateFile(archName+"/"+a.name.toFirstUpper+"Architecture.java",compile(archName,a))	
 				
 				for(c: a.elements.filter(Component)){
-					fsa.generateFile(archName+"/"+c.name.toFirstUpper+".java",c.compile)	
+					fsa.generateFile(archName+"/"+c.name.toFirstUpper+".java",compile(archName,c))	
 				}			
 			}
 		}
 	}
 	
-	def compile(Architecture a) '''
-		public class «a.name.toFirstUpper»Architecture {
+	def compile(String pkg, MetaArchitecture a) '''
+		package «pkg»;
+		
+		public class «a.name.toFirstUpper»MetaArchitecture {
 			
 		}
 	'''
 	
-	def compile(Component c) '''
+	def compile(String pkg, Architecture a) '''
+		package «pkg»;
+		
+		import «a.type.name.toLowerCase».«a.type.name.toFirstUpper»MetaArchitecture;
+
+		public class «a.name.toFirstUpper»Architecture extends «a.type.name.toFirstUpper»MetaArchitecture{
+			
+		}
+	'''
+	
+	def compile(String pkg, Component c) '''
+		package «pkg»;
+		
 		public class «c.name.toFirstUpper» {
 			
 		}
