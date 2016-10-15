@@ -96,14 +96,6 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 				return createMethodAdapter();
 			}
 			@Override
-			public Adapter caseExternalType(ExternalType object) {
-				return createExternalTypeAdapter();
-			}
-			@Override
-			public Adapter casePrimitiveType(PrimitiveType object) {
-				return createPrimitiveTypeAdapter();
-			}
-			@Override
 			public Adapter caseType(Type object) {
 				return createTypeAdapter();
 			}
@@ -162,6 +154,18 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseTypeBinding(TypeBinding object) {
 				return createTypeBindingAdapter();
+			}
+			@Override
+			public Adapter caseTypeUse(TypeUse object) {
+				return createTypeUseAdapter();
+			}
+			@Override
+			public Adapter casePrimitiveUse(PrimitiveUse object) {
+				return createPrimitiveUseAdapter();
+			}
+			@Override
+			public Adapter caseGenericUse(GenericUse object) {
+				return createGenericUseAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -278,34 +282,6 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createMethodAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.ExternalType <em>External Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.tud.inf.st.smags.model.smags.ExternalType
-	 * @generated
-	 */
-	public Adapter createExternalTypeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.PrimitiveType <em>Primitive Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.tud.inf.st.smags.model.smags.PrimitiveType
-	 * @generated
-	 */
-	public Adapter createPrimitiveTypeAdapter() {
 		return null;
 	}
 
@@ -516,6 +492,48 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createTypeBindingAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.TypeUse <em>Type Use</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.TypeUse
+	 * @generated
+	 */
+	public Adapter createTypeUseAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.PrimitiveUse <em>Primitive Use</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.PrimitiveUse
+	 * @generated
+	 */
+	public Adapter createPrimitiveUseAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.GenericUse <em>Generic Use</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.GenericUse
+	 * @generated
+	 */
+	public Adapter createGenericUseAdapter() {
 		return null;
 	}
 

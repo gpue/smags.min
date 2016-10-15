@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getElements <em>Elements</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getName <em>Name</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel <em>Initial Role Model</em>}</li>
  * </ul>
  *
  * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getMetaArchitecture()
@@ -80,5 +81,31 @@ public interface MetaArchitecture extends SmagsElement {
 	 * @generated
 	 */
 	EList<Type> getTypes();
+
+	/**
+	 * Returns the value of the '<em><b>Initial Role Model</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Initial Role Model</em>' reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Initial Role Model</em>' reference.
+	 * @see #setInitialRoleModel(RoleModel)
+	 * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getMetaArchitecture_InitialRoleModel()
+	 * @model
+	 * @generated
+	 */
+	RoleModel getInitialRoleModel();
+
+	/**
+	 * Sets the value of the '{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel <em>Initial Role Model</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Initial Role Model</em>' reference.
+	 * @see #getInitialRoleModel()
+	 * @generated
+	 */
+	void setInitialRoleModel(RoleModel value);
 
 } // MetaArchitecture

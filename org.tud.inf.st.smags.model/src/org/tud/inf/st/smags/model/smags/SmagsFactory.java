@@ -76,22 +76,13 @@ public interface SmagsFactory extends EFactory {
 	Method createMethod();
 
 	/**
-	 * Returns a new object of class '<em>External Type</em>'.
+	 * Returns a new object of class '<em>Type</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>External Type</em>'.
+	 * @return a new object of class '<em>Type</em>'.
 	 * @generated
 	 */
-	ExternalType createExternalType();
-
-	/**
-	 * Returns a new object of class '<em>Primitive Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Primitive Type</em>'.
-	 * @generated
-	 */
-	PrimitiveType createPrimitiveType();
+	Type createType();
 
 	/**
 	 * Returns a new object of class '<em>Variable</em>'.
@@ -182,6 +173,24 @@ public interface SmagsFactory extends EFactory {
 	 * @generated
 	 */
 	TypeBinding createTypeBinding();
+
+	/**
+	 * Returns a new object of class '<em>Primitive Use</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Primitive Use</em>'.
+	 * @generated
+	 */
+	PrimitiveUse createPrimitiveUse();
+
+	/**
+	 * Returns a new object of class '<em>Generic Use</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Generic Use</em>'.
+	 * @generated
+	 */
+	GenericUse createGenericUse();
 
 	/**
 	 * Returns the package supported by this factory.

@@ -31,12 +31,12 @@ public interface Method extends PortTypeElement {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Return Type</em>' containment reference.
-	 * @see #setReturnType(Variable)
+	 * @see #setReturnType(TypeUse)
 	 * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getMethod_ReturnType()
 	 * @model containment="true"
 	 * @generated
 	 */
-	Variable getReturnType();
+	TypeUse getReturnType();
 
 	/**
 	 * Sets the value of the '{@link org.tud.inf.st.smags.model.smags.Method#getReturnType <em>Return Type</em>}' containment reference.
@@ -46,7 +46,7 @@ public interface Method extends PortTypeElement {
 	 * @see #getReturnType()
 	 * @generated
 	 */
-	void setReturnType(Variable value);
+	void setReturnType(TypeUse value);
 
 	/**
 	 * Returns the value of the '<em><b>Args</b></em>' containment reference list.

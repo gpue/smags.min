@@ -9,49 +9,49 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.tud.inf.st.smags.model.smags.PrimitiveUse;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
-import org.tud.inf.st.smags.model.smags.Type;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Type</b></em>'.
+ * An implementation of the model object '<em><b>Primitive Use</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.tud.inf.st.smags.model.smags.impl.TypeImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.impl.PrimitiveUseImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
+public class PrimitiveUseImpl extends MinimalEObjectImpl.Container implements PrimitiveUse {
 	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The default value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected static final String NAME_EDEFAULT = null;
+	protected static final String TYPE_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * The cached value of the '{@link #getType() <em>Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getName()
+	 * @see #getType()
 	 * @generated
 	 * @ordered
 	 */
-	protected String name = NAME_EDEFAULT;
+	protected String type = TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected TypeImpl() {
+	protected PrimitiveUseImpl() {
 		super();
 	}
 
@@ -62,7 +62,7 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return SmagsPackage.Literals.TYPE;
+		return SmagsPackage.Literals.PRIMITIVE_USE;
 	}
 
 	/**
@@ -70,8 +70,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
 	/**
@@ -79,11 +79,11 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setName(String newName) {
-		String oldName = name;
-		name = newName;
+	public void setType(String newType) {
+		String oldType = type;
+		type = newType;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.TYPE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.PRIMITIVE_USE__TYPE, oldType, type));
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case SmagsPackage.TYPE__NAME:
-				return getName();
+			case SmagsPackage.PRIMITIVE_USE__TYPE:
+				return getType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -108,8 +108,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case SmagsPackage.TYPE__NAME:
-				setName((String)newValue);
+			case SmagsPackage.PRIMITIVE_USE__TYPE:
+				setType((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -123,8 +123,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case SmagsPackage.TYPE__NAME:
-				setName(NAME_EDEFAULT);
+			case SmagsPackage.PRIMITIVE_USE__TYPE:
+				setType(TYPE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -138,8 +138,8 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case SmagsPackage.TYPE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case SmagsPackage.PRIMITIVE_USE__TYPE:
+				return TYPE_EDEFAULT == null ? type != null : !TYPE_EDEFAULT.equals(type);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -154,10 +154,10 @@ public class TypeImpl extends MinimalEObjectImpl.Container implements Type {
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (name: ");
-		result.append(name);
+		result.append(" (type: ");
+		result.append(type);
 		result.append(')');
 		return result.toString();
 	}
 
-} //TypeImpl
+} //PrimitiveUseImpl

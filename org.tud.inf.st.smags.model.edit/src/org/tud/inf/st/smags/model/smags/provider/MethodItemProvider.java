@@ -141,35 +141,17 @@ public class MethodItemProvider extends PortTypeElementItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(SmagsPackage.Literals.METHOD__RETURN_TYPE,
-				 SmagsFactory.eINSTANCE.createVariable()));
+				 SmagsFactory.eINSTANCE.createPrimitiveUse()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(SmagsPackage.Literals.METHOD__RETURN_TYPE,
+				 SmagsFactory.eINSTANCE.createGenericUse()));
 
 		newChildDescriptors.add
 			(createChildParameter
 				(SmagsPackage.Literals.METHOD__ARGS,
 				 SmagsFactory.eINSTANCE.createVariable()));
-	}
-
-	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-		Object childFeature = feature;
-		Object childObject = child;
-
-		boolean qualify =
-			childFeature == SmagsPackage.Literals.METHOD__RETURN_TYPE ||
-			childFeature == SmagsPackage.Literals.METHOD__ARGS;
-
-		if (qualify) {
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
-		}
-		return super.getCreateChildText(owner, feature, child, selection);
 	}
 
 }

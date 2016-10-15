@@ -16,7 +16,7 @@ import org.tud.inf.st.smags.model.smags.Component;
 import org.tud.inf.st.smags.model.smags.ComponentInstance;
 import org.tud.inf.st.smags.model.smags.ComponentType;
 import org.tud.inf.st.smags.model.smags.CompositionOperator;
-import org.tud.inf.st.smags.model.smags.ExternalType;
+import org.tud.inf.st.smags.model.smags.GenericUse;
 import org.tud.inf.st.smags.model.smags.Import;
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
 import org.tud.inf.st.smags.model.smags.MetaArchitectureElement;
@@ -25,7 +25,7 @@ import org.tud.inf.st.smags.model.smags.Port;
 import org.tud.inf.st.smags.model.smags.PortInstance;
 import org.tud.inf.st.smags.model.smags.PortType;
 import org.tud.inf.st.smags.model.smags.PortTypeElement;
-import org.tud.inf.st.smags.model.smags.PrimitiveType;
+import org.tud.inf.st.smags.model.smags.PrimitiveUse;
 import org.tud.inf.st.smags.model.smags.RoleModel;
 import org.tud.inf.st.smags.model.smags.RoleModelSlot;
 import org.tud.inf.st.smags.model.smags.SmagsElement;
@@ -34,6 +34,7 @@ import org.tud.inf.st.smags.model.smags.SmagsModel;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
 import org.tud.inf.st.smags.model.smags.Type;
 import org.tud.inf.st.smags.model.smags.TypeBinding;
+import org.tud.inf.st.smags.model.smags.TypeUse;
 import org.tud.inf.st.smags.model.smags.Variable;
 
 /**
@@ -91,20 +92,6 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 	 * @generated
 	 */
 	private EClass methodEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass externalTypeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass primitiveTypeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -212,6 +199,27 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 	private EClass typeBindingEClass = null;
 
 	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass typeUseEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass primitiveUseEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass genericUseEClass = null;
+
+	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -279,6 +287,15 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 	 */
 	public EClass getComponentType() {
 		return componentTypeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getComponentType_Provides() {
+		return (EReference)componentTypeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -394,6 +411,15 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getMetaArchitecture_InitialRoleModel() {
+		return (EReference)metaArchitectureEClass.getEStructuralFeatures().get(3);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getMetaArchitectureElement() {
 		return metaArchitectureElementEClass;
 	}
@@ -432,24 +458,6 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 	 */
 	public EReference getMethod_Args() {
 		return (EReference)methodEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getExternalType() {
-		return externalTypeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getPrimitiveType() {
-		return primitiveTypeEClass;
 	}
 
 	/**
@@ -781,6 +789,51 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getTypeUse() {
+		return typeUseEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getPrimitiveUse() {
+		return primitiveUseEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getPrimitiveUse_Type() {
+		return (EAttribute)primitiveUseEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getGenericUse() {
+		return genericUseEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getGenericUse_Type() {
+		return (EReference)genericUseEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public SmagsFactory getSmagsFactory() {
 		return (SmagsFactory)getEFactoryInstance();
 	}
@@ -805,6 +858,7 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 
 		// Create classes and their features
 		componentTypeEClass = createEClass(COMPONENT_TYPE);
+		createEReference(componentTypeEClass, COMPONENT_TYPE__PROVIDES);
 
 		portTypeEClass = createEClass(PORT_TYPE);
 		createEReference(portTypeEClass, PORT_TYPE__ELEMENTS);
@@ -821,6 +875,7 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 		createEReference(metaArchitectureEClass, META_ARCHITECTURE__ELEMENTS);
 		createEAttribute(metaArchitectureEClass, META_ARCHITECTURE__NAME);
 		createEReference(metaArchitectureEClass, META_ARCHITECTURE__TYPES);
+		createEReference(metaArchitectureEClass, META_ARCHITECTURE__INITIAL_ROLE_MODEL);
 
 		metaArchitectureElementEClass = createEClass(META_ARCHITECTURE_ELEMENT);
 		createEAttribute(metaArchitectureElementEClass, META_ARCHITECTURE_ELEMENT__NAME);
@@ -828,10 +883,6 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 		methodEClass = createEClass(METHOD);
 		createEReference(methodEClass, METHOD__RETURN_TYPE);
 		createEReference(methodEClass, METHOD__ARGS);
-
-		externalTypeEClass = createEClass(EXTERNAL_TYPE);
-
-		primitiveTypeEClass = createEClass(PRIMITIVE_TYPE);
 
 		typeEClass = createEClass(TYPE);
 		createEAttribute(typeEClass, TYPE__NAME);
@@ -883,6 +934,14 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 		typeBindingEClass = createEClass(TYPE_BINDING);
 		createEReference(typeBindingEClass, TYPE_BINDING__TYPE);
 		createEAttribute(typeBindingEClass, TYPE_BINDING__IMPLEMENTATION);
+
+		typeUseEClass = createEClass(TYPE_USE);
+
+		primitiveUseEClass = createEClass(PRIMITIVE_USE);
+		createEAttribute(primitiveUseEClass, PRIMITIVE_USE__TYPE);
+
+		genericUseEClass = createEClass(GENERIC_USE);
+		createEReference(genericUseEClass, GENERIC_USE__TYPE);
 	}
 
 	/**
@@ -918,16 +977,17 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 		roleModelEClass.getESuperTypes().add(this.getMetaArchitectureElement());
 		metaArchitectureEClass.getESuperTypes().add(this.getSmagsElement());
 		methodEClass.getESuperTypes().add(this.getPortTypeElement());
-		externalTypeEClass.getESuperTypes().add(this.getType());
-		primitiveTypeEClass.getESuperTypes().add(this.getType());
 		variableEClass.getESuperTypes().add(this.getPortTypeElement());
 		componentEClass.getESuperTypes().add(this.getArchitectureElement());
 		portEClass.getESuperTypes().add(this.getArchitectureElement());
 		architectureEClass.getESuperTypes().add(this.getSmagsElement());
 		bindOperatorEClass.getESuperTypes().add(this.getCompositionOperator());
+		primitiveUseEClass.getESuperTypes().add(this.getTypeUse());
+		genericUseEClass.getESuperTypes().add(this.getTypeUse());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(componentTypeEClass, ComponentType.class, "ComponentType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getComponentType_Provides(), this.getPortType(), null, "provides", null, 0, -1, ComponentType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(portTypeEClass, PortType.class, "PortType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getPortType_Elements(), this.getPortTypeElement(), null, "elements", null, 0, -1, PortType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -944,23 +1004,20 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 		initEReference(getMetaArchitecture_Elements(), this.getMetaArchitectureElement(), null, "elements", null, 0, -1, MetaArchitecture.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getMetaArchitecture_Name(), ecorePackage.getEString(), "name", null, 0, 1, MetaArchitecture.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMetaArchitecture_Types(), this.getType(), null, "types", null, 0, -1, MetaArchitecture.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMetaArchitecture_InitialRoleModel(), this.getRoleModel(), null, "initialRoleModel", null, 0, 1, MetaArchitecture.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(metaArchitectureElementEClass, MetaArchitectureElement.class, "MetaArchitectureElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getMetaArchitectureElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, MetaArchitectureElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(methodEClass, Method.class, "Method", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMethod_ReturnType(), this.getVariable(), null, "returnType", null, 0, 1, Method.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getMethod_ReturnType(), this.getTypeUse(), null, "returnType", null, 0, 1, Method.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getMethod_Args(), this.getVariable(), null, "args", null, 0, -1, Method.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(externalTypeEClass, ExternalType.class, "ExternalType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(primitiveTypeEClass, PrimitiveType.class, "PrimitiveType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(typeEClass, Type.class, "Type", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(typeEClass, Type.class, "Type", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getType_Name(), ecorePackage.getEString(), "name", null, 0, 1, Type.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(variableEClass, Variable.class, "Variable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVariable_Type(), this.getType(), null, "type", null, 0, 1, Variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariable_Type(), this.getTypeUse(), null, "type", null, 0, 1, Variable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(portTypeElementEClass, PortTypeElement.class, "PortTypeElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getPortTypeElement_Name(), ecorePackage.getEString(), "name", null, 0, 1, PortTypeElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1006,6 +1063,14 @@ public class SmagsPackageImpl extends EPackageImpl implements SmagsPackage {
 		initEClass(typeBindingEClass, TypeBinding.class, "TypeBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getTypeBinding_Type(), this.getType(), null, "type", null, 0, 1, TypeBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTypeBinding_Implementation(), ecorePackage.getEString(), "implementation", null, 0, 1, TypeBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(typeUseEClass, TypeUse.class, "TypeUse", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(primitiveUseEClass, PrimitiveUse.class, "PrimitiveUse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPrimitiveUse_Type(), ecorePackage.getEString(), "type", null, 1, 1, PrimitiveUse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(genericUseEClass, GenericUse.class, "GenericUse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGenericUse_Type(), this.getType(), null, "type", null, 1, 1, GenericUse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

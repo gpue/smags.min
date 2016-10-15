@@ -7,7 +7,9 @@
   <foreignModel>model.ecore</foreignModel>
   <genPackages prefix="Smags" basePackage="org.tud.inf.st.smags.model" disposableProviderFactory="true"
       ecorePackage="model.ecore#/">
-    <genClasses ecoreClass="model.ecore#//ComponentType"/>
+    <genClasses ecoreClass="model.ecore#//ComponentType">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//ComponentType/provides"/>
+    </genClasses>
     <genClasses ecoreClass="model.ecore#//PortType">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//PortType/elements"/>
     </genClasses>
@@ -23,6 +25,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//MetaArchitecture/elements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//MetaArchitecture/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//MetaArchitecture/types"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//MetaArchitecture/initialRoleModel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="model.ecore#//MetaArchitectureElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//MetaArchitectureElement/name"/>
@@ -31,8 +34,6 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//Method/returnType"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//Method/args"/>
     </genClasses>
-    <genClasses ecoreClass="model.ecore#//ExternalType"/>
-    <genClasses ecoreClass="model.ecore#//PrimitiveType"/>
     <genClasses image="false" ecoreClass="model.ecore#//Type">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Type/name"/>
     </genClasses>
@@ -81,6 +82,13 @@
     <genClasses ecoreClass="model.ecore#//TypeBinding">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//TypeBinding/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//TypeBinding/implementation"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="model.ecore#//TypeUse"/>
+    <genClasses ecoreClass="model.ecore#//PrimitiveUse">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PrimitiveUse/type"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//GenericUse">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//GenericUse/type"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

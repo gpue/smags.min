@@ -9,26 +9,40 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.common.util.ResourceLocator;
 
-import org.tud.inf.st.smags.model.smags.ComponentType;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
+
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
 
 /**
- * This is the item provider adapter for a {@link org.tud.inf.st.smags.model.smags.ComponentType} object.
+ * This is the item provider adapter for a {@link org.tud.inf.st.smags.model.smags.GenericUse} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvider {
+public class GenericUseItemProvider 
+	extends ItemProviderAdapter
+	implements
+		IEditingDomainItemProvider,
+		IStructuredItemContentProvider,
+		ITreeItemContentProvider,
+		IItemLabelProvider,
+		IItemPropertySource {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ComponentTypeItemProvider(AdapterFactory adapterFactory) {
+	public GenericUseItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -43,25 +57,25 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addProvidesPropertyDescriptor(object);
+			addTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Provides feature.
+	 * This adds a property descriptor for the Type feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addProvidesPropertyDescriptor(Object object) {
+	protected void addTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ComponentType_provides_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentType_provides_feature", "_UI_ComponentType_type"),
-				 SmagsPackage.Literals.COMPONENT_TYPE__PROVIDES,
+				 getString("_UI_GenericUse_type_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_GenericUse_type_feature", "_UI_GenericUse_type"),
+				 SmagsPackage.Literals.GENERIC_USE__TYPE,
 				 true,
 				 false,
 				 true,
@@ -71,14 +85,14 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 	}
 
 	/**
-	 * This returns ComponentType.gif.
+	 * This returns GenericUse.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentType"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/GenericUse"));
 	}
 
 	/**
@@ -89,10 +103,7 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ComponentType)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_ComponentType_type") :
-			getString("_UI_ComponentType_type") + " " + label;
+		return getString("_UI_GenericUse_type");
 	}
 	
 
@@ -119,6 +130,17 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
+
+	/**
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ResourceLocator getResourceLocator() {
+		return ModelEditPlugin.INSTANCE;
 	}
 
 }

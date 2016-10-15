@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
 import org.tud.inf.st.smags.model.smags.MetaArchitectureElement;
+import org.tud.inf.st.smags.model.smags.RoleModel;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
 import org.tud.inf.st.smags.model.smags.Type;
 
@@ -32,6 +33,7 @@ import org.tud.inf.st.smags.model.smags.Type;
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getInitialRoleModel <em>Initial Role Model</em>}</li>
  * </ul>
  *
  * @generated
@@ -76,6 +78,16 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 	 * @ordered
 	 */
 	protected EList<Type> types;
+
+	/**
+	 * The cached value of the '{@link #getInitialRoleModel() <em>Initial Role Model</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getInitialRoleModel()
+	 * @generated
+	 * @ordered
+	 */
+	protected RoleModel initialRoleModel;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -146,6 +158,44 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public RoleModel getInitialRoleModel() {
+		if (initialRoleModel != null && initialRoleModel.eIsProxy()) {
+			InternalEObject oldInitialRoleModel = (InternalEObject)initialRoleModel;
+			initialRoleModel = (RoleModel)eResolveProxy(oldInitialRoleModel);
+			if (initialRoleModel != oldInitialRoleModel) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL, oldInitialRoleModel, initialRoleModel));
+			}
+		}
+		return initialRoleModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public RoleModel basicGetInitialRoleModel() {
+		return initialRoleModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setInitialRoleModel(RoleModel newInitialRoleModel) {
+		RoleModel oldInitialRoleModel = initialRoleModel;
+		initialRoleModel = newInitialRoleModel;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL, oldInitialRoleModel, initialRoleModel));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -171,6 +221,9 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 				return getName();
 			case SmagsPackage.META_ARCHITECTURE__TYPES:
 				return getTypes();
+			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
+				if (resolve) return getInitialRoleModel();
+				return basicGetInitialRoleModel();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -195,6 +248,9 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 				getTypes().clear();
 				getTypes().addAll((Collection<? extends Type>)newValue);
 				return;
+			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
+				setInitialRoleModel((RoleModel)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -216,6 +272,9 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 			case SmagsPackage.META_ARCHITECTURE__TYPES:
 				getTypes().clear();
 				return;
+			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
+				setInitialRoleModel((RoleModel)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -234,6 +293,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SmagsPackage.META_ARCHITECTURE__TYPES:
 				return types != null && !types.isEmpty();
+			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
+				return initialRoleModel != null;
 		}
 		return super.eIsSet(featureID);
 	}

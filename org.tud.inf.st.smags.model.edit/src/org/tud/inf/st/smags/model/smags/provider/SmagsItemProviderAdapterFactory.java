@@ -210,49 +210,26 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.ExternalType} instances.
+	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.Type} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected ExternalTypeItemProvider externalTypeItemProvider;
+	protected TypeItemProvider typeItemProvider;
 
 	/**
-	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.ExternalType}.
+	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.Type}.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public Adapter createExternalTypeAdapter() {
-		if (externalTypeItemProvider == null) {
-			externalTypeItemProvider = new ExternalTypeItemProvider(this);
+	public Adapter createTypeAdapter() {
+		if (typeItemProvider == null) {
+			typeItemProvider = new TypeItemProvider(this);
 		}
 
-		return externalTypeItemProvider;
-	}
-
-	/**
-	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.PrimitiveType} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PrimitiveTypeItemProvider primitiveTypeItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.PrimitiveType}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createPrimitiveTypeAdapter() {
-		if (primitiveTypeItemProvider == null) {
-			primitiveTypeItemProvider = new PrimitiveTypeItemProvider(this);
-		}
-
-		return primitiveTypeItemProvider;
+		return typeItemProvider;
 	}
 
 	/**
@@ -486,6 +463,52 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.PrimitiveUse} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected PrimitiveUseItemProvider primitiveUseItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.PrimitiveUse}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createPrimitiveUseAdapter() {
+		if (primitiveUseItemProvider == null) {
+			primitiveUseItemProvider = new PrimitiveUseItemProvider(this);
+		}
+
+		return primitiveUseItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.GenericUse} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected GenericUseItemProvider genericUseItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.GenericUse}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createGenericUseAdapter() {
+		if (genericUseItemProvider == null) {
+			genericUseItemProvider = new GenericUseItemProvider(this);
+		}
+
+		return genericUseItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -590,8 +613,7 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 		if (roleModelSlotItemProvider != null) roleModelSlotItemProvider.dispose();
 		if (metaArchitectureItemProvider != null) metaArchitectureItemProvider.dispose();
 		if (methodItemProvider != null) methodItemProvider.dispose();
-		if (externalTypeItemProvider != null) externalTypeItemProvider.dispose();
-		if (primitiveTypeItemProvider != null) primitiveTypeItemProvider.dispose();
+		if (typeItemProvider != null) typeItemProvider.dispose();
 		if (variableItemProvider != null) variableItemProvider.dispose();
 		if (componentItemProvider != null) componentItemProvider.dispose();
 		if (portItemProvider != null) portItemProvider.dispose();
@@ -602,6 +624,8 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 		if (smagsModelItemProvider != null) smagsModelItemProvider.dispose();
 		if (importItemProvider != null) importItemProvider.dispose();
 		if (typeBindingItemProvider != null) typeBindingItemProvider.dispose();
+		if (primitiveUseItemProvider != null) primitiveUseItemProvider.dispose();
+		if (genericUseItemProvider != null) genericUseItemProvider.dispose();
 	}
 
 }

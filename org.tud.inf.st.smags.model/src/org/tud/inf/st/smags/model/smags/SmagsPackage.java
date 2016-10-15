@@ -113,13 +113,22 @@ public interface SmagsPackage extends EPackage {
 	int COMPONENT_TYPE__NAME = META_ARCHITECTURE_ELEMENT__NAME;
 
 	/**
+	 * The feature id for the '<em><b>Provides</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPONENT_TYPE__PROVIDES = META_ARCHITECTURE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Component Type</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int COMPONENT_TYPE_FEATURE_COUNT = META_ARCHITECTURE_ELEMENT_FEATURE_COUNT + 0;
+	int COMPONENT_TYPE_FEATURE_COUNT = META_ARCHITECTURE_ELEMENT_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of operations of the '<em>Component Type</em>' class.
@@ -285,7 +294,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getSmagsElement()
 	 * @generated
 	 */
-	int SMAGS_ELEMENT = 21;
+	int SMAGS_ELEMENT = 19;
 
 	/**
 	 * The number of structural features of the '<em>Element</em>' class.
@@ -343,13 +352,22 @@ public interface SmagsPackage extends EPackage {
 	int META_ARCHITECTURE__TYPES = SMAGS_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
+	 * The feature id for the '<em><b>Initial Role Model</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int META_ARCHITECTURE__INITIAL_ROLE_MODEL = SMAGS_ELEMENT_FEATURE_COUNT + 3;
+
+	/**
 	 * The number of structural features of the '<em>Meta Architecture</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int META_ARCHITECTURE_FEATURE_COUNT = SMAGS_ELEMENT_FEATURE_COUNT + 3;
+	int META_ARCHITECTURE_FEATURE_COUNT = SMAGS_ELEMENT_FEATURE_COUNT + 4;
 
 	/**
 	 * The number of operations of the '<em>Meta Architecture</em>' class.
@@ -368,7 +386,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPortTypeElement()
 	 * @generated
 	 */
-	int PORT_TYPE_ELEMENT = 11;
+	int PORT_TYPE_ELEMENT = 9;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -460,7 +478,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getType()
 	 * @generated
 	 */
-	int TYPE = 9;
+	int TYPE = 7;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -490,80 +508,6 @@ public interface SmagsPackage extends EPackage {
 	int TYPE_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.ExternalTypeImpl <em>External Type</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.tud.inf.st.smags.model.smags.impl.ExternalTypeImpl
-	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getExternalType()
-	 * @generated
-	 */
-	int EXTERNAL_TYPE = 7;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXTERNAL_TYPE__NAME = TYPE__NAME;
-
-	/**
-	 * The number of structural features of the '<em>External Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXTERNAL_TYPE_FEATURE_COUNT = TYPE_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>External Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int EXTERNAL_TYPE_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
-
-	/**
-	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.tud.inf.st.smags.model.smags.impl.PrimitiveTypeImpl
-	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPrimitiveType()
-	 * @generated
-	 */
-	int PRIMITIVE_TYPE = 8;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PRIMITIVE_TYPE__NAME = TYPE__NAME;
-
-	/**
-	 * The number of structural features of the '<em>Primitive Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PRIMITIVE_TYPE_FEATURE_COUNT = TYPE_FEATURE_COUNT + 0;
-
-	/**
-	 * The number of operations of the '<em>Primitive Type</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PRIMITIVE_TYPE_OPERATION_COUNT = TYPE_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.VariableImpl <em>Variable</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -571,7 +515,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getVariable()
 	 * @generated
 	 */
-	int VARIABLE = 10;
+	int VARIABLE = 8;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -583,7 +527,7 @@ public interface SmagsPackage extends EPackage {
 	int VARIABLE__NAME = PORT_TYPE_ELEMENT__NAME;
 
 	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * The feature id for the '<em><b>Type</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -617,7 +561,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getArchitectureElement()
 	 * @generated
 	 */
-	int ARCHITECTURE_ELEMENT = 15;
+	int ARCHITECTURE_ELEMENT = 13;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -654,7 +598,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getComponent()
 	 * @generated
 	 */
-	int COMPONENT = 12;
+	int COMPONENT = 10;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -700,7 +644,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPort()
 	 * @generated
 	 */
-	int PORT = 13;
+	int PORT = 11;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -746,7 +690,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getArchitecture()
 	 * @generated
 	 */
-	int ARCHITECTURE = 14;
+	int ARCHITECTURE = 12;
 
 	/**
 	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -810,7 +754,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getComponentInstance()
 	 * @generated
 	 */
-	int COMPONENT_INSTANCE = 16;
+	int COMPONENT_INSTANCE = 14;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -856,7 +800,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPortInstance()
 	 * @generated
 	 */
-	int PORT_INSTANCE = 17;
+	int PORT_INSTANCE = 15;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -902,7 +846,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getCompositionOperator()
 	 * @generated
 	 */
-	int COMPOSITION_OPERATOR = 18;
+	int COMPOSITION_OPERATOR = 16;
 
 	/**
 	 * The number of structural features of the '<em>Composition Operator</em>' class.
@@ -930,7 +874,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getBindOperator()
 	 * @generated
 	 */
-	int BIND_OPERATOR = 19;
+	int BIND_OPERATOR = 17;
 
 	/**
 	 * The feature id for the '<em><b>Slot</b></em>' reference.
@@ -977,7 +921,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getSmagsModel()
 	 * @generated
 	 */
-	int SMAGS_MODEL = 20;
+	int SMAGS_MODEL = 18;
 
 	/**
 	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -1023,7 +967,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getImport()
 	 * @generated
 	 */
-	int IMPORT = 22;
+	int IMPORT = 20;
 
 	/**
 	 * The feature id for the '<em><b>Import URI</b></em>' attribute.
@@ -1060,7 +1004,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getTypeBinding()
 	 * @generated
 	 */
-	int TYPE_BINDING = 23;
+	int TYPE_BINDING = 21;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1100,6 +1044,109 @@ public interface SmagsPackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.TypeUse <em>Type Use</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.TypeUse
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getTypeUse()
+	 * @generated
+	 */
+	int TYPE_USE = 22;
+
+	/**
+	 * The number of structural features of the '<em>Type Use</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_USE_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>Type Use</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TYPE_USE_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.PrimitiveUseImpl <em>Primitive Use</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.impl.PrimitiveUseImpl
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPrimitiveUse()
+	 * @generated
+	 */
+	int PRIMITIVE_USE = 23;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_USE__TYPE = TYPE_USE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Primitive Use</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_USE_FEATURE_COUNT = TYPE_USE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Primitive Use</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int PRIMITIVE_USE_OPERATION_COUNT = TYPE_USE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.GenericUseImpl <em>Generic Use</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.impl.GenericUseImpl
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getGenericUse()
+	 * @generated
+	 */
+	int GENERIC_USE = 24;
+
+	/**
+	 * The feature id for the '<em><b>Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERIC_USE__TYPE = TYPE_USE_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Generic Use</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERIC_USE_FEATURE_COUNT = TYPE_USE_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Generic Use</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int GENERIC_USE_OPERATION_COUNT = TYPE_USE_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.ComponentType <em>Component Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1108,6 +1155,17 @@ public interface SmagsPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getComponentType();
+
+	/**
+	 * Returns the meta object for the reference list '{@link org.tud.inf.st.smags.model.smags.ComponentType#getProvides <em>Provides</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Provides</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.ComponentType#getProvides()
+	 * @see #getComponentType()
+	 * @generated
+	 */
+	EReference getComponentType_Provides();
 
 	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.PortType <em>Port Type</em>}'.
@@ -1238,6 +1296,17 @@ public interface SmagsPackage extends EPackage {
 	EReference getMetaArchitecture_Types();
 
 	/**
+	 * Returns the meta object for the reference '{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel <em>Initial Role Model</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Initial Role Model</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel()
+	 * @see #getMetaArchitecture()
+	 * @generated
+	 */
+	EReference getMetaArchitecture_InitialRoleModel();
+
+	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.MetaArchitectureElement <em>Meta Architecture Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1291,26 +1360,6 @@ public interface SmagsPackage extends EPackage {
 	EReference getMethod_Args();
 
 	/**
-	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.ExternalType <em>External Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>External Type</em>'.
-	 * @see org.tud.inf.st.smags.model.smags.ExternalType
-	 * @generated
-	 */
-	EClass getExternalType();
-
-	/**
-	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.PrimitiveType <em>Primitive Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Primitive Type</em>'.
-	 * @see org.tud.inf.st.smags.model.smags.PrimitiveType
-	 * @generated
-	 */
-	EClass getPrimitiveType();
-
-	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.Type <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1342,10 +1391,10 @@ public interface SmagsPackage extends EPackage {
 	EClass getVariable();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.tud.inf.st.smags.model.smags.Variable#getType <em>Type</em>}'.
+	 * Returns the meta object for the containment reference '{@link org.tud.inf.st.smags.model.smags.Variable#getType <em>Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @return the meta object for the containment reference '<em>Type</em>'.
 	 * @see org.tud.inf.st.smags.model.smags.Variable#getType()
 	 * @see #getVariable()
 	 * @generated
@@ -1692,6 +1741,58 @@ public interface SmagsPackage extends EPackage {
 	EAttribute getTypeBinding_Implementation();
 
 	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.TypeUse <em>Type Use</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Type Use</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.TypeUse
+	 * @generated
+	 */
+	EClass getTypeUse();
+
+	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.PrimitiveUse <em>Primitive Use</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Primitive Use</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.PrimitiveUse
+	 * @generated
+	 */
+	EClass getPrimitiveUse();
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.tud.inf.st.smags.model.smags.PrimitiveUse#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Type</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.PrimitiveUse#getType()
+	 * @see #getPrimitiveUse()
+	 * @generated
+	 */
+	EAttribute getPrimitiveUse_Type();
+
+	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.GenericUse <em>Generic Use</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Generic Use</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.GenericUse
+	 * @generated
+	 */
+	EClass getGenericUse();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.tud.inf.st.smags.model.smags.GenericUse#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Type</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.GenericUse#getType()
+	 * @see #getGenericUse()
+	 * @generated
+	 */
+	EReference getGenericUse_Type();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1723,6 +1824,14 @@ public interface SmagsPackage extends EPackage {
 		 * @generated
 		 */
 		EClass COMPONENT_TYPE = eINSTANCE.getComponentType();
+
+		/**
+		 * The meta object literal for the '<em><b>Provides</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference COMPONENT_TYPE__PROVIDES = eINSTANCE.getComponentType_Provides();
 
 		/**
 		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.PortTypeImpl <em>Port Type</em>}' class.
@@ -1829,6 +1938,14 @@ public interface SmagsPackage extends EPackage {
 		EReference META_ARCHITECTURE__TYPES = eINSTANCE.getMetaArchitecture_Types();
 
 		/**
+		 * The meta object literal for the '<em><b>Initial Role Model</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference META_ARCHITECTURE__INITIAL_ROLE_MODEL = eINSTANCE.getMetaArchitecture_InitialRoleModel();
+
+		/**
 		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureElementImpl <em>Meta Architecture Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1873,26 +1990,6 @@ public interface SmagsPackage extends EPackage {
 		EReference METHOD__ARGS = eINSTANCE.getMethod_Args();
 
 		/**
-		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.ExternalTypeImpl <em>External Type</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.tud.inf.st.smags.model.smags.impl.ExternalTypeImpl
-		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getExternalType()
-		 * @generated
-		 */
-		EClass EXTERNAL_TYPE = eINSTANCE.getExternalType();
-
-		/**
-		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.PrimitiveTypeImpl <em>Primitive Type</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.tud.inf.st.smags.model.smags.impl.PrimitiveTypeImpl
-		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPrimitiveType()
-		 * @generated
-		 */
-		EClass PRIMITIVE_TYPE = eINSTANCE.getPrimitiveType();
-
-		/**
 		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.TypeImpl <em>Type</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -1921,7 +2018,7 @@ public interface SmagsPackage extends EPackage {
 		EClass VARIABLE = eINSTANCE.getVariable();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
@@ -2209,6 +2306,52 @@ public interface SmagsPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TYPE_BINDING__IMPLEMENTATION = eINSTANCE.getTypeBinding_Implementation();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.TypeUse <em>Type Use</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.TypeUse
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getTypeUse()
+		 * @generated
+		 */
+		EClass TYPE_USE = eINSTANCE.getTypeUse();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.PrimitiveUseImpl <em>Primitive Use</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.impl.PrimitiveUseImpl
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPrimitiveUse()
+		 * @generated
+		 */
+		EClass PRIMITIVE_USE = eINSTANCE.getPrimitiveUse();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute PRIMITIVE_USE__TYPE = eINSTANCE.getPrimitiveUse_Type();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.GenericUseImpl <em>Generic Use</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.impl.GenericUseImpl
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getGenericUse()
+		 * @generated
+		 */
+		EClass GENERIC_USE = eINSTANCE.getGenericUse();
+
+		/**
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference GENERIC_USE__TYPE = eINSTANCE.getGenericUse_Type();
 
 	}
 

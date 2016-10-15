@@ -3,14 +3,28 @@
  */
 package org.tud.inf.st.smags.dsl.generator
 
+import java.util.HashSet
+import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
 import org.tud.inf.st.smags.model.smags.Architecture
-import org.tud.inf.st.smags.model.smags.SmagsModel
 import org.tud.inf.st.smags.model.smags.Component
+import org.tud.inf.st.smags.model.smags.ComponentType
 import org.tud.inf.st.smags.model.smags.MetaArchitecture
+import org.tud.inf.st.smags.model.smags.Method
+import org.tud.inf.st.smags.model.smags.Port
+import org.tud.inf.st.smags.model.smags.PortType
+import org.tud.inf.st.smags.model.smags.SmagsModel
+import org.tud.inf.st.smags.model.smags.Type
+import org.tud.inf.st.smags.model.smags.Variable
+import org.tud.inf.st.smags.model.smags.TypeBinding
+import org.tud.inf.st.smags.model.smags.RoleModel
+import org.tud.inf.st.smags.model.smags.BindOperator
+import org.tud.inf.st.smags.model.smags.GenericUse
+import org.tud.inf.st.smags.model.smags.PrimitiveUse
+import org.tud.inf.st.smags.model.smags.TypeUse
 
 /**
  * Generates code from your model files on save.
@@ -20,50 +34,250 @@ import org.tud.inf.st.smags.model.smags.MetaArchitecture
 class DSLGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
-				
-		for(m: resource.contents.filter(SmagsModel)) {
-			for(a: m.elements.filter(MetaArchitecture)) {
-				var archName = a.name.toLowerCase;
-				
-				fsa.generateFile(archName+"/"+a.name.toFirstUpper+"MetaArchitecture.java",compile(archName,a))	
-				
-			}			
-			
-			for(a : m.elements.filter(Architecture)){
-				
-				var archName = a.name.toLowerCase;
-				
-				fsa.generateFile(archName+"/"+a.name.toFirstUpper+"Architecture.java",compile(archName,a))	
-				
-				for(c: a.elements.filter(Component)){
-					fsa.generateFile(archName+"/"+c.name.toFirstUpper+".java",compile(archName,c))	
-				}			
+
+		for (m : resource.contents.filter(SmagsModel)) {
+			for (a : m.elements.filter(MetaArchitecture)) {
+				val archName = a.name.toLowerCase;
+				val portTypeMarkerName = a.name.toFirstUpper + "PortType";
+
+				fsa.generateFile(archName + "/" + a.name.toFirstUpper + "MetaArchitecture.java", compile(archName, a));
+
+				fsa.generateFile(archName + "/" + portTypeMarkerName + ".java", marker(archName, portTypeMarkerName));
+
+				for (c : a.elements.filter(ComponentType)) {
+					fsa.generateFile(archName + "/" + c.name.toFirstUpper + ".java",
+						compile(archName, c, portTypeMarkerName));
+				}
+
+				for (p : a.elements.filter(PortType)) {
+					fsa.generateFile(archName + "/" + p.name.toFirstUpper + ".java",
+						compile(archName, p, portTypeMarkerName));
+				}
+			}
+
+			for (a : m.elements.filter(Architecture)) {
+
+				val archName = a.name.toLowerCase;
+
+				fsa.generateFile(archName + "/" + a.name.toFirstUpper + "Architecture.java", compile(archName, a));
+
+				for (c : a.elements.filter(Component)) {
+					fsa.generateFile(archName + "/" + c.name.toFirstUpper + ".java", compile(archName, c));
+				}
+
+				for (p : a.elements.filter(Port)) {
+					fsa.generateFile(archName + "/" + p.name.toFirstUpper + ".java", compile(archName, p));
+				}
 			}
 		}
 	}
+
+	def String commaList(Iterable<String> list) {
+		val out = new StringBuffer();
+		val i = list.iterator;
+
+		while (i.hasNext) {
+			out.append(i.next);
+			if (i.hasNext) {
+				out.append(", ");
+			}
+		}
+
+		return out.toString;
+	}
+
+	def Set<Type> usedTypes(PortType p) {
+		val used = new HashSet<Type>();
+		p.elements.filter(Variable).filter[v | v.type instanceof GenericUse].forEach([v|used.add((v as GenericUse).type)]);
+		p.elements.filter(Method).forEach([m|used.addAll(usedTypes(m))]);
+		return used;
+	}
+
+	def Set<Type> usedTypes(Method m) {
+		val used = new HashSet<Type>();
+		if(m.returnType instanceof GenericUse)
+		used.add((m.returnType as GenericUse).type);
+		m.args.filter[v | v.type instanceof GenericUse].forEach([v|used.add((v.type as GenericUse).type)]);
+		return used;
+	}
 	
-	def compile(String pkg, MetaArchitecture a) '''
+	def TypeBinding binding(Type t, Architecture a) {
+		a.typeBindings.findFirst[b|b.type == t];
+	}
+
+	def marker(String pkg, String name) '''
 		package «pkg»;
 		
-		public class «a.name.toFirstUpper»MetaArchitecture {
+		public interface «name»{
 			
 		}
 	'''
 	
+	def compile(TypeUse t) {
+		if(t instanceof GenericUse)
+		'''T«(t as GenericUse).type.name.toFirstUpper»'''
+		else
+		(t as PrimitiveUse).type
+	}
+
+	def compile(Variable v) '''
+		«v.type.compile» «v.name»'''
+
+	def compileInterface(Method m) '''
+		«m.returnType.compile» «m.name»(«m.args.map[a | a.compile.toString].commaList»);
+	'''
+	
+	def compileDelegate(Method m) '''
+		@SuppressWarnings("unchecked")
+		public «m.returnType.compile» «m.name»(«m.args.map[a | a.compile.toString].commaList»){
+			Method m = Arrays.stream(«(m.eContainer as PortType).name.toFirstUpper».class.getMethods()).filter(e -> e.getName().equals("«m.name»")).findFirst().get();
+			return («m.returnType.compile»)delegate(m«IF m.args.size>0»,«m.args.map[a | a.name].commaList»«ENDIF»);
+		}
+	'''
+
+	def genericName(MetaArchitecture a) '''«a.name.toFirstUpper»MetaArchitecture«IF a.elements
+			.filter(PortType).exists[pt | pt.usedTypes.size>0]»<«a.elements
+				.filter(PortType).map[pt | pt.usedTypes].flatten.map[t | "T"+t.name].toSet.commaList»>«ENDIF»'''
+				
+	def genericName(ComponentType c) '''«c.name.toFirstUpper»«IF c.provides
+				.exists[pt | pt.usedTypes.size>0]»<«c.provides
+					.map[pt | pt.usedTypes].flatten.map[t | "T"+t.name].toSet.commaList»>«ENDIF»'''
+					
+	def genericName(PortType p) '''«p.name.toFirstUpper»<«p.usedTypes.map[t | "T"+t.name].toSet.commaList»>'''
+
+	def compile(String pkg, MetaArchitecture a) '''
+		package «pkg»;
+		
+		public abstract class «a.genericName» {
+			«FOR rm:a.elements.filter(RoleModel)»
+				public void activate«rm.name.toFirstUpper»(«rm.slots.map[s | s.type.genericName+" "+s.name].commaList»){
+					«FOR op:rm.initialization.filter(BindOperator)»
+						«op.slot.name».playRole(create«op.to.name.toFirstUpper»());
+					«ENDFOR»	
+				}
+			«ENDFOR»
+			
+			«FOR ct:a.elements.filter(ComponentType)»
+				public abstract «ct.genericName» create«ct.name.toFirstUpper»();
+			«ENDFOR»	
+			
+			«FOR pt:a.elements.filter(PortType)»
+				public abstract «pt.genericName» create«pt.name.toFirstUpper»();
+			«ENDFOR»			
+		}
+	'''
+
+	def compile(String pkg, ComponentType c, String portTypeMarker) '''
+		package «pkg»;
+		
+		import java.util.Stack;
+		import java.lang.reflect.Method;
+		«IF c.provides.size>0»import java.util.Arrays;«ENDIF»
+		
+		public abstract class «c.name.toFirstUpper»«IF c.provides.size>0»«IF c.provides
+			.exists[pt | pt.usedTypes.size>0]»<«c.provides
+				.map[pt | pt.usedTypes].flatten.map[t | "T"+t.name].commaList»>«ENDIF» implements «c.provides.
+					map[pt | pt.name+"<"+pt.usedTypes.map[t | "T"+t.name].commaList+">"].commaList»«ENDIF»{
+				
+			private Stack<«portTypeMarker»> roles = new Stack<«portTypeMarker»>();
+			
+			public void playRole(«portTypeMarker» p){
+				roles.push(p);	
+			}
+			
+			public void dropRole(Class<«portTypeMarker»> c) {
+				for(int i=0;i<roles.size();i++) {
+					if(c.isAssignableFrom(roles.get(i).getClass())){
+						roles.remove(i);
+						break;	
+					} 	
+				}
+			}
+			
+			private Object delegate(Method m, Object... args) {
+				Class<?> c = m.getDeclaringClass();
+				«portTypeMarker» o = null; 
+				for(int i=0;i<roles.size();i++) {
+					if(c.isAssignableFrom(roles.get(i).getClass())){
+				     	o=roles.get(i);
+						break;	
+					} 	
+				}
+				if(o == null)
+					throw new UnsupportedOperationException("role "+c+" not bound to "+this);
+				else
+					try{
+						return m.invoke(o,args);
+					} catch(Exception e) {
+						throw new RuntimeException(e);	
+					} 
+			}
+			
+			«FOR m : c.provides.map[pt | pt.elements.filter(Method)].flatten»
+				«m.compileDelegate»
+			«ENDFOR»
+		}
+	'''
+
+	def compile(String pkg, PortType p,
+		String portTypeMarker) '''
+		package «pkg»;
+		
+		public interface «p.genericName» extends «portTypeMarker»{
+			«FOR m : p.elements.filter(Method)»
+				«m.compileInterface»
+			«ENDFOR»
+		}
+	'''
+	
+	def boundParentName(Architecture a) '''«a.type.name.toFirstUpper»MetaArchitecture«IF a.type.elements
+			.filter(PortType).exists[pt | pt.usedTypes.size>0]»<«a.type.elements
+				.filter(PortType).map[pt | pt.usedTypes].flatten.map[t | binding(t,a).implementation]
+				.toSet.commaList»>«ENDIF»'''
+					
+	def boundParentName(Component c) '''«c.type.name.toFirstUpper»«IF c.type.provides
+				.exists[pt | pt.usedTypes.size>0]»<«c.type.provides
+					.map[pt | pt.usedTypes].flatten.toSet
+					.map[t | binding(t,c.eContainer as Architecture).implementation]
+					.commaList»>«ENDIF»'''
+	
+	def boundParentName(Port p) '''«p.type.name.toFirstUpper»«IF p.type.usedTypes.size>0»<«p.type.usedTypes
+				.map[t | binding(t,p.eContainer as Architecture).implementation].commaList»>«ENDIF»'''
+
 	def compile(String pkg, Architecture a) '''
 		package «pkg»;
 		
 		import «a.type.name.toLowerCase».«a.type.name.toFirstUpper»MetaArchitecture;
-
-		public class «a.name.toFirstUpper»Architecture extends «a.type.name.toFirstUpper»MetaArchitecture{
+		
+		public abstract class «a.name.toFirstUpper»Architecture extends «a.boundParentName»{
 			
 		}
 	'''
-	
+
 	def compile(String pkg, Component c) '''
 		package «pkg»;
 		
-		public class «c.name.toFirstUpper» {
+		import «(c.type.eContainer as MetaArchitecture).name.toLowerCase».«c.type.name.toFirstUpper»;
+		
+		public class «c.name.toFirstUpper» extends «c.boundParentName»{
+			
+		}
+	'''
+
+	def compile(String pkg, Port p) '''
+		package «pkg»;
+		
+		import «(p.type.eContainer as MetaArchitecture).name.toLowerCase».«p.type.name.toFirstUpper»;
+		
+		public abstract class «p.name.toFirstUpper» implements «p.boundParentName»{
+				
+			protected «p.type.name.toFirstUpper»<«p.type.usedTypes
+						.map[t | binding(t,p.eContainer as Architecture).implementation].commaList»> base;
+						
+			public «p.name.toFirstUpper»(«p.type.name.toFirstUpper»<«p.type.usedTypes
+						.map[t | binding(t,p.eContainer as Architecture).implementation].commaList»> base){
+				this.base = base;				
+			}
 			
 		}
 	'''

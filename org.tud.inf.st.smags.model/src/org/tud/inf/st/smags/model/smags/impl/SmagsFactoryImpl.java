@@ -62,8 +62,7 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 			case SmagsPackage.ROLE_MODEL_SLOT: return createRoleModelSlot();
 			case SmagsPackage.META_ARCHITECTURE: return createMetaArchitecture();
 			case SmagsPackage.METHOD: return createMethod();
-			case SmagsPackage.EXTERNAL_TYPE: return createExternalType();
-			case SmagsPackage.PRIMITIVE_TYPE: return createPrimitiveType();
+			case SmagsPackage.TYPE: return createType();
 			case SmagsPackage.VARIABLE: return createVariable();
 			case SmagsPackage.COMPONENT: return createComponent();
 			case SmagsPackage.PORT: return createPort();
@@ -74,6 +73,8 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 			case SmagsPackage.SMAGS_MODEL: return createSmagsModel();
 			case SmagsPackage.IMPORT: return createImport();
 			case SmagsPackage.TYPE_BINDING: return createTypeBinding();
+			case SmagsPackage.PRIMITIVE_USE: return createPrimitiveUse();
+			case SmagsPackage.GENERIC_USE: return createGenericUse();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -144,19 +145,9 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ExternalType createExternalType() {
-		ExternalTypeImpl externalType = new ExternalTypeImpl();
-		return externalType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public PrimitiveType createPrimitiveType() {
-		PrimitiveTypeImpl primitiveType = new PrimitiveTypeImpl();
-		return primitiveType;
+	public Type createType() {
+		TypeImpl type = new TypeImpl();
+		return type;
 	}
 
 	/**
@@ -257,6 +248,26 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 	public TypeBinding createTypeBinding() {
 		TypeBindingImpl typeBinding = new TypeBindingImpl();
 		return typeBinding;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public PrimitiveUse createPrimitiveUse() {
+		PrimitiveUseImpl primitiveUse = new PrimitiveUseImpl();
+		return primitiveUse;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public GenericUse createGenericUse() {
+		GenericUseImpl genericUse = new GenericUseImpl();
+		return genericUse;
 	}
 
 	/**

@@ -23,28 +23,32 @@ MetaArchitecture returns smags::MetaArchitecture:
 	'}'
 	'{'
 	elements+=MetaArchitectureElement*
-	'}';
+	'}' ('start' 'with' initialRoleModel=[smags::RoleModel|EString] ';')?;
 
 MetaArchitectureElement returns smags::MetaArchitectureElement:
 	ComponentType | PortType | RoleModel;
 
 Type returns smags::Type:
-	ExternalType | PrimitiveType;
-
-ExternalType returns smags::ExternalType:
-	'Type' name=EString';';
-
-PrimitiveType returns smags::PrimitiveType:
-	'Primitive' name=EString ';';
+	'Type' ':' name=EString';';
 
 Variable returns smags::Variable:
-	type=[smags::Type|EString] name=EString;
-
-AnonymousVariable returns smags::Variable:
-	type=[smags::Type|EString];
+	type=TypeUse name=EString;
 
 Method returns smags::Method:
-	returnType=AnonymousVariable name=EString '(' (args+=Variable ("," args+=Variable)*)? ')';
+	returnType=TypeUse name=EString '(' (args+=Variable ("," args+=Variable)*)? ')';
+	
+TypeUse returns smags::TypeUse: 
+	PrimitiveUse | GenericUse
+;
+
+PrimitiveUse returns smags::PrimitiveUse: 
+	type=EString
+;
+
+GenericUse returns smags::GenericUse: 
+	':' type=[smags::Type|EString]
+;
+
 
 PortTypeElement returns smags::PortTypeElement:
 	(Variable | Method) ';';
@@ -58,7 +62,10 @@ EString returns ecore::EString:
 ComponentType returns smags::ComponentType:
 	{smags::ComponentType}
 	'ComponentType'
-	name=EString ';';
+	name=EString 
+	('provides' provides+=[smags::PortType|EString] (',' provides+=[smags::PortType|EString])*)?	
+	';'
+;
 
 PortType returns smags::PortType:
 	{smags::PortType}

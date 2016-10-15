@@ -17,7 +17,7 @@ import org.eclipse.emf.ecore.EObject;
  * </ul>
  *
  * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getType()
- * @model abstract="true"
+ * @model
  * @generated
  */
 public interface Type extends EObject {

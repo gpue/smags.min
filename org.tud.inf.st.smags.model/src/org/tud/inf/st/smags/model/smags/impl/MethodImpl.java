@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.tud.inf.st.smags.model.smags.Method;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
+import org.tud.inf.st.smags.model.smags.TypeUse;
 import org.tud.inf.st.smags.model.smags.Variable;
 
 /**
@@ -44,7 +45,7 @@ public class MethodImpl extends PortTypeElementImpl implements Method {
 	 * @generated
 	 * @ordered
 	 */
-	protected Variable returnType;
+	protected TypeUse returnType;
 
 	/**
 	 * The cached value of the '{@link #getArgs() <em>Args</em>}' containment reference list.
@@ -80,7 +81,7 @@ public class MethodImpl extends PortTypeElementImpl implements Method {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Variable getReturnType() {
+	public TypeUse getReturnType() {
 		return returnType;
 	}
 
@@ -89,8 +90,8 @@ public class MethodImpl extends PortTypeElementImpl implements Method {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetReturnType(Variable newReturnType, NotificationChain msgs) {
-		Variable oldReturnType = returnType;
+	public NotificationChain basicSetReturnType(TypeUse newReturnType, NotificationChain msgs) {
+		TypeUse oldReturnType = returnType;
 		returnType = newReturnType;
 		if (eNotificationRequired()) {
 			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SmagsPackage.METHOD__RETURN_TYPE, oldReturnType, newReturnType);
@@ -104,7 +105,7 @@ public class MethodImpl extends PortTypeElementImpl implements Method {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setReturnType(Variable newReturnType) {
+	public void setReturnType(TypeUse newReturnType) {
 		if (newReturnType != returnType) {
 			NotificationChain msgs = null;
 			if (returnType != null)
@@ -172,7 +173,7 @@ public class MethodImpl extends PortTypeElementImpl implements Method {
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
 			case SmagsPackage.METHOD__RETURN_TYPE:
-				setReturnType((Variable)newValue);
+				setReturnType((TypeUse)newValue);
 				return;
 			case SmagsPackage.METHOD__ARGS:
 				getArgs().clear();
@@ -191,7 +192,7 @@ public class MethodImpl extends PortTypeElementImpl implements Method {
 	public void eUnset(int featureID) {
 		switch (featureID) {
 			case SmagsPackage.METHOD__RETURN_TYPE:
-				setReturnType((Variable)null);
+				setReturnType((TypeUse)null);
 				return;
 			case SmagsPackage.METHOD__ARGS:
 				getArgs().clear();

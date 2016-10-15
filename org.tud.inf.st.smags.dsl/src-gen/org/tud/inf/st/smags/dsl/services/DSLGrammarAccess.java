@@ -130,6 +130,12 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cElementsAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cElementsMetaArchitectureElementParserRuleCall_6_0 = (RuleCall)cElementsAssignment_6.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Group cGroup_8 = (Group)cGroup.eContents().get(8);
+		private final Keyword cStartKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final Keyword cWithKeyword_8_1 = (Keyword)cGroup_8.eContents().get(1);
+		private final Assignment cInitialRoleModelAssignment_8_2 = (Assignment)cGroup_8.eContents().get(2);
+		private final CrossReference cInitialRoleModelRoleModelCrossReference_8_2_0 = (CrossReference)cInitialRoleModelAssignment_8_2.eContents().get(0);
+		private final RuleCall cInitialRoleModelRoleModelEStringParserRuleCall_8_2_0_1 = (RuleCall)cInitialRoleModelRoleModelCrossReference_8_2_0.eContents().get(1);
 		
 		//MetaArchitecture smags::MetaArchitecture:
 		//	'MetaArchitecture' name=EString
@@ -138,10 +144,11 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		//	'}'
 		//	'{'
 		//	elements+=MetaArchitectureElement*
-		//	'}'
+		//	'}' ('start' 'with' initialRoleModel=[smags::RoleModel|EString])?
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'MetaArchitecture' name=EString '{' types+=Type* '}' '{' elements+=MetaArchitectureElement* '}'
+		//'MetaArchitecture' name=EString '{' types+=Type* '}' '{' elements+=MetaArchitectureElement* '}' ('start' 'with'
+		//initialRoleModel=[smags::RoleModel|EString])?
 		public Group getGroup() { return cGroup; }
 		
 		//'MetaArchitecture'
@@ -176,6 +183,24 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//'}'
 		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		
+		//('start' 'with' initialRoleModel=[smags::RoleModel|EString])?
+		public Group getGroup_8() { return cGroup_8; }
+		
+		//'start'
+		public Keyword getStartKeyword_8_0() { return cStartKeyword_8_0; }
+		
+		//'with'
+		public Keyword getWithKeyword_8_1() { return cWithKeyword_8_1; }
+		
+		//initialRoleModel=[smags::RoleModel|EString]
+		public Assignment getInitialRoleModelAssignment_8_2() { return cInitialRoleModelAssignment_8_2; }
+		
+		//[smags::RoleModel|EString]
+		public CrossReference getInitialRoleModelRoleModelCrossReference_8_2_0() { return cInitialRoleModelRoleModelCrossReference_8_2_0; }
+		
+		//EString
+		public RuleCall getInitialRoleModelRoleModelEStringParserRuleCall_8_2_0_1() { return cInitialRoleModelRoleModelEStringParserRuleCall_8_2_0_1; }
 	}
 	public class MetaArchitectureElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.MetaArchitectureElement");
@@ -202,101 +227,55 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	public class TypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.Type");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cExternalTypeParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cPrimitiveTypeParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		
-		//Type smags::Type:
-		//	ExternalType | PrimitiveType
-		@Override public ParserRule getRule() { return rule; }
-		
-		//ExternalType | PrimitiveType
-		public Alternatives getAlternatives() { return cAlternatives; }
-		
-		//ExternalType
-		public RuleCall getExternalTypeParserRuleCall_0() { return cExternalTypeParserRuleCall_0; }
-		
-		//PrimitiveType
-		public RuleCall getPrimitiveTypeParserRuleCall_1() { return cPrimitiveTypeParserRuleCall_1; }
-	}
-	public class ExternalTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.ExternalType");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cTypeKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameEStringParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Keyword cColonKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
-		//ExternalType smags::ExternalType:
-		//	'Type' name=EString ';'
+		//Type smags::Type:
+		//	'Type' ':' name=EString ';'
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'Type' name=EString ';'
+		//'Type' ':' name=EString ';'
 		public Group getGroup() { return cGroup; }
 		
 		//'Type'
 		public Keyword getTypeKeyword_0() { return cTypeKeyword_0; }
 		
-		//name=EString
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
-		
-		//EString
-		public RuleCall getNameEStringParserRuleCall_1_0() { return cNameEStringParserRuleCall_1_0; }
-		
-		//';'
-		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
-	}
-	public class PrimitiveTypeElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.PrimitiveType");
-		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cPrimitiveKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameEStringParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Keyword cSemicolonKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		
-		//PrimitiveType smags::PrimitiveType:
-		//	'Primitive' name=EString ';'
-		@Override public ParserRule getRule() { return rule; }
-		
-		//'Primitive' name=EString ';'
-		public Group getGroup() { return cGroup; }
-		
-		//'Primitive'
-		public Keyword getPrimitiveKeyword_0() { return cPrimitiveKeyword_0; }
+		//':'
+		public Keyword getColonKeyword_1() { return cColonKeyword_1; }
 		
 		//name=EString
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
 		//EString
-		public RuleCall getNameEStringParserRuleCall_1_0() { return cNameEStringParserRuleCall_1_0; }
+		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
 		
 		//';'
-		public Keyword getSemicolonKeyword_2() { return cSemicolonKeyword_2; }
+		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
 	public class VariableElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.Variable");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final CrossReference cTypeTypeCrossReference_0_0 = (CrossReference)cTypeAssignment_0.eContents().get(0);
-		private final RuleCall cTypeTypeEStringParserRuleCall_0_0_1 = (RuleCall)cTypeTypeCrossReference_0_0.eContents().get(1);
+		private final RuleCall cTypeTypeUseParserRuleCall_0_0 = (RuleCall)cTypeAssignment_0.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameEStringParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		
 		//Variable smags::Variable:
-		//	type=[smags::Type|EString] name=EString
+		//	type=TypeUse name=EString
 		@Override public ParserRule getRule() { return rule; }
 		
-		//type=[smags::Type|EString] name=EString
+		//type=TypeUse name=EString
 		public Group getGroup() { return cGroup; }
 		
-		//type=[smags::Type|EString]
+		//type=TypeUse
 		public Assignment getTypeAssignment_0() { return cTypeAssignment_0; }
 		
-		//[smags::Type|EString]
-		public CrossReference getTypeTypeCrossReference_0_0() { return cTypeTypeCrossReference_0_0; }
-		
-		//EString
-		public RuleCall getTypeTypeEStringParserRuleCall_0_0_1() { return cTypeTypeEStringParserRuleCall_0_0_1; }
+		//TypeUse
+		public RuleCall getTypeTypeUseParserRuleCall_0_0() { return cTypeTypeUseParserRuleCall_0_0; }
 		
 		//name=EString
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -304,30 +283,11 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		//EString
 		public RuleCall getNameEStringParserRuleCall_1_0() { return cNameEStringParserRuleCall_1_0; }
 	}
-	public class AnonymousVariableElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.AnonymousVariable");
-		private final Assignment cTypeAssignment = (Assignment)rule.eContents().get(1);
-		private final CrossReference cTypeTypeCrossReference_0 = (CrossReference)cTypeAssignment.eContents().get(0);
-		private final RuleCall cTypeTypeEStringParserRuleCall_0_1 = (RuleCall)cTypeTypeCrossReference_0.eContents().get(1);
-		
-		//AnonymousVariable smags::Variable:
-		//	type=[smags::Type|EString]
-		@Override public ParserRule getRule() { return rule; }
-		
-		//type=[smags::Type|EString]
-		public Assignment getTypeAssignment() { return cTypeAssignment; }
-		
-		//[smags::Type|EString]
-		public CrossReference getTypeTypeCrossReference_0() { return cTypeTypeCrossReference_0; }
-		
-		//EString
-		public RuleCall getTypeTypeEStringParserRuleCall_0_1() { return cTypeTypeEStringParserRuleCall_0_1; }
-	}
 	public class MethodElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.Method");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Assignment cReturnTypeAssignment_0 = (Assignment)cGroup.eContents().get(0);
-		private final RuleCall cReturnTypeAnonymousVariableParserRuleCall_0_0 = (RuleCall)cReturnTypeAssignment_0.eContents().get(0);
+		private final RuleCall cReturnTypeTypeUseParserRuleCall_0_0 = (RuleCall)cReturnTypeAssignment_0.eContents().get(0);
 		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
 		private final RuleCall cNameEStringParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
@@ -341,17 +301,17 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//Method smags::Method:
-		//	returnType=AnonymousVariable name=EString '(' (args+=Variable ("," args+=Variable)*)? ')'
+		//	returnType=TypeUse name=EString '(' (args+=Variable ("," args+=Variable)*)? ')'
 		@Override public ParserRule getRule() { return rule; }
 		
-		//returnType=AnonymousVariable name=EString '(' (args+=Variable ("," args+=Variable)*)? ')'
+		//returnType=TypeUse name=EString '(' (args+=Variable ("," args+=Variable)*)? ')'
 		public Group getGroup() { return cGroup; }
 		
-		//returnType=AnonymousVariable
+		//returnType=TypeUse
 		public Assignment getReturnTypeAssignment_0() { return cReturnTypeAssignment_0; }
 		
-		//AnonymousVariable
-		public RuleCall getReturnTypeAnonymousVariableParserRuleCall_0_0() { return cReturnTypeAnonymousVariableParserRuleCall_0_0; }
+		//TypeUse
+		public RuleCall getReturnTypeTypeUseParserRuleCall_0_0() { return cReturnTypeTypeUseParserRuleCall_0_0; }
 		
 		//name=EString
 		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
@@ -385,6 +345,67 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+	}
+	public class TypeUseElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.TypeUse");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cPrimitiveUseParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cGenericUseParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//TypeUse smags::TypeUse:
+		//	PrimitiveUse | GenericUse
+		@Override public ParserRule getRule() { return rule; }
+		
+		//PrimitiveUse | GenericUse
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//PrimitiveUse
+		public RuleCall getPrimitiveUseParserRuleCall_0() { return cPrimitiveUseParserRuleCall_0; }
+		
+		//GenericUse
+		public RuleCall getGenericUseParserRuleCall_1() { return cGenericUseParserRuleCall_1; }
+	}
+	public class PrimitiveUseElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.PrimitiveUse");
+		private final Assignment cTypeAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cTypeEStringParserRuleCall_0 = (RuleCall)cTypeAssignment.eContents().get(0);
+		
+		//PrimitiveUse smags::PrimitiveUse:
+		//	type=EString
+		@Override public ParserRule getRule() { return rule; }
+		
+		//type=EString
+		public Assignment getTypeAssignment() { return cTypeAssignment; }
+		
+		//EString
+		public RuleCall getTypeEStringParserRuleCall_0() { return cTypeEStringParserRuleCall_0; }
+	}
+	public class GenericUseElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.GenericUse");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Keyword cColonKeyword_0 = (Keyword)cGroup.eContents().get(0);
+		private final Assignment cTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final CrossReference cTypeTypeCrossReference_1_0 = (CrossReference)cTypeAssignment_1.eContents().get(0);
+		private final RuleCall cTypeTypeEStringParserRuleCall_1_0_1 = (RuleCall)cTypeTypeCrossReference_1_0.eContents().get(1);
+		
+		//GenericUse smags::GenericUse:
+		//	':' type=[smags::Type|EString]
+		@Override public ParserRule getRule() { return rule; }
+		
+		//':' type=[smags::Type|EString]
+		public Group getGroup() { return cGroup; }
+		
+		//':'
+		public Keyword getColonKeyword_0() { return cColonKeyword_0; }
+		
+		//type=[smags::Type|EString]
+		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
+		
+		//[smags::Type|EString]
+		public CrossReference getTypeTypeCrossReference_1_0() { return cTypeTypeCrossReference_1_0; }
+		
+		//EString
+		public RuleCall getTypeTypeEStringParserRuleCall_1_0_1() { return cTypeTypeEStringParserRuleCall_1_0_1; }
 	}
 	public class PortTypeElementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.PortTypeElement");
@@ -450,15 +471,27 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cComponentTypeKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final RuleCall cNameEStringParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
-		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
+		private final Keyword cProvidesKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cProvidesAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final CrossReference cProvidesPortTypeCrossReference_3_1_0 = (CrossReference)cProvidesAssignment_3_1.eContents().get(0);
+		private final RuleCall cProvidesPortTypeEStringParserRuleCall_3_1_0_1 = (RuleCall)cProvidesPortTypeCrossReference_3_1_0.eContents().get(1);
+		private final Group cGroup_3_2 = (Group)cGroup_3.eContents().get(2);
+		private final Keyword cCommaKeyword_3_2_0 = (Keyword)cGroup_3_2.eContents().get(0);
+		private final Assignment cProvidesAssignment_3_2_1 = (Assignment)cGroup_3_2.eContents().get(1);
+		private final CrossReference cProvidesPortTypeCrossReference_3_2_1_0 = (CrossReference)cProvidesAssignment_3_2_1.eContents().get(0);
+		private final RuleCall cProvidesPortTypeEStringParserRuleCall_3_2_1_0_1 = (RuleCall)cProvidesPortTypeCrossReference_3_2_1_0.eContents().get(1);
+		private final Keyword cSemicolonKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//ComponentType smags::ComponentType:
 		//	{smags::ComponentType}
 		//	'ComponentType'
-		//	name=EString ';'
+		//	name=EString ('provides' provides+=[smags::PortType|EString] (',' provides+=[smags::PortType|EString])*)?
+		//	';'
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{smags::ComponentType} 'ComponentType' name=EString ';'
+		//{smags::ComponentType} 'ComponentType' name=EString ('provides' provides+=[smags::PortType|EString] (','
+		//provides+=[smags::PortType|EString])*)? ';'
 		public Group getGroup() { return cGroup; }
 		
 		//{smags::ComponentType}
@@ -473,8 +506,38 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		//EString
 		public RuleCall getNameEStringParserRuleCall_2_0() { return cNameEStringParserRuleCall_2_0; }
 		
+		//('provides' provides+=[smags::PortType|EString] (',' provides+=[smags::PortType|EString])*)?
+		public Group getGroup_3() { return cGroup_3; }
+		
+		//'provides'
+		public Keyword getProvidesKeyword_3_0() { return cProvidesKeyword_3_0; }
+		
+		//provides+=[smags::PortType|EString]
+		public Assignment getProvidesAssignment_3_1() { return cProvidesAssignment_3_1; }
+		
+		//[smags::PortType|EString]
+		public CrossReference getProvidesPortTypeCrossReference_3_1_0() { return cProvidesPortTypeCrossReference_3_1_0; }
+		
+		//EString
+		public RuleCall getProvidesPortTypeEStringParserRuleCall_3_1_0_1() { return cProvidesPortTypeEStringParserRuleCall_3_1_0_1; }
+		
+		//(',' provides+=[smags::PortType|EString])*
+		public Group getGroup_3_2() { return cGroup_3_2; }
+		
+		//','
+		public Keyword getCommaKeyword_3_2_0() { return cCommaKeyword_3_2_0; }
+		
+		//provides+=[smags::PortType|EString]
+		public Assignment getProvidesAssignment_3_2_1() { return cProvidesAssignment_3_2_1; }
+		
+		//[smags::PortType|EString]
+		public CrossReference getProvidesPortTypeCrossReference_3_2_1_0() { return cProvidesPortTypeCrossReference_3_2_1_0; }
+		
+		//EString
+		public RuleCall getProvidesPortTypeEStringParserRuleCall_3_2_1_0_1() { return cProvidesPortTypeEStringParserRuleCall_3_2_1_0_1; }
+		
 		//';'
-		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
+		public Keyword getSemicolonKeyword_4() { return cSemicolonKeyword_4; }
 	}
 	public class PortTypeElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "org.tud.inf.st.smags.dsl.DSL.PortType");
@@ -928,11 +991,11 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 	private final MetaArchitectureElements pMetaArchitecture;
 	private final MetaArchitectureElementElements pMetaArchitectureElement;
 	private final TypeElements pType;
-	private final ExternalTypeElements pExternalType;
-	private final PrimitiveTypeElements pPrimitiveType;
 	private final VariableElements pVariable;
-	private final AnonymousVariableElements pAnonymousVariable;
 	private final MethodElements pMethod;
+	private final TypeUseElements pTypeUse;
+	private final PrimitiveUseElements pPrimitiveUse;
+	private final GenericUseElements pGenericUse;
 	private final PortTypeElementElements pPortTypeElement;
 	private final CompositionOperatorElements pCompositionOperator;
 	private final EStringElements pEString;
@@ -962,11 +1025,11 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		this.pMetaArchitecture = new MetaArchitectureElements();
 		this.pMetaArchitectureElement = new MetaArchitectureElementElements();
 		this.pType = new TypeElements();
-		this.pExternalType = new ExternalTypeElements();
-		this.pPrimitiveType = new PrimitiveTypeElements();
 		this.pVariable = new VariableElements();
-		this.pAnonymousVariable = new AnonymousVariableElements();
 		this.pMethod = new MethodElements();
+		this.pTypeUse = new TypeUseElements();
+		this.pPrimitiveUse = new PrimitiveUseElements();
+		this.pGenericUse = new GenericUseElements();
 		this.pPortTypeElement = new PortTypeElementElements();
 		this.pCompositionOperator = new CompositionOperatorElements();
 		this.pEString = new EStringElements();
@@ -1049,7 +1112,7 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 	//	'}'
 	//	'{'
 	//	elements+=MetaArchitectureElement*
-	//	'}'
+	//	'}' ('start' 'with' initialRoleModel=[smags::RoleModel|EString])?
 	public MetaArchitectureElements getMetaArchitectureAccess() {
 		return pMetaArchitecture;
 	}
@@ -1069,7 +1132,7 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//Type smags::Type:
-	//	ExternalType | PrimitiveType
+	//	'Type' ':' name=EString ';'
 	public TypeElements getTypeAccess() {
 		return pType;
 	}
@@ -1078,28 +1141,8 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		return getTypeAccess().getRule();
 	}
 	
-	//ExternalType smags::ExternalType:
-	//	'Type' name=EString ';'
-	public ExternalTypeElements getExternalTypeAccess() {
-		return pExternalType;
-	}
-	
-	public ParserRule getExternalTypeRule() {
-		return getExternalTypeAccess().getRule();
-	}
-	
-	//PrimitiveType smags::PrimitiveType:
-	//	'Primitive' name=EString ';'
-	public PrimitiveTypeElements getPrimitiveTypeAccess() {
-		return pPrimitiveType;
-	}
-	
-	public ParserRule getPrimitiveTypeRule() {
-		return getPrimitiveTypeAccess().getRule();
-	}
-	
 	//Variable smags::Variable:
-	//	type=[smags::Type|EString] name=EString
+	//	type=TypeUse name=EString
 	public VariableElements getVariableAccess() {
 		return pVariable;
 	}
@@ -1108,24 +1151,44 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 		return getVariableAccess().getRule();
 	}
 	
-	//AnonymousVariable smags::Variable:
-	//	type=[smags::Type|EString]
-	public AnonymousVariableElements getAnonymousVariableAccess() {
-		return pAnonymousVariable;
-	}
-	
-	public ParserRule getAnonymousVariableRule() {
-		return getAnonymousVariableAccess().getRule();
-	}
-	
 	//Method smags::Method:
-	//	returnType=AnonymousVariable name=EString '(' (args+=Variable ("," args+=Variable)*)? ')'
+	//	returnType=TypeUse name=EString '(' (args+=Variable ("," args+=Variable)*)? ')'
 	public MethodElements getMethodAccess() {
 		return pMethod;
 	}
 	
 	public ParserRule getMethodRule() {
 		return getMethodAccess().getRule();
+	}
+	
+	//TypeUse smags::TypeUse:
+	//	PrimitiveUse | GenericUse
+	public TypeUseElements getTypeUseAccess() {
+		return pTypeUse;
+	}
+	
+	public ParserRule getTypeUseRule() {
+		return getTypeUseAccess().getRule();
+	}
+	
+	//PrimitiveUse smags::PrimitiveUse:
+	//	type=EString
+	public PrimitiveUseElements getPrimitiveUseAccess() {
+		return pPrimitiveUse;
+	}
+	
+	public ParserRule getPrimitiveUseRule() {
+		return getPrimitiveUseAccess().getRule();
+	}
+	
+	//GenericUse smags::GenericUse:
+	//	':' type=[smags::Type|EString]
+	public GenericUseElements getGenericUseAccess() {
+		return pGenericUse;
+	}
+	
+	public ParserRule getGenericUseRule() {
+		return getGenericUseAccess().getRule();
 	}
 	
 	//PortTypeElement smags::PortTypeElement:
@@ -1161,7 +1224,8 @@ public class DSLGrammarAccess extends AbstractGrammarElementFinder {
 	//ComponentType smags::ComponentType:
 	//	{smags::ComponentType}
 	//	'ComponentType'
-	//	name=EString ';'
+	//	name=EString ('provides' provides+=[smags::PortType|EString] (',' provides+=[smags::PortType|EString])*)?
+	//	';'
 	public ComponentTypeElements getComponentTypeAccess() {
 		return pComponentType;
 	}

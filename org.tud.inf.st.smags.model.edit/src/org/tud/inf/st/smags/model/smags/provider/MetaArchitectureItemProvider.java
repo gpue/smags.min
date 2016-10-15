@@ -49,6 +49,7 @@ public class MetaArchitectureItemProvider
 			super.getPropertyDescriptors(object);
 
 			addNamePropertyDescriptor(object);
+			addInitialRoleModelPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -71,6 +72,28 @@ public class MetaArchitectureItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Initial Role Model feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addInitialRoleModelPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_MetaArchitecture_initialRoleModel_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_MetaArchitecture_initialRoleModel_feature", "_UI_MetaArchitecture_type"),
+				 SmagsPackage.Literals.META_ARCHITECTURE__INITIAL_ROLE_MODEL,
+				 true,
+				 false,
+				 true,
+				 null,
 				 null,
 				 null));
 	}
@@ -184,12 +207,7 @@ public class MetaArchitectureItemProvider
 		newChildDescriptors.add
 			(createChildParameter
 				(SmagsPackage.Literals.META_ARCHITECTURE__TYPES,
-				 SmagsFactory.eINSTANCE.createExternalType()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SmagsPackage.Literals.META_ARCHITECTURE__TYPES,
-				 SmagsFactory.eINSTANCE.createPrimitiveType()));
+				 SmagsFactory.eINSTANCE.createType()));
 	}
 
 }

@@ -9,26 +9,43 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
-import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.common.util.ResourceLocator;
 
-import org.tud.inf.st.smags.model.smags.ComponentType;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
+import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+
+import org.tud.inf.st.smags.model.smags.PrimitiveUse;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
 
 /**
- * This is the item provider adapter for a {@link org.tud.inf.st.smags.model.smags.ComponentType} object.
+ * This is the item provider adapter for a {@link org.tud.inf.st.smags.model.smags.PrimitiveUse} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvider {
+public class PrimitiveUseItemProvider 
+	extends ItemProviderAdapter
+	implements
+		IEditingDomainItemProvider,
+		IStructuredItemContentProvider,
+		ITreeItemContentProvider,
+		IItemLabelProvider,
+		IItemPropertySource {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public ComponentTypeItemProvider(AdapterFactory adapterFactory) {
+	public PrimitiveUseItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -43,42 +60,42 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addProvidesPropertyDescriptor(object);
+			addTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Provides feature.
+	 * This adds a property descriptor for the Type feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addProvidesPropertyDescriptor(Object object) {
+	protected void addTypePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ComponentType_provides_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ComponentType_provides_feature", "_UI_ComponentType_type"),
-				 SmagsPackage.Literals.COMPONENT_TYPE__PROVIDES,
+				 getString("_UI_PrimitiveUse_type_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_PrimitiveUse_type_feature", "_UI_PrimitiveUse_type"),
+				 SmagsPackage.Literals.PRIMITIVE_USE__TYPE,
 				 true,
 				 false,
-				 true,
-				 null,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
 				 null,
 				 null));
 	}
 
 	/**
-	 * This returns ComponentType.gif.
+	 * This returns PrimitiveUse.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/ComponentType"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/PrimitiveUse"));
 	}
 
 	/**
@@ -89,10 +106,10 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((ComponentType)object).getName();
+		String label = ((PrimitiveUse)object).getType();
 		return label == null || label.length() == 0 ?
-			getString("_UI_ComponentType_type") :
-			getString("_UI_ComponentType_type") + " " + label;
+			getString("_UI_PrimitiveUse_type") :
+			getString("_UI_PrimitiveUse_type") + " " + label;
 	}
 	
 
@@ -106,6 +123,12 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+
+		switch (notification.getFeatureID(PrimitiveUse.class)) {
+			case SmagsPackage.PRIMITIVE_USE__TYPE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
 		super.notifyChanged(notification);
 	}
 
@@ -119,6 +142,17 @@ public class ComponentTypeItemProvider extends MetaArchitectureElementItemProvid
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
+
+	/**
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ResourceLocator getResourceLocator() {
+		return ModelEditPlugin.INSTANCE;
 	}
 
 }

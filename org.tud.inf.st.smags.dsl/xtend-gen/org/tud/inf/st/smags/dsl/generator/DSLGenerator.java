@@ -3,7 +3,13 @@
  */
 package org.tud.inf.st.smags.dsl.generator;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -11,13 +17,32 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
+import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
 import org.tud.inf.st.smags.model.smags.Architecture;
 import org.tud.inf.st.smags.model.smags.ArchitectureElement;
+import org.tud.inf.st.smags.model.smags.BindOperator;
 import org.tud.inf.st.smags.model.smags.Component;
+import org.tud.inf.st.smags.model.smags.ComponentType;
+import org.tud.inf.st.smags.model.smags.CompositionOperator;
+import org.tud.inf.st.smags.model.smags.GenericUse;
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
+import org.tud.inf.st.smags.model.smags.MetaArchitectureElement;
+import org.tud.inf.st.smags.model.smags.Method;
+import org.tud.inf.st.smags.model.smags.Port;
+import org.tud.inf.st.smags.model.smags.PortType;
+import org.tud.inf.st.smags.model.smags.PortTypeElement;
+import org.tud.inf.st.smags.model.smags.PrimitiveUse;
+import org.tud.inf.st.smags.model.smags.RoleModel;
+import org.tud.inf.st.smags.model.smags.RoleModelSlot;
 import org.tud.inf.st.smags.model.smags.SmagsElement;
 import org.tud.inf.st.smags.model.smags.SmagsModel;
+import org.tud.inf.st.smags.model.smags.Type;
+import org.tud.inf.st.smags.model.smags.TypeBinding;
+import org.tud.inf.st.smags.model.smags.TypeUse;
+import org.tud.inf.st.smags.model.smags.Variable;
 
 /**
  * Generates code from your model files on save.
@@ -37,13 +62,38 @@ public class DSLGenerator extends AbstractGenerator {
         for (final MetaArchitecture a : _filter_1) {
           {
             String _name = a.getName();
-            String archName = _name.toLowerCase();
+            final String archName = _name.toLowerCase();
             String _name_1 = a.getName();
             String _firstUpper = StringExtensions.toFirstUpper(_name_1);
-            String _plus = ((archName + "/") + _firstUpper);
+            final String portTypeMarkerName = (_firstUpper + "PortType");
+            String _name_2 = a.getName();
+            String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+            String _plus = ((archName + "/") + _firstUpper_1);
             String _plus_1 = (_plus + "MetaArchitecture.java");
             CharSequence _compile = this.compile(archName, a);
             fsa.generateFile(_plus_1, _compile);
+            CharSequence _marker = this.marker(archName, portTypeMarkerName);
+            fsa.generateFile((((archName + "/") + portTypeMarkerName) + ".java"), _marker);
+            EList<MetaArchitectureElement> _elements_1 = a.getElements();
+            Iterable<ComponentType> _filter_2 = Iterables.<ComponentType>filter(_elements_1, ComponentType.class);
+            for (final ComponentType c : _filter_2) {
+              String _name_3 = c.getName();
+              String _firstUpper_2 = StringExtensions.toFirstUpper(_name_3);
+              String _plus_2 = ((archName + "/") + _firstUpper_2);
+              String _plus_3 = (_plus_2 + ".java");
+              CharSequence _compile_1 = this.compile(archName, c, portTypeMarkerName);
+              fsa.generateFile(_plus_3, _compile_1);
+            }
+            EList<MetaArchitectureElement> _elements_2 = a.getElements();
+            Iterable<PortType> _filter_3 = Iterables.<PortType>filter(_elements_2, PortType.class);
+            for (final PortType p : _filter_3) {
+              String _name_4 = p.getName();
+              String _firstUpper_3 = StringExtensions.toFirstUpper(_name_4);
+              String _plus_4 = ((archName + "/") + _firstUpper_3);
+              String _plus_5 = (_plus_4 + ".java");
+              CharSequence _compile_2 = this.compile(archName, p, portTypeMarkerName);
+              fsa.generateFile(_plus_5, _compile_2);
+            }
           }
         }
         EList<SmagsElement> _elements_1 = m.getElements();
@@ -51,7 +101,7 @@ public class DSLGenerator extends AbstractGenerator {
         for (final Architecture a_1 : _filter_2) {
           {
             String _name = a_1.getName();
-            String archName = _name.toLowerCase();
+            final String archName = _name.toLowerCase();
             String _name_1 = a_1.getName();
             String _firstUpper = StringExtensions.toFirstUpper(_name_1);
             String _plus = ((archName + "/") + _firstUpper);
@@ -68,10 +118,312 @@ public class DSLGenerator extends AbstractGenerator {
               CharSequence _compile_1 = this.compile(archName, c);
               fsa.generateFile(_plus_3, _compile_1);
             }
+            EList<ArchitectureElement> _elements_3 = a_1.getElements();
+            Iterable<Port> _filter_4 = Iterables.<Port>filter(_elements_3, Port.class);
+            for (final Port p : _filter_4) {
+              String _name_3 = p.getName();
+              String _firstUpper_2 = StringExtensions.toFirstUpper(_name_3);
+              String _plus_4 = ((archName + "/") + _firstUpper_2);
+              String _plus_5 = (_plus_4 + ".java");
+              CharSequence _compile_2 = this.compile(archName, p);
+              fsa.generateFile(_plus_5, _compile_2);
+            }
           }
         }
       }
     }
+  }
+  
+  public String commaList(final Iterable<String> list) {
+    final StringBuffer out = new StringBuffer();
+    final Iterator<String> i = list.iterator();
+    while (i.hasNext()) {
+      {
+        String _next = i.next();
+        out.append(_next);
+        boolean _hasNext = i.hasNext();
+        if (_hasNext) {
+          out.append(", ");
+        }
+      }
+    }
+    return out.toString();
+  }
+  
+  public Set<Type> usedTypes(final PortType p) {
+    final HashSet<Type> used = new HashSet<Type>();
+    EList<PortTypeElement> _elements = p.getElements();
+    Iterable<Variable> _filter = Iterables.<Variable>filter(_elements, Variable.class);
+    final Function1<Variable, Boolean> _function = (Variable v) -> {
+      TypeUse _type = v.getType();
+      return Boolean.valueOf((_type instanceof GenericUse));
+    };
+    Iterable<Variable> _filter_1 = IterableExtensions.<Variable>filter(_filter, _function);
+    final Consumer<Variable> _function_1 = (Variable v) -> {
+      Type _type = ((GenericUse) v).getType();
+      used.add(_type);
+    };
+    _filter_1.forEach(_function_1);
+    EList<PortTypeElement> _elements_1 = p.getElements();
+    Iterable<Method> _filter_2 = Iterables.<Method>filter(_elements_1, Method.class);
+    final Consumer<Method> _function_2 = (Method m) -> {
+      Set<Type> _usedTypes = this.usedTypes(m);
+      used.addAll(_usedTypes);
+    };
+    _filter_2.forEach(_function_2);
+    return used;
+  }
+  
+  public Set<Type> usedTypes(final Method m) {
+    final HashSet<Type> used = new HashSet<Type>();
+    TypeUse _returnType = m.getReturnType();
+    if ((_returnType instanceof GenericUse)) {
+      TypeUse _returnType_1 = m.getReturnType();
+      Type _type = ((GenericUse) _returnType_1).getType();
+      used.add(_type);
+    }
+    EList<Variable> _args = m.getArgs();
+    final Function1<Variable, Boolean> _function = (Variable v) -> {
+      TypeUse _type_1 = v.getType();
+      return Boolean.valueOf((_type_1 instanceof GenericUse));
+    };
+    Iterable<Variable> _filter = IterableExtensions.<Variable>filter(_args, _function);
+    final Consumer<Variable> _function_1 = (Variable v) -> {
+      TypeUse _type_1 = v.getType();
+      Type _type_2 = ((GenericUse) _type_1).getType();
+      used.add(_type_2);
+    };
+    _filter.forEach(_function_1);
+    return used;
+  }
+  
+  public TypeBinding binding(final Type t, final Architecture a) {
+    EList<TypeBinding> _typeBindings = a.getTypeBindings();
+    final Function1<TypeBinding, Boolean> _function = (TypeBinding b) -> {
+      Type _type = b.getType();
+      return Boolean.valueOf(Objects.equal(_type, t));
+    };
+    return IterableExtensions.<TypeBinding>findFirst(_typeBindings, _function);
+  }
+  
+  public CharSequence marker(final String pkg, final String name) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public interface ");
+    _builder.append(name, "");
+    _builder.append("{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile(final TypeUse t) {
+    CharSequence _xifexpression = null;
+    if ((t instanceof GenericUse)) {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("T");
+      Type _type = ((GenericUse) t).getType();
+      String _name = _type.getName();
+      String _firstUpper = StringExtensions.toFirstUpper(_name);
+      _builder.append(_firstUpper, "");
+      _xifexpression = _builder;
+    } else {
+      _xifexpression = ((PrimitiveUse) t).getType();
+    }
+    return _xifexpression;
+  }
+  
+  public CharSequence compile(final Variable v) {
+    StringConcatenation _builder = new StringConcatenation();
+    TypeUse _type = v.getType();
+    CharSequence _compile = this.compile(_type);
+    _builder.append(_compile, "");
+    _builder.append(" ");
+    String _name = v.getName();
+    _builder.append(_name, "");
+    return _builder;
+  }
+  
+  public CharSequence compileInterface(final Method m) {
+    StringConcatenation _builder = new StringConcatenation();
+    TypeUse _returnType = m.getReturnType();
+    CharSequence _compile = this.compile(_returnType);
+    _builder.append(_compile, "");
+    _builder.append(" ");
+    String _name = m.getName();
+    _builder.append(_name, "");
+    _builder.append("(");
+    EList<Variable> _args = m.getArgs();
+    final Function1<Variable, String> _function = (Variable a) -> {
+      CharSequence _compile_1 = this.compile(a);
+      return _compile_1.toString();
+    };
+    List<String> _map = ListExtensions.<Variable, String>map(_args, _function);
+    String _commaList = this.commaList(_map);
+    _builder.append(_commaList, "");
+    _builder.append(");");
+    _builder.newLineIfNotEmpty();
+    return _builder;
+  }
+  
+  public CharSequence compileDelegate(final Method m) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("@SuppressWarnings(\"unchecked\")");
+    _builder.newLine();
+    _builder.append("public ");
+    TypeUse _returnType = m.getReturnType();
+    CharSequence _compile = this.compile(_returnType);
+    _builder.append(_compile, "");
+    _builder.append(" ");
+    String _name = m.getName();
+    _builder.append(_name, "");
+    _builder.append("(");
+    EList<Variable> _args = m.getArgs();
+    final Function1<Variable, String> _function = (Variable a) -> {
+      CharSequence _compile_1 = this.compile(a);
+      return _compile_1.toString();
+    };
+    List<String> _map = ListExtensions.<Variable, String>map(_args, _function);
+    String _commaList = this.commaList(_map);
+    _builder.append(_commaList, "");
+    _builder.append("){");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("Method m = Arrays.stream(");
+    EObject _eContainer = m.eContainer();
+    String _name_1 = ((PortType) _eContainer).getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name_1);
+    _builder.append(_firstUpper, "\t");
+    _builder.append(".class.getMethods()).filter(e -> e.getName().equals(\"");
+    String _name_2 = m.getName();
+    _builder.append(_name_2, "\t");
+    _builder.append("\")).findFirst().get();");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("return (");
+    TypeUse _returnType_1 = m.getReturnType();
+    CharSequence _compile_1 = this.compile(_returnType_1);
+    _builder.append(_compile_1, "\t");
+    _builder.append(")delegate(m");
+    {
+      EList<Variable> _args_1 = m.getArgs();
+      int _size = _args_1.size();
+      boolean _greaterThan = (_size > 0);
+      if (_greaterThan) {
+        _builder.append(",");
+        EList<Variable> _args_2 = m.getArgs();
+        final Function1<Variable, String> _function_1 = (Variable a) -> {
+          return a.getName();
+        };
+        List<String> _map_1 = ListExtensions.<Variable, String>map(_args_2, _function_1);
+        String _commaList_1 = this.commaList(_map_1);
+        _builder.append(_commaList_1, "\t");
+      }
+    }
+    _builder.append(");");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence genericName(final MetaArchitecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _name = a.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("MetaArchitecture");
+    {
+      EList<MetaArchitectureElement> _elements = a.getElements();
+      Iterable<PortType> _filter = Iterables.<PortType>filter(_elements, PortType.class);
+      final Function1<PortType, Boolean> _function = (PortType pt) -> {
+        Set<Type> _usedTypes = this.usedTypes(pt);
+        int _size = _usedTypes.size();
+        return Boolean.valueOf((_size > 0));
+      };
+      boolean _exists = IterableExtensions.<PortType>exists(_filter, _function);
+      if (_exists) {
+        _builder.append("<");
+        EList<MetaArchitectureElement> _elements_1 = a.getElements();
+        Iterable<PortType> _filter_1 = Iterables.<PortType>filter(_elements_1, PortType.class);
+        final Function1<PortType, Set<Type>> _function_1 = (PortType pt) -> {
+          return this.usedTypes(pt);
+        };
+        Iterable<Set<Type>> _map = IterableExtensions.<PortType, Set<Type>>map(_filter_1, _function_1);
+        Iterable<Type> _flatten = Iterables.<Type>concat(_map);
+        final Function1<Type, String> _function_2 = (Type t) -> {
+          String _name_1 = t.getName();
+          return ("T" + _name_1);
+        };
+        Iterable<String> _map_1 = IterableExtensions.<Type, String>map(_flatten, _function_2);
+        Set<String> _set = IterableExtensions.<String>toSet(_map_1);
+        String _commaList = this.commaList(_set);
+        _builder.append(_commaList, "");
+        _builder.append(">");
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence genericName(final ComponentType c) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _name = c.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    {
+      EList<PortType> _provides = c.getProvides();
+      final Function1<PortType, Boolean> _function = (PortType pt) -> {
+        Set<Type> _usedTypes = this.usedTypes(pt);
+        int _size = _usedTypes.size();
+        return Boolean.valueOf((_size > 0));
+      };
+      boolean _exists = IterableExtensions.<PortType>exists(_provides, _function);
+      if (_exists) {
+        _builder.append("<");
+        EList<PortType> _provides_1 = c.getProvides();
+        final Function1<PortType, Set<Type>> _function_1 = (PortType pt) -> {
+          return this.usedTypes(pt);
+        };
+        List<Set<Type>> _map = ListExtensions.<PortType, Set<Type>>map(_provides_1, _function_1);
+        Iterable<Type> _flatten = Iterables.<Type>concat(_map);
+        final Function1<Type, String> _function_2 = (Type t) -> {
+          String _name_1 = t.getName();
+          return ("T" + _name_1);
+        };
+        Iterable<String> _map_1 = IterableExtensions.<Type, String>map(_flatten, _function_2);
+        Set<String> _set = IterableExtensions.<String>toSet(_map_1);
+        String _commaList = this.commaList(_set);
+        _builder.append(_commaList, "");
+        _builder.append(">");
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence genericName(final PortType p) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _name = p.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("<");
+    Set<Type> _usedTypes = this.usedTypes(p);
+    final Function1<Type, String> _function = (Type t) -> {
+      String _name_1 = t.getName();
+      return ("T" + _name_1);
+    };
+    Iterable<String> _map = IterableExtensions.<Type, String>map(_usedTypes, _function);
+    Set<String> _set = IterableExtensions.<String>toSet(_map);
+    String _commaList = this.commaList(_set);
+    _builder.append(_commaList, "");
+    _builder.append(">");
+    return _builder;
   }
   
   public CharSequence compile(final String pkg, final MetaArchitecture a) {
@@ -81,16 +433,440 @@ public class DSLGenerator extends AbstractGenerator {
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    _builder.append("public class ");
-    String _name = a.getName();
+    _builder.append("public abstract class ");
+    CharSequence _genericName = this.genericName(a);
+    _builder.append(_genericName, "");
+    _builder.append(" {");
+    _builder.newLineIfNotEmpty();
+    {
+      EList<MetaArchitectureElement> _elements = a.getElements();
+      Iterable<RoleModel> _filter = Iterables.<RoleModel>filter(_elements, RoleModel.class);
+      for(final RoleModel rm : _filter) {
+        _builder.append("\t");
+        _builder.append("public void activate");
+        String _name = rm.getName();
+        String _firstUpper = StringExtensions.toFirstUpper(_name);
+        _builder.append(_firstUpper, "\t");
+        _builder.append("(");
+        EList<RoleModelSlot> _slots = rm.getSlots();
+        final Function1<RoleModelSlot, String> _function = (RoleModelSlot s) -> {
+          ComponentType _type = s.getType();
+          CharSequence _genericName_1 = this.genericName(_type);
+          String _plus = (_genericName_1 + " ");
+          String _name_1 = s.getName();
+          return (_plus + _name_1);
+        };
+        List<String> _map = ListExtensions.<RoleModelSlot, String>map(_slots, _function);
+        String _commaList = this.commaList(_map);
+        _builder.append(_commaList, "\t");
+        _builder.append("){");
+        _builder.newLineIfNotEmpty();
+        {
+          EList<CompositionOperator> _initialization = rm.getInitialization();
+          Iterable<BindOperator> _filter_1 = Iterables.<BindOperator>filter(_initialization, BindOperator.class);
+          for(final BindOperator op : _filter_1) {
+            _builder.append("\t");
+            _builder.append("\t");
+            RoleModelSlot _slot = op.getSlot();
+            String _name_1 = _slot.getName();
+            _builder.append(_name_1, "\t\t");
+            _builder.append(".playRole(create");
+            PortType _to = op.getTo();
+            String _name_2 = _to.getName();
+            String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+            _builder.append(_firstUpper_1, "\t\t");
+            _builder.append("());");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+      }
+    }
+    _builder.append("\t");
+    _builder.newLine();
+    {
+      EList<MetaArchitectureElement> _elements_1 = a.getElements();
+      Iterable<ComponentType> _filter_2 = Iterables.<ComponentType>filter(_elements_1, ComponentType.class);
+      for(final ComponentType ct : _filter_2) {
+        _builder.append("\t");
+        _builder.append("public abstract ");
+        CharSequence _genericName_1 = this.genericName(ct);
+        _builder.append(_genericName_1, "\t");
+        _builder.append(" create");
+        String _name_3 = ct.getName();
+        String _firstUpper_2 = StringExtensions.toFirstUpper(_name_3);
+        _builder.append(_firstUpper_2, "\t");
+        _builder.append("();");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\t");
+    _builder.newLine();
+    {
+      EList<MetaArchitectureElement> _elements_2 = a.getElements();
+      Iterable<PortType> _filter_3 = Iterables.<PortType>filter(_elements_2, PortType.class);
+      for(final PortType pt : _filter_3) {
+        _builder.append("\t");
+        _builder.append("public abstract ");
+        CharSequence _genericName_2 = this.genericName(pt);
+        _builder.append(_genericName_2, "\t");
+        _builder.append(" create");
+        String _name_4 = pt.getName();
+        String _firstUpper_3 = StringExtensions.toFirstUpper(_name_4);
+        _builder.append(_firstUpper_3, "\t");
+        _builder.append("();");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile(final String pkg, final ComponentType c, final String portTypeMarker) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("import java.util.Stack;");
+    _builder.newLine();
+    _builder.append("import java.lang.reflect.Method;");
+    _builder.newLine();
+    {
+      EList<PortType> _provides = c.getProvides();
+      int _size = _provides.size();
+      boolean _greaterThan = (_size > 0);
+      if (_greaterThan) {
+        _builder.append("import java.util.Arrays;");
+      }
+    }
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public abstract class ");
+    String _name = c.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);
     _builder.append(_firstUpper, "");
-    _builder.append("MetaArchitecture {");
+    {
+      EList<PortType> _provides_1 = c.getProvides();
+      int _size_1 = _provides_1.size();
+      boolean _greaterThan_1 = (_size_1 > 0);
+      if (_greaterThan_1) {
+        {
+          EList<PortType> _provides_2 = c.getProvides();
+          final Function1<PortType, Boolean> _function = (PortType pt) -> {
+            Set<Type> _usedTypes = this.usedTypes(pt);
+            int _size_2 = _usedTypes.size();
+            return Boolean.valueOf((_size_2 > 0));
+          };
+          boolean _exists = IterableExtensions.<PortType>exists(_provides_2, _function);
+          if (_exists) {
+            _builder.append("<");
+            EList<PortType> _provides_3 = c.getProvides();
+            final Function1<PortType, Set<Type>> _function_1 = (PortType pt) -> {
+              return this.usedTypes(pt);
+            };
+            List<Set<Type>> _map = ListExtensions.<PortType, Set<Type>>map(_provides_3, _function_1);
+            Iterable<Type> _flatten = Iterables.<Type>concat(_map);
+            final Function1<Type, String> _function_2 = (Type t) -> {
+              String _name_1 = t.getName();
+              return ("T" + _name_1);
+            };
+            Iterable<String> _map_1 = IterableExtensions.<Type, String>map(_flatten, _function_2);
+            String _commaList = this.commaList(_map_1);
+            _builder.append(_commaList, "");
+            _builder.append(">");
+          }
+        }
+        _builder.append(" implements ");
+        EList<PortType> _provides_4 = c.getProvides();
+        final Function1<PortType, String> _function_3 = (PortType pt) -> {
+          String _name_1 = pt.getName();
+          String _plus = (_name_1 + "<");
+          Set<Type> _usedTypes = this.usedTypes(pt);
+          final Function1<Type, String> _function_4 = (Type t) -> {
+            String _name_2 = t.getName();
+            return ("T" + _name_2);
+          };
+          Iterable<String> _map_2 = IterableExtensions.<Type, String>map(_usedTypes, _function_4);
+          String _commaList_1 = this.commaList(_map_2);
+          String _plus_1 = (_plus + _commaList_1);
+          return (_plus_1 + ">");
+        };
+        List<String> _map_2 = ListExtensions.<PortType, String>map(_provides_4, _function_3);
+        String _commaList_1 = this.commaList(_map_2);
+        _builder.append(_commaList_1, "");
+      }
+    }
+    _builder.append("{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("private Stack<");
+    _builder.append(portTypeMarker, "\t");
+    _builder.append("> roles = new Stack<");
+    _builder.append(portTypeMarker, "\t");
+    _builder.append(">();");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void playRole(");
+    _builder.append(portTypeMarker, "\t");
+    _builder.append(" p){");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("roles.push(p);\t");
+    _builder.newLine();
+    _builder.append("\t");
     _builder.append("}");
     _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void dropRole(Class<");
+    _builder.append(portTypeMarker, "\t");
+    _builder.append("> c) {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("for(int i=0;i<roles.size();i++) {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("if(c.isAssignableFrom(roles.get(i).getClass())){");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("roles.remove(i);");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("break;\t");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("} \t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("private Object delegate(Method m, Object... args) {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("Class<?> c = m.getDeclaringClass();");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append(portTypeMarker, "\t\t");
+    _builder.append(" o = null; ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("for(int i=0;i<roles.size();i++) {");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("if(c.isAssignableFrom(roles.get(i).getClass())){");
+    _builder.newLine();
+    _builder.append("\t\t     \t");
+    _builder.append("o=roles.get(i);");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("break;\t");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("} \t");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("if(o == null)");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("throw new UnsupportedOperationException(\"role \"+c+\" not bound to \"+this);");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("else");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("try{");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("return m.invoke(o,args);");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("} catch(Exception e) {");
+    _builder.newLine();
+    _builder.append("\t\t\t\t");
+    _builder.append("throw new RuntimeException(e);\t");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("} ");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    {
+      EList<PortType> _provides_5 = c.getProvides();
+      final Function1<PortType, Iterable<Method>> _function_4 = (PortType pt) -> {
+        EList<PortTypeElement> _elements = pt.getElements();
+        return Iterables.<Method>filter(_elements, Method.class);
+      };
+      List<Iterable<Method>> _map_3 = ListExtensions.<PortType, Iterable<Method>>map(_provides_5, _function_4);
+      Iterable<Method> _flatten_1 = Iterables.<Method>concat(_map_3);
+      for(final Method m : _flatten_1) {
+        _builder.append("\t");
+        CharSequence _compileDelegate = this.compileDelegate(m);
+        _builder.append(_compileDelegate, "\t");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile(final String pkg, final PortType p, final String portTypeMarker) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public interface ");
+    CharSequence _genericName = this.genericName(p);
+    _builder.append(_genericName, "");
+    _builder.append(" extends ");
+    _builder.append(portTypeMarker, "");
+    _builder.append("{");
+    _builder.newLineIfNotEmpty();
+    {
+      EList<PortTypeElement> _elements = p.getElements();
+      Iterable<Method> _filter = Iterables.<Method>filter(_elements, Method.class);
+      for(final Method m : _filter) {
+        _builder.append("\t");
+        CharSequence _compileInterface = this.compileInterface(m);
+        _builder.append(_compileInterface, "\t");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence boundParentName(final Architecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    MetaArchitecture _type = a.getType();
+    String _name = _type.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("MetaArchitecture");
+    {
+      MetaArchitecture _type_1 = a.getType();
+      EList<MetaArchitectureElement> _elements = _type_1.getElements();
+      Iterable<PortType> _filter = Iterables.<PortType>filter(_elements, PortType.class);
+      final Function1<PortType, Boolean> _function = (PortType pt) -> {
+        Set<Type> _usedTypes = this.usedTypes(pt);
+        int _size = _usedTypes.size();
+        return Boolean.valueOf((_size > 0));
+      };
+      boolean _exists = IterableExtensions.<PortType>exists(_filter, _function);
+      if (_exists) {
+        _builder.append("<");
+        MetaArchitecture _type_2 = a.getType();
+        EList<MetaArchitectureElement> _elements_1 = _type_2.getElements();
+        Iterable<PortType> _filter_1 = Iterables.<PortType>filter(_elements_1, PortType.class);
+        final Function1<PortType, Set<Type>> _function_1 = (PortType pt) -> {
+          return this.usedTypes(pt);
+        };
+        Iterable<Set<Type>> _map = IterableExtensions.<PortType, Set<Type>>map(_filter_1, _function_1);
+        Iterable<Type> _flatten = Iterables.<Type>concat(_map);
+        final Function1<Type, String> _function_2 = (Type t) -> {
+          TypeBinding _binding = this.binding(t, a);
+          return _binding.getImplementation();
+        };
+        Iterable<String> _map_1 = IterableExtensions.<Type, String>map(_flatten, _function_2);
+        Set<String> _set = IterableExtensions.<String>toSet(_map_1);
+        String _commaList = this.commaList(_set);
+        _builder.append(_commaList, "");
+        _builder.append(">");
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence boundParentName(final Component c) {
+    StringConcatenation _builder = new StringConcatenation();
+    ComponentType _type = c.getType();
+    String _name = _type.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    {
+      ComponentType _type_1 = c.getType();
+      EList<PortType> _provides = _type_1.getProvides();
+      final Function1<PortType, Boolean> _function = (PortType pt) -> {
+        Set<Type> _usedTypes = this.usedTypes(pt);
+        int _size = _usedTypes.size();
+        return Boolean.valueOf((_size > 0));
+      };
+      boolean _exists = IterableExtensions.<PortType>exists(_provides, _function);
+      if (_exists) {
+        _builder.append("<");
+        ComponentType _type_2 = c.getType();
+        EList<PortType> _provides_1 = _type_2.getProvides();
+        final Function1<PortType, Set<Type>> _function_1 = (PortType pt) -> {
+          return this.usedTypes(pt);
+        };
+        List<Set<Type>> _map = ListExtensions.<PortType, Set<Type>>map(_provides_1, _function_1);
+        Iterable<Type> _flatten = Iterables.<Type>concat(_map);
+        Set<Type> _set = IterableExtensions.<Type>toSet(_flatten);
+        final Function1<Type, String> _function_2 = (Type t) -> {
+          EObject _eContainer = c.eContainer();
+          TypeBinding _binding = this.binding(t, ((Architecture) _eContainer));
+          return _binding.getImplementation();
+        };
+        Iterable<String> _map_1 = IterableExtensions.<Type, String>map(_set, _function_2);
+        String _commaList = this.commaList(_map_1);
+        _builder.append(_commaList, "");
+        _builder.append(">");
+      }
+    }
+    return _builder;
+  }
+  
+  public CharSequence boundParentName(final Port p) {
+    StringConcatenation _builder = new StringConcatenation();
+    PortType _type = p.getType();
+    String _name = _type.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    {
+      PortType _type_1 = p.getType();
+      Set<Type> _usedTypes = this.usedTypes(_type_1);
+      int _size = _usedTypes.size();
+      boolean _greaterThan = (_size > 0);
+      if (_greaterThan) {
+        _builder.append("<");
+        PortType _type_2 = p.getType();
+        Set<Type> _usedTypes_1 = this.usedTypes(_type_2);
+        final Function1<Type, String> _function = (Type t) -> {
+          EObject _eContainer = p.eContainer();
+          TypeBinding _binding = this.binding(t, ((Architecture) _eContainer));
+          return _binding.getImplementation();
+        };
+        Iterable<String> _map = IterableExtensions.<Type, String>map(_usedTypes_1, _function);
+        String _commaList = this.commaList(_map);
+        _builder.append(_commaList, "");
+        _builder.append(">");
+      }
+    }
     return _builder;
   }
   
@@ -114,16 +890,14 @@ public class DSLGenerator extends AbstractGenerator {
     _builder.append("MetaArchitecture;");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    _builder.append("public class ");
+    _builder.append("public abstract class ");
     String _name_2 = a.getName();
     String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
     _builder.append(_firstUpper_1, "");
     _builder.append("Architecture extends ");
-    MetaArchitecture _type_2 = a.getType();
-    String _name_3 = _type_2.getName();
-    String _firstUpper_2 = StringExtensions.toFirstUpper(_name_3);
-    _builder.append(_firstUpper_2, "");
-    _builder.append("MetaArchitecture{");
+    CharSequence _boundParentName = this.boundParentName(a);
+    _builder.append(_boundParentName, "");
+    _builder.append("{");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.newLine();
@@ -139,12 +913,118 @@ public class DSLGenerator extends AbstractGenerator {
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    _builder.append("public class ");
-    String _name = c.getName();
-    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append("import ");
+    ComponentType _type = c.getType();
+    EObject _eContainer = _type.eContainer();
+    String _name = ((MetaArchitecture) _eContainer).getName();
+    String _lowerCase = _name.toLowerCase();
+    _builder.append(_lowerCase, "");
+    _builder.append(".");
+    ComponentType _type_1 = c.getType();
+    String _name_1 = _type_1.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name_1);
     _builder.append(_firstUpper, "");
-    _builder.append(" {");
+    _builder.append(";");
     _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public class ");
+    String _name_2 = c.getName();
+    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+    _builder.append(_firstUpper_1, "");
+    _builder.append(" extends ");
+    CharSequence _boundParentName = this.boundParentName(c);
+    _builder.append(_boundParentName, "");
+    _builder.append("{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  public CharSequence compile(final String pkg, final Port p) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("import ");
+    PortType _type = p.getType();
+    EObject _eContainer = _type.eContainer();
+    String _name = ((MetaArchitecture) _eContainer).getName();
+    String _lowerCase = _name.toLowerCase();
+    _builder.append(_lowerCase, "");
+    _builder.append(".");
+    PortType _type_1 = p.getType();
+    String _name_1 = _type_1.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name_1);
+    _builder.append(_firstUpper, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public abstract class ");
+    String _name_2 = p.getName();
+    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_2);
+    _builder.append(_firstUpper_1, "");
+    _builder.append(" implements ");
+    CharSequence _boundParentName = this.boundParentName(p);
+    _builder.append(_boundParentName, "");
+    _builder.append("{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("protected ");
+    PortType _type_2 = p.getType();
+    String _name_3 = _type_2.getName();
+    String _firstUpper_2 = StringExtensions.toFirstUpper(_name_3);
+    _builder.append(_firstUpper_2, "\t");
+    _builder.append("<");
+    PortType _type_3 = p.getType();
+    Set<Type> _usedTypes = this.usedTypes(_type_3);
+    final Function1<Type, String> _function = (Type t) -> {
+      EObject _eContainer_1 = p.eContainer();
+      TypeBinding _binding = this.binding(t, ((Architecture) _eContainer_1));
+      return _binding.getImplementation();
+    };
+    Iterable<String> _map = IterableExtensions.<Type, String>map(_usedTypes, _function);
+    String _commaList = this.commaList(_map);
+    _builder.append(_commaList, "\t");
+    _builder.append("> base;");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public ");
+    String _name_4 = p.getName();
+    String _firstUpper_3 = StringExtensions.toFirstUpper(_name_4);
+    _builder.append(_firstUpper_3, "\t");
+    _builder.append("(");
+    PortType _type_4 = p.getType();
+    String _name_5 = _type_4.getName();
+    String _firstUpper_4 = StringExtensions.toFirstUpper(_name_5);
+    _builder.append(_firstUpper_4, "\t");
+    _builder.append("<");
+    PortType _type_5 = p.getType();
+    Set<Type> _usedTypes_1 = this.usedTypes(_type_5);
+    final Function1<Type, String> _function_1 = (Type t) -> {
+      EObject _eContainer_1 = p.eContainer();
+      TypeBinding _binding = this.binding(t, ((Architecture) _eContainer_1));
+      return _binding.getImplementation();
+    };
+    Iterable<String> _map_1 = IterableExtensions.<Type, String>map(_usedTypes_1, _function_1);
+    String _commaList_1 = this.commaList(_map_1);
+    _builder.append(_commaList_1, "\t");
+    _builder.append("> base){");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.append("this.base = base;\t\t\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
     _builder.append("}");

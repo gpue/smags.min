@@ -113,20 +113,6 @@ public class SmagsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case SmagsPackage.EXTERNAL_TYPE: {
-				ExternalType externalType = (ExternalType)theEObject;
-				T result = caseExternalType(externalType);
-				if (result == null) result = caseType(externalType);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
-			case SmagsPackage.PRIMITIVE_TYPE: {
-				PrimitiveType primitiveType = (PrimitiveType)theEObject;
-				T result = casePrimitiveType(primitiveType);
-				if (result == null) result = caseType(primitiveType);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case SmagsPackage.TYPE: {
 				Type type = (Type)theEObject;
 				T result = caseType(type);
@@ -219,6 +205,26 @@ public class SmagsSwitch<T> extends Switch<T> {
 			case SmagsPackage.TYPE_BINDING: {
 				TypeBinding typeBinding = (TypeBinding)theEObject;
 				T result = caseTypeBinding(typeBinding);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.TYPE_USE: {
+				TypeUse typeUse = (TypeUse)theEObject;
+				T result = caseTypeUse(typeUse);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.PRIMITIVE_USE: {
+				PrimitiveUse primitiveUse = (PrimitiveUse)theEObject;
+				T result = casePrimitiveUse(primitiveUse);
+				if (result == null) result = caseTypeUse(primitiveUse);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.GENERIC_USE: {
+				GenericUse genericUse = (GenericUse)theEObject;
+				T result = caseGenericUse(genericUse);
+				if (result == null) result = caseTypeUse(genericUse);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -328,36 +334,6 @@ public class SmagsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseMethod(Method object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>External Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>External Type</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseExternalType(ExternalType object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Primitive Type</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Primitive Type</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T casePrimitiveType(PrimitiveType object) {
 		return null;
 	}
 
@@ -583,6 +559,51 @@ public class SmagsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseTypeBinding(TypeBinding object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Type Use</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Type Use</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseTypeUse(TypeUse object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Primitive Use</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Primitive Use</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T casePrimitiveUse(PrimitiveUse object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Generic Use</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Generic Use</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseGenericUse(GenericUse object) {
 		return null;
 	}
 
