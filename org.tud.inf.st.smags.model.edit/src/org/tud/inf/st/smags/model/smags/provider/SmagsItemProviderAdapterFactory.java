@@ -348,29 +348,6 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.PortInstance} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected PortInstanceItemProvider portInstanceItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.PortInstance}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createPortInstanceAdapter() {
-		if (portInstanceItemProvider == null) {
-			portInstanceItemProvider = new PortInstanceItemProvider(this);
-		}
-
-		return portInstanceItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.BindOperator} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -509,6 +486,75 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.Deployment} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected DeploymentItemProvider deploymentItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.Deployment}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createDeploymentAdapter() {
+		if (deploymentItemProvider == null) {
+			deploymentItemProvider = new DeploymentItemProvider(this);
+		}
+
+		return deploymentItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.CreateInstanceOperator} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected CreateInstanceOperatorItemProvider createInstanceOperatorItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.CreateInstanceOperator}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createCreateInstanceOperatorAdapter() {
+		if (createInstanceOperatorItemProvider == null) {
+			createInstanceOperatorItemProvider = new CreateInstanceOperatorItemProvider(this);
+		}
+
+		return createInstanceOperatorItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ActivateRoleModelOperatorItemProvider activateRoleModelOperatorItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createActivateRoleModelOperatorAdapter() {
+		if (activateRoleModelOperatorItemProvider == null) {
+			activateRoleModelOperatorItemProvider = new ActivateRoleModelOperatorItemProvider(this);
+		}
+
+		return activateRoleModelOperatorItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -619,13 +665,15 @@ public class SmagsItemProviderAdapterFactory extends SmagsAdapterFactory impleme
 		if (portItemProvider != null) portItemProvider.dispose();
 		if (architectureItemProvider != null) architectureItemProvider.dispose();
 		if (componentInstanceItemProvider != null) componentInstanceItemProvider.dispose();
-		if (portInstanceItemProvider != null) portInstanceItemProvider.dispose();
 		if (bindOperatorItemProvider != null) bindOperatorItemProvider.dispose();
 		if (smagsModelItemProvider != null) smagsModelItemProvider.dispose();
 		if (importItemProvider != null) importItemProvider.dispose();
 		if (typeBindingItemProvider != null) typeBindingItemProvider.dispose();
 		if (primitiveUseItemProvider != null) primitiveUseItemProvider.dispose();
 		if (genericUseItemProvider != null) genericUseItemProvider.dispose();
+		if (deploymentItemProvider != null) deploymentItemProvider.dispose();
+		if (createInstanceOperatorItemProvider != null) createInstanceOperatorItemProvider.dispose();
+		if (activateRoleModelOperatorItemProvider != null) activateRoleModelOperatorItemProvider.dispose();
 	}
 
 }

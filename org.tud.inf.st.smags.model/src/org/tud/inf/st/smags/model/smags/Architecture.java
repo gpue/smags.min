@@ -17,6 +17,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.tud.inf.st.smags.model.smags.Architecture#getType <em>Type</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.Architecture#getName <em>Name</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.Architecture#getTypeBindings <em>Type Bindings</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.Architecture#getNamespace <em>Namespace</em>}</li>
  * </ul>
  *
  * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getArchitecture()
@@ -107,5 +108,31 @@ public interface Architecture extends SmagsElement {
 	 * @generated
 	 */
 	EList<TypeBinding> getTypeBindings();
+
+	/**
+	 * Returns the value of the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Namespace</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Namespace</em>' attribute.
+	 * @see #setNamespace(String)
+	 * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getArchitecture_Namespace()
+	 * @model
+	 * @generated
+	 */
+	String getNamespace();
+
+	/**
+	 * Sets the value of the '{@link org.tud.inf.st.smags.model.smags.Architecture#getNamespace <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Namespace</em>' attribute.
+	 * @see #getNamespace()
+	 * @generated
+	 */
+	void setNamespace(String value);
 
 } // Architecture

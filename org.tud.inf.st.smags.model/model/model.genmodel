@@ -25,7 +25,7 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//MetaArchitecture/elements"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//MetaArchitecture/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//MetaArchitecture/types"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//MetaArchitecture/initialRoleModel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//MetaArchitecture/namespace"/>
     </genClasses>
     <genClasses image="false" ecoreClass="model.ecore#//MetaArchitectureElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//MetaArchitectureElement/name"/>
@@ -54,6 +54,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//Architecture/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Architecture/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//Architecture/typeBindings"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//Architecture/namespace"/>
     </genClasses>
     <genClasses image="false" ecoreClass="model.ecore#//ArchitectureElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ArchitectureElement/name"/>
@@ -61,10 +62,6 @@
     <genClasses ecoreClass="model.ecore#//ComponentInstance">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//ComponentInstance/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//ComponentInstance/type"/>
-    </genClasses>
-    <genClasses ecoreClass="model.ecore#//PortInstance">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute model.ecore#//PortInstance/name"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//PortInstance/type"/>
     </genClasses>
     <genClasses image="false" ecoreClass="model.ecore#//CompositionOperator"/>
     <genClasses ecoreClass="model.ecore#//BindOperator">
@@ -89,6 +86,17 @@
     </genClasses>
     <genClasses ecoreClass="model.ecore#//GenericUse">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//GenericUse/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="model.ecore#//DeploymentOperator"/>
+    <genClasses ecoreClass="model.ecore#//Deployment">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//Deployment/script"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//CreateInstanceOperator">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference model.ecore#//CreateInstanceOperator/instance"/>
+    </genClasses>
+    <genClasses ecoreClass="model.ecore#//ActivateRoleModelOperator">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//ActivateRoleModelOperator/roleModel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference model.ecore#//ActivateRoleModelOperator/args"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

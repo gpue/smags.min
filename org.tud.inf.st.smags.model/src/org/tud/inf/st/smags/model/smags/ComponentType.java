@@ -4,7 +4,6 @@ package org.tud.inf.st.smags.model.smags;
 
 import org.eclipse.emf.common.util.EList;
 
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Component Type</b></em>'.
@@ -22,7 +21,6 @@ import org.eclipse.emf.common.util.EList;
  * @generated
  */
 public interface ComponentType extends MetaArchitectureElement {
-
 	/**
 	 * Returns the value of the '<em><b>Provides</b></em>' reference list.
 	 * The list contents are of type {@link org.tud.inf.st.smags.model.smags.PortType}.
@@ -38,4 +36,5 @@ public interface ComponentType extends MetaArchitectureElement {
 	 * @generated
 	 */
 	EList<PortType> getProvides();
+
 } // ComponentType

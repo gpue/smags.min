@@ -130,15 +130,6 @@ public interface SmagsFactory extends EFactory {
 	ComponentInstance createComponentInstance();
 
 	/**
-	 * Returns a new object of class '<em>Port Instance</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Port Instance</em>'.
-	 * @generated
-	 */
-	PortInstance createPortInstance();
-
-	/**
 	 * Returns a new object of class '<em>Bind Operator</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -191,6 +182,33 @@ public interface SmagsFactory extends EFactory {
 	 * @generated
 	 */
 	GenericUse createGenericUse();
+
+	/**
+	 * Returns a new object of class '<em>Deployment</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Deployment</em>'.
+	 * @generated
+	 */
+	Deployment createDeployment();
+
+	/**
+	 * Returns a new object of class '<em>Create Instance Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Create Instance Operator</em>'.
+	 * @generated
+	 */
+	CreateInstanceOperator createCreateInstanceOperator();
+
+	/**
+	 * Returns a new object of class '<em>Activate Role Model Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Activate Role Model Operator</em>'.
+	 * @generated
+	 */
+	ActivateRoleModelOperator createActivateRoleModelOperator();
 
 	/**
 	 * Returns the package supported by this factory.

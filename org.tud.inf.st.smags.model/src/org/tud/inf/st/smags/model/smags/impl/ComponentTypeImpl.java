@@ -3,10 +3,13 @@
 package org.tud.inf.st.smags.model.smags.impl;
 
 import java.util.Collection;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+
 import org.tud.inf.st.smags.model.smags.ComponentType;
 import org.tud.inf.st.smags.model.smags.PortType;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;

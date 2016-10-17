@@ -25,7 +25,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="types" upperBound="-1"
         eType="#//Type" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="initialRoleModel" eType="#//RoleModel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MetaArchitectureElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -59,6 +59,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="typeBindings" upperBound="-1"
         eType="#//TypeBinding" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="namespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ArchitectureElement" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -66,10 +67,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="ComponentInstance">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Component"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PortInstance">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Port"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CompositionOperator" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="BindOperator" eSuperTypes="#//CompositionOperator">
@@ -96,5 +93,19 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="GenericUse" eSuperTypes="#//TypeUse">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DeploymentOperator" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Deployment" eSuperTypes="#//ArchitectureElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="script" upperBound="-1"
+        eType="#//DeploymentOperator" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CreateInstanceOperator" eSuperTypes="#//DeploymentOperator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="instance" eType="#//ComponentInstance"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ActivateRoleModelOperator" eSuperTypes="#//DeploymentOperator">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="roleModel" lowerBound="1"
+        eType="#//RoleModel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="args" upperBound="-1" eType="#//ComponentInstance"/>
   </eClassifiers>
 </ecore:EPackage>

@@ -294,7 +294,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getSmagsElement()
 	 * @generated
 	 */
-	int SMAGS_ELEMENT = 19;
+	int SMAGS_ELEMENT = 18;
 
 	/**
 	 * The number of structural features of the '<em>Element</em>' class.
@@ -352,13 +352,13 @@ public interface SmagsPackage extends EPackage {
 	int META_ARCHITECTURE__TYPES = SMAGS_ELEMENT_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Initial Role Model</b></em>' reference.
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int META_ARCHITECTURE__INITIAL_ROLE_MODEL = SMAGS_ELEMENT_FEATURE_COUNT + 3;
+	int META_ARCHITECTURE__NAMESPACE = SMAGS_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>Meta Architecture</em>' class.
@@ -729,13 +729,22 @@ public interface SmagsPackage extends EPackage {
 	int ARCHITECTURE__TYPE_BINDINGS = SMAGS_ELEMENT_FEATURE_COUNT + 3;
 
 	/**
+	 * The feature id for the '<em><b>Namespace</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ARCHITECTURE__NAMESPACE = SMAGS_ELEMENT_FEATURE_COUNT + 4;
+
+	/**
 	 * The number of structural features of the '<em>Architecture</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int ARCHITECTURE_FEATURE_COUNT = SMAGS_ELEMENT_FEATURE_COUNT + 4;
+	int ARCHITECTURE_FEATURE_COUNT = SMAGS_ELEMENT_FEATURE_COUNT + 5;
 
 	/**
 	 * The number of operations of the '<em>Architecture</em>' class.
@@ -793,52 +802,6 @@ public interface SmagsPackage extends EPackage {
 	int COMPONENT_INSTANCE_OPERATION_COUNT = 0;
 
 	/**
-	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.PortInstanceImpl <em>Port Instance</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.tud.inf.st.smags.model.smags.impl.PortInstanceImpl
-	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPortInstance()
-	 * @generated
-	 */
-	int PORT_INSTANCE = 15;
-
-	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PORT_INSTANCE__NAME = 0;
-
-	/**
-	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PORT_INSTANCE__TYPE = 1;
-
-	/**
-	 * The number of structural features of the '<em>Port Instance</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PORT_INSTANCE_FEATURE_COUNT = 2;
-
-	/**
-	 * The number of operations of the '<em>Port Instance</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PORT_INSTANCE_OPERATION_COUNT = 0;
-
-	/**
 	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.CompositionOperatorImpl <em>Composition Operator</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -846,7 +809,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getCompositionOperator()
 	 * @generated
 	 */
-	int COMPOSITION_OPERATOR = 16;
+	int COMPOSITION_OPERATOR = 15;
 
 	/**
 	 * The number of structural features of the '<em>Composition Operator</em>' class.
@@ -874,7 +837,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getBindOperator()
 	 * @generated
 	 */
-	int BIND_OPERATOR = 17;
+	int BIND_OPERATOR = 16;
 
 	/**
 	 * The feature id for the '<em><b>Slot</b></em>' reference.
@@ -912,7 +875,6 @@ public interface SmagsPackage extends EPackage {
 	 */
 	int BIND_OPERATOR_OPERATION_COUNT = COMPOSITION_OPERATOR_OPERATION_COUNT + 0;
 
-
 	/**
 	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.SmagsModelImpl <em>Model</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -921,7 +883,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getSmagsModel()
 	 * @generated
 	 */
-	int SMAGS_MODEL = 18;
+	int SMAGS_MODEL = 17;
 
 	/**
 	 * The feature id for the '<em><b>Elements</b></em>' containment reference list.
@@ -967,7 +929,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getImport()
 	 * @generated
 	 */
-	int IMPORT = 20;
+	int IMPORT = 19;
 
 	/**
 	 * The feature id for the '<em><b>Import URI</b></em>' attribute.
@@ -1004,7 +966,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getTypeBinding()
 	 * @generated
 	 */
-	int TYPE_BINDING = 21;
+	int TYPE_BINDING = 20;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1042,7 +1004,6 @@ public interface SmagsPackage extends EPackage {
 	 */
 	int TYPE_BINDING_OPERATION_COUNT = 0;
 
-
 	/**
 	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.TypeUse <em>Type Use</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -1051,7 +1012,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getTypeUse()
 	 * @generated
 	 */
-	int TYPE_USE = 22;
+	int TYPE_USE = 21;
 
 	/**
 	 * The number of structural features of the '<em>Type Use</em>' class.
@@ -1079,7 +1040,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPrimitiveUse()
 	 * @generated
 	 */
-	int PRIMITIVE_USE = 23;
+	int PRIMITIVE_USE = 22;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' attribute.
@@ -1116,7 +1077,7 @@ public interface SmagsPackage extends EPackage {
 	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getGenericUse()
 	 * @generated
 	 */
-	int GENERIC_USE = 24;
+	int GENERIC_USE = 23;
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
@@ -1144,6 +1105,163 @@ public interface SmagsPackage extends EPackage {
 	 * @ordered
 	 */
 	int GENERIC_USE_OPERATION_COUNT = TYPE_USE_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.DeploymentOperatorImpl <em>Deployment Operator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.impl.DeploymentOperatorImpl
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getDeploymentOperator()
+	 * @generated
+	 */
+	int DEPLOYMENT_OPERATOR = 24;
+
+	/**
+	 * The number of structural features of the '<em>Deployment Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEPLOYMENT_OPERATOR_FEATURE_COUNT = 0;
+
+	/**
+	 * The number of operations of the '<em>Deployment Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEPLOYMENT_OPERATOR_OPERATION_COUNT = 0;
+
+	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.DeploymentImpl <em>Deployment</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.impl.DeploymentImpl
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getDeployment()
+	 * @generated
+	 */
+	int DEPLOYMENT = 25;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEPLOYMENT__NAME = ARCHITECTURE_ELEMENT__NAME;
+
+	/**
+	 * The feature id for the '<em><b>Script</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEPLOYMENT__SCRIPT = ARCHITECTURE_ELEMENT_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Deployment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEPLOYMENT_FEATURE_COUNT = ARCHITECTURE_ELEMENT_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Deployment</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DEPLOYMENT_OPERATION_COUNT = ARCHITECTURE_ELEMENT_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.CreateInstanceOperatorImpl <em>Create Instance Operator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.impl.CreateInstanceOperatorImpl
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getCreateInstanceOperator()
+	 * @generated
+	 */
+	int CREATE_INSTANCE_OPERATOR = 26;
+
+	/**
+	 * The feature id for the '<em><b>Instance</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_INSTANCE_OPERATOR__INSTANCE = DEPLOYMENT_OPERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Create Instance Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_INSTANCE_OPERATOR_FEATURE_COUNT = DEPLOYMENT_OPERATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of operations of the '<em>Create Instance Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_INSTANCE_OPERATOR_OPERATION_COUNT = DEPLOYMENT_OPERATOR_OPERATION_COUNT + 0;
+
+	/**
+	 * The meta object id for the '{@link org.tud.inf.st.smags.model.smags.impl.ActivateRoleModelOperatorImpl <em>Activate Role Model Operator</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see org.tud.inf.st.smags.model.smags.impl.ActivateRoleModelOperatorImpl
+	 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getActivateRoleModelOperator()
+	 * @generated
+	 */
+	int ACTIVATE_ROLE_MODEL_OPERATOR = 27;
+
+	/**
+	 * The feature id for the '<em><b>Role Model</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTIVATE_ROLE_MODEL_OPERATOR__ROLE_MODEL = DEPLOYMENT_OPERATOR_FEATURE_COUNT + 0;
+
+	/**
+	 * The feature id for the '<em><b>Args</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTIVATE_ROLE_MODEL_OPERATOR__ARGS = DEPLOYMENT_OPERATOR_FEATURE_COUNT + 1;
+
+	/**
+	 * The number of structural features of the '<em>Activate Role Model Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTIVATE_ROLE_MODEL_OPERATOR_FEATURE_COUNT = DEPLOYMENT_OPERATOR_FEATURE_COUNT + 2;
+
+	/**
+	 * The number of operations of the '<em>Activate Role Model Operator</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ACTIVATE_ROLE_MODEL_OPERATOR_OPERATION_COUNT = DEPLOYMENT_OPERATOR_OPERATION_COUNT + 0;
 
 
 	/**
@@ -1296,15 +1414,15 @@ public interface SmagsPackage extends EPackage {
 	EReference getMetaArchitecture_Types();
 
 	/**
-	 * Returns the meta object for the reference '{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel <em>Initial Role Model</em>}'.
+	 * Returns the meta object for the attribute '{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getNamespace <em>Namespace</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Initial Role Model</em>'.
-	 * @see org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel()
+	 * @return the meta object for the attribute '<em>Namespace</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.MetaArchitecture#getNamespace()
 	 * @see #getMetaArchitecture()
 	 * @generated
 	 */
-	EReference getMetaArchitecture_InitialRoleModel();
+	EAttribute getMetaArchitecture_Namespace();
 
 	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.MetaArchitectureElement <em>Meta Architecture Element</em>}'.
@@ -1519,6 +1637,17 @@ public interface SmagsPackage extends EPackage {
 	EReference getArchitecture_TypeBindings();
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.tud.inf.st.smags.model.smags.Architecture#getNamespace <em>Namespace</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Namespace</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.Architecture#getNamespace()
+	 * @see #getArchitecture()
+	 * @generated
+	 */
+	EAttribute getArchitecture_Namespace();
+
+	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.ArchitectureElement <em>Architecture Element</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1570,38 +1699,6 @@ public interface SmagsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getComponentInstance_Type();
-
-	/**
-	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.PortInstance <em>Port Instance</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Port Instance</em>'.
-	 * @see org.tud.inf.st.smags.model.smags.PortInstance
-	 * @generated
-	 */
-	EClass getPortInstance();
-
-	/**
-	 * Returns the meta object for the attribute '{@link org.tud.inf.st.smags.model.smags.PortInstance#getName <em>Name</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.tud.inf.st.smags.model.smags.PortInstance#getName()
-	 * @see #getPortInstance()
-	 * @generated
-	 */
-	EAttribute getPortInstance_Name();
-
-	/**
-	 * Returns the meta object for the reference '{@link org.tud.inf.st.smags.model.smags.PortInstance#getType <em>Type</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Type</em>'.
-	 * @see org.tud.inf.st.smags.model.smags.PortInstance#getType()
-	 * @see #getPortInstance()
-	 * @generated
-	 */
-	EReference getPortInstance_Type();
 
 	/**
 	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.CompositionOperator <em>Composition Operator</em>}'.
@@ -1793,6 +1890,90 @@ public interface SmagsPackage extends EPackage {
 	EReference getGenericUse_Type();
 
 	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.DeploymentOperator <em>Deployment Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Deployment Operator</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.DeploymentOperator
+	 * @generated
+	 */
+	EClass getDeploymentOperator();
+
+	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.Deployment <em>Deployment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Deployment</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.Deployment
+	 * @generated
+	 */
+	EClass getDeployment();
+
+	/**
+	 * Returns the meta object for the containment reference list '{@link org.tud.inf.st.smags.model.smags.Deployment#getScript <em>Script</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Script</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.Deployment#getScript()
+	 * @see #getDeployment()
+	 * @generated
+	 */
+	EReference getDeployment_Script();
+
+	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.CreateInstanceOperator <em>Create Instance Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Create Instance Operator</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.CreateInstanceOperator
+	 * @generated
+	 */
+	EClass getCreateInstanceOperator();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link org.tud.inf.st.smags.model.smags.CreateInstanceOperator#getInstance <em>Instance</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Instance</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.CreateInstanceOperator#getInstance()
+	 * @see #getCreateInstanceOperator()
+	 * @generated
+	 */
+	EReference getCreateInstanceOperator_Instance();
+
+	/**
+	 * Returns the meta object for class '{@link org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator <em>Activate Role Model Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Activate Role Model Operator</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator
+	 * @generated
+	 */
+	EClass getActivateRoleModelOperator();
+
+	/**
+	 * Returns the meta object for the reference '{@link org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator#getRoleModel <em>Role Model</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Role Model</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator#getRoleModel()
+	 * @see #getActivateRoleModelOperator()
+	 * @generated
+	 */
+	EReference getActivateRoleModelOperator_RoleModel();
+
+	/**
+	 * Returns the meta object for the reference list '{@link org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator#getArgs <em>Args</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference list '<em>Args</em>'.
+	 * @see org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator#getArgs()
+	 * @see #getActivateRoleModelOperator()
+	 * @generated
+	 */
+	EReference getActivateRoleModelOperator_Args();
+
+	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1938,12 +2119,12 @@ public interface SmagsPackage extends EPackage {
 		EReference META_ARCHITECTURE__TYPES = eINSTANCE.getMetaArchitecture_Types();
 
 		/**
-		 * The meta object literal for the '<em><b>Initial Role Model</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference META_ARCHITECTURE__INITIAL_ROLE_MODEL = eINSTANCE.getMetaArchitecture_InitialRoleModel();
+		EAttribute META_ARCHITECTURE__NAMESPACE = eINSTANCE.getMetaArchitecture_Namespace();
 
 		/**
 		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureElementImpl <em>Meta Architecture Element</em>}' class.
@@ -2122,6 +2303,14 @@ public interface SmagsPackage extends EPackage {
 		EReference ARCHITECTURE__TYPE_BINDINGS = eINSTANCE.getArchitecture_TypeBindings();
 
 		/**
+		 * The meta object literal for the '<em><b>Namespace</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute ARCHITECTURE__NAMESPACE = eINSTANCE.getArchitecture_Namespace();
+
+		/**
 		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.ArchitectureElementImpl <em>Architecture Element</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2164,32 +2353,6 @@ public interface SmagsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference COMPONENT_INSTANCE__TYPE = eINSTANCE.getComponentInstance_Type();
-
-		/**
-		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.PortInstanceImpl <em>Port Instance</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.tud.inf.st.smags.model.smags.impl.PortInstanceImpl
-		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getPortInstance()
-		 * @generated
-		 */
-		EClass PORT_INSTANCE = eINSTANCE.getPortInstance();
-
-		/**
-		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute PORT_INSTANCE__NAME = eINSTANCE.getPortInstance_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EReference PORT_INSTANCE__TYPE = eINSTANCE.getPortInstance_Type();
 
 		/**
 		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.CompositionOperatorImpl <em>Composition Operator</em>}' class.
@@ -2352,6 +2515,78 @@ public interface SmagsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference GENERIC_USE__TYPE = eINSTANCE.getGenericUse_Type();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.DeploymentOperatorImpl <em>Deployment Operator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.impl.DeploymentOperatorImpl
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getDeploymentOperator()
+		 * @generated
+		 */
+		EClass DEPLOYMENT_OPERATOR = eINSTANCE.getDeploymentOperator();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.DeploymentImpl <em>Deployment</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.impl.DeploymentImpl
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getDeployment()
+		 * @generated
+		 */
+		EClass DEPLOYMENT = eINSTANCE.getDeployment();
+
+		/**
+		 * The meta object literal for the '<em><b>Script</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference DEPLOYMENT__SCRIPT = eINSTANCE.getDeployment_Script();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.CreateInstanceOperatorImpl <em>Create Instance Operator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.impl.CreateInstanceOperatorImpl
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getCreateInstanceOperator()
+		 * @generated
+		 */
+		EClass CREATE_INSTANCE_OPERATOR = eINSTANCE.getCreateInstanceOperator();
+
+		/**
+		 * The meta object literal for the '<em><b>Instance</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference CREATE_INSTANCE_OPERATOR__INSTANCE = eINSTANCE.getCreateInstanceOperator_Instance();
+
+		/**
+		 * The meta object literal for the '{@link org.tud.inf.st.smags.model.smags.impl.ActivateRoleModelOperatorImpl <em>Activate Role Model Operator</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see org.tud.inf.st.smags.model.smags.impl.ActivateRoleModelOperatorImpl
+		 * @see org.tud.inf.st.smags.model.smags.impl.SmagsPackageImpl#getActivateRoleModelOperator()
+		 * @generated
+		 */
+		EClass ACTIVATE_ROLE_MODEL_OPERATOR = eINSTANCE.getActivateRoleModelOperator();
+
+		/**
+		 * The meta object literal for the '<em><b>Role Model</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTIVATE_ROLE_MODEL_OPERATOR__ROLE_MODEL = eINSTANCE.getActivateRoleModelOperator_RoleModel();
+
+		/**
+		 * The meta object literal for the '<em><b>Args</b></em>' reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference ACTIVATE_ROLE_MODEL_OPERATOR__ARGS = eINSTANCE.getActivateRoleModelOperator_Args();
 
 	}
 

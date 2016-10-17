@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -34,6 +35,7 @@ import org.tud.inf.st.smags.model.smags.TypeBinding;
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.ArchitectureImpl#getType <em>Type</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.ArchitectureImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.ArchitectureImpl#getTypeBindings <em>Type Bindings</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.impl.ArchitectureImpl#getNamespace <em>Namespace</em>}</li>
  * </ul>
  *
  * @generated
@@ -88,6 +90,26 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 	 * @ordered
 	 */
 	protected EList<TypeBinding> typeBindings;
+
+	/**
+	 * The default value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamespace()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAMESPACE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamespace()
+	 * @generated
+	 * @ordered
+	 */
+	protected String namespace = NAMESPACE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -196,6 +218,27 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getNamespace() {
+		return namespace;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setNamespace(String newNamespace) {
+		String oldNamespace = namespace;
+		namespace = newNamespace;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.ARCHITECTURE__NAMESPACE, oldNamespace, namespace));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
@@ -224,6 +267,8 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 				return getName();
 			case SmagsPackage.ARCHITECTURE__TYPE_BINDINGS:
 				return getTypeBindings();
+			case SmagsPackage.ARCHITECTURE__NAMESPACE:
+				return getNamespace();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -251,6 +296,9 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 				getTypeBindings().clear();
 				getTypeBindings().addAll((Collection<? extends TypeBinding>)newValue);
 				return;
+			case SmagsPackage.ARCHITECTURE__NAMESPACE:
+				setNamespace((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -275,6 +323,9 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 			case SmagsPackage.ARCHITECTURE__TYPE_BINDINGS:
 				getTypeBindings().clear();
 				return;
+			case SmagsPackage.ARCHITECTURE__NAMESPACE:
+				setNamespace(NAMESPACE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -295,6 +346,8 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SmagsPackage.ARCHITECTURE__TYPE_BINDINGS:
 				return typeBindings != null && !typeBindings.isEmpty();
+			case SmagsPackage.ARCHITECTURE__NAMESPACE:
+				return NAMESPACE_EDEFAULT == null ? namespace != null : !NAMESPACE_EDEFAULT.equals(namespace);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -311,6 +364,8 @@ public class ArchitectureImpl extends SmagsElementImpl implements Architecture {
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", namespace: ");
+		result.append(namespace);
 		result.append(')');
 		return result.toString();
 	}

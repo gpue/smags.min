@@ -165,12 +165,6 @@ public class SmagsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case SmagsPackage.PORT_INSTANCE: {
-				PortInstance portInstance = (PortInstance)theEObject;
-				T result = casePortInstance(portInstance);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case SmagsPackage.COMPOSITION_OPERATOR: {
 				CompositionOperator compositionOperator = (CompositionOperator)theEObject;
 				T result = caseCompositionOperator(compositionOperator);
@@ -225,6 +219,33 @@ public class SmagsSwitch<T> extends Switch<T> {
 				GenericUse genericUse = (GenericUse)theEObject;
 				T result = caseGenericUse(genericUse);
 				if (result == null) result = caseTypeUse(genericUse);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.DEPLOYMENT_OPERATOR: {
+				DeploymentOperator deploymentOperator = (DeploymentOperator)theEObject;
+				T result = caseDeploymentOperator(deploymentOperator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.DEPLOYMENT: {
+				Deployment deployment = (Deployment)theEObject;
+				T result = caseDeployment(deployment);
+				if (result == null) result = caseArchitectureElement(deployment);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR: {
+				CreateInstanceOperator createInstanceOperator = (CreateInstanceOperator)theEObject;
+				T result = caseCreateInstanceOperator(createInstanceOperator);
+				if (result == null) result = caseDeploymentOperator(createInstanceOperator);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case SmagsPackage.ACTIVATE_ROLE_MODEL_OPERATOR: {
+				ActivateRoleModelOperator activateRoleModelOperator = (ActivateRoleModelOperator)theEObject;
+				T result = caseActivateRoleModelOperator(activateRoleModelOperator);
+				if (result == null) result = caseDeploymentOperator(activateRoleModelOperator);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -458,21 +479,6 @@ public class SmagsSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Port Instance</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Port Instance</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T casePortInstance(PortInstance object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Composition Operator</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -604,6 +610,66 @@ public class SmagsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseGenericUse(GenericUse object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Deployment Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Deployment Operator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDeploymentOperator(DeploymentOperator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Deployment</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Deployment</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseDeployment(Deployment object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Create Instance Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Create Instance Operator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseCreateInstanceOperator(CreateInstanceOperator object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Activate Role Model Operator</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Activate Role Model Operator</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseActivateRoleModelOperator(ActivateRoleModelOperator object) {
 		return null;
 	}
 

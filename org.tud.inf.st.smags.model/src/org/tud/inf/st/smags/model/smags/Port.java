@@ -2,6 +2,7 @@
  */
 package org.tud.inf.st.smags.model.smags;
 
+
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Port</b></em>'.

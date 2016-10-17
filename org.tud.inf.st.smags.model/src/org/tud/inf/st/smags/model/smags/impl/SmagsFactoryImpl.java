@@ -68,13 +68,15 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 			case SmagsPackage.PORT: return createPort();
 			case SmagsPackage.ARCHITECTURE: return createArchitecture();
 			case SmagsPackage.COMPONENT_INSTANCE: return createComponentInstance();
-			case SmagsPackage.PORT_INSTANCE: return createPortInstance();
 			case SmagsPackage.BIND_OPERATOR: return createBindOperator();
 			case SmagsPackage.SMAGS_MODEL: return createSmagsModel();
 			case SmagsPackage.IMPORT: return createImport();
 			case SmagsPackage.TYPE_BINDING: return createTypeBinding();
 			case SmagsPackage.PRIMITIVE_USE: return createPrimitiveUse();
 			case SmagsPackage.GENERIC_USE: return createGenericUse();
+			case SmagsPackage.DEPLOYMENT: return createDeployment();
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR: return createCreateInstanceOperator();
+			case SmagsPackage.ACTIVATE_ROLE_MODEL_OPERATOR: return createActivateRoleModelOperator();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -205,16 +207,6 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public PortInstance createPortInstance() {
-		PortInstanceImpl portInstance = new PortInstanceImpl();
-		return portInstance;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public BindOperator createBindOperator() {
 		BindOperatorImpl bindOperator = new BindOperatorImpl();
 		return bindOperator;
@@ -268,6 +260,36 @@ public class SmagsFactoryImpl extends EFactoryImpl implements SmagsFactory {
 	public GenericUse createGenericUse() {
 		GenericUseImpl genericUse = new GenericUseImpl();
 		return genericUse;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public Deployment createDeployment() {
+		DeploymentImpl deployment = new DeploymentImpl();
+		return deployment;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CreateInstanceOperator createCreateInstanceOperator() {
+		CreateInstanceOperatorImpl createInstanceOperator = new CreateInstanceOperatorImpl();
+		return createInstanceOperator;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ActivateRoleModelOperator createActivateRoleModelOperator() {
+		ActivateRoleModelOperatorImpl activateRoleModelOperator = new ActivateRoleModelOperatorImpl();
+		return activateRoleModelOperator;
 	}
 
 	/**

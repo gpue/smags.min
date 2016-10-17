@@ -18,21 +18,22 @@ Import returns smags::Import:
 
 MetaArchitecture returns smags::MetaArchitecture:
 	'MetaArchitecture' name=EString
+	('with' 'namespace' namespace=EString)?
 	'{'
 	types+=Type*
 	'}'
 	'{'
 	elements+=MetaArchitectureElement*
-	'}' ('start' 'with' initialRoleModel=[smags::RoleModel|EString] ';')?;
+	'}';
 
 MetaArchitectureElement returns smags::MetaArchitectureElement:
 	ComponentType | PortType | RoleModel;
 
 Type returns smags::Type:
-	'Type' ':' name=EString';';
+	'Type' ':' name=ID';';
 
 Variable returns smags::Variable:
-	type=TypeUse name=EString;
+	type=TypeUse name=ID;
 
 Method returns smags::Method:
 	returnType=TypeUse name=EString '(' (args+=Variable ("," args+=Variable)*)? ')';
@@ -48,7 +49,6 @@ PrimitiveUse returns smags::PrimitiveUse:
 GenericUse returns smags::GenericUse: 
 	':' type=[smags::Type|EString]
 ;
-
 
 PortTypeElement returns smags::PortTypeElement:
 	(Variable | Method) ';';
@@ -91,6 +91,7 @@ BindOperator returns smags::BindOperator:
 
 Architecture returns smags::Architecture:
 	'Architecture' name=EString '::' type=[smags::MetaArchitecture|EString] 
+	('with' 'namespace' namespace=EString)?
 	'{'
 		typeBindings+=TypeBinding*	
 	'}'	
@@ -99,7 +100,7 @@ Architecture returns smags::Architecture:
 	'}';
 	
 ArchitectureElement returns smags::ArchitectureElement: 
-	Component | Port
+	Component | Port | Deployment
 ;
 
 Component returns smags::Component:
@@ -109,6 +110,27 @@ Port returns smags::Port:
 	'Port' name=EString '::' type=[smags::PortType|EString] ';';
 	
 TypeBinding returns smags::TypeBinding: 
-	 type=[smags::Type|EString] '=' implementation=EString ';'
+	 type=[smags::Type|ID] '=' implementation=EString ';'
+;
+
+Deployment returns smags::Deployment: 
+	'Deployment' name=EString '{' script+=DeploymentOperator* '}'
+;
+
+DeploymentOperator returns smags::DeploymentOperator: 
+	(ActivateRoleModelOperator | CreateInstanceOperator) ';'
+;
+
+
+ActivateRoleModelOperator returns smags::ActivateRoleModelOperator: 
+	roleModel=[smags::RoleModel|EString] '(' (args+=[smags::ComponentInstance|EString] (',' args+=[smags::ComponentInstance|EString])*)? ')'
+;
+
+CreateInstanceOperator returns smags::CreateInstanceOperator: 
+	instance=ComponentInstance
+;
+
+ComponentInstance returns smags::ComponentInstance: 
+	'val' name=EString '=' 'new' type=[smags::Component|EString] '(' ')'
 ;
 

@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getElements <em>Elements</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getName <em>Name</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getTypes <em>Types</em>}</li>
- *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel <em>Initial Role Model</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getNamespace <em>Namespace</em>}</li>
  * </ul>
  *
  * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getMetaArchitecture()
@@ -83,29 +83,29 @@ public interface MetaArchitecture extends SmagsElement {
 	EList<Type> getTypes();
 
 	/**
-	 * Returns the value of the '<em><b>Initial Role Model</b></em>' reference.
+	 * Returns the value of the '<em><b>Namespace</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Initial Role Model</em>' reference isn't clear,
+	 * If the meaning of the '<em>Namespace</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Initial Role Model</em>' reference.
-	 * @see #setInitialRoleModel(RoleModel)
-	 * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getMetaArchitecture_InitialRoleModel()
+	 * @return the value of the '<em>Namespace</em>' attribute.
+	 * @see #setNamespace(String)
+	 * @see org.tud.inf.st.smags.model.smags.SmagsPackage#getMetaArchitecture_Namespace()
 	 * @model
 	 * @generated
 	 */
-	RoleModel getInitialRoleModel();
+	String getNamespace();
 
 	/**
-	 * Sets the value of the '{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getInitialRoleModel <em>Initial Role Model</em>}' reference.
+	 * Sets the value of the '{@link org.tud.inf.st.smags.model.smags.MetaArchitecture#getNamespace <em>Namespace</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Initial Role Model</em>' reference.
-	 * @see #getInitialRoleModel()
+	 * @param value the new value of the '<em>Namespace</em>' attribute.
+	 * @see #getNamespace()
 	 * @generated
 	 */
-	void setInitialRoleModel(RoleModel value);
+	void setNamespace(String value);
 
 } // MetaArchitecture

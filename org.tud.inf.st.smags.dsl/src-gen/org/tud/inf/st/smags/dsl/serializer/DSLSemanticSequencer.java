@@ -15,10 +15,14 @@ import org.eclipse.xtext.serializer.acceptor.SequenceFeeder;
 import org.eclipse.xtext.serializer.sequencer.AbstractDelegatingSemanticSequencer;
 import org.eclipse.xtext.serializer.sequencer.ITransientValueService.ValueTransient;
 import org.tud.inf.st.smags.dsl.services.DSLGrammarAccess;
+import org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator;
 import org.tud.inf.st.smags.model.smags.Architecture;
 import org.tud.inf.st.smags.model.smags.BindOperator;
 import org.tud.inf.st.smags.model.smags.Component;
+import org.tud.inf.st.smags.model.smags.ComponentInstance;
 import org.tud.inf.st.smags.model.smags.ComponentType;
+import org.tud.inf.st.smags.model.smags.CreateInstanceOperator;
+import org.tud.inf.st.smags.model.smags.Deployment;
 import org.tud.inf.st.smags.model.smags.GenericUse;
 import org.tud.inf.st.smags.model.smags.Import;
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
@@ -48,6 +52,9 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		Set<Parameter> parameters = context.getEnabledBooleanParameters();
 		if (epackage == SmagsPackage.eINSTANCE)
 			switch (semanticObject.eClass().getClassifierID()) {
+			case SmagsPackage.ACTIVATE_ROLE_MODEL_OPERATOR:
+				sequence_ActivateRoleModelOperator(context, (ActivateRoleModelOperator) semanticObject); 
+				return; 
 			case SmagsPackage.ARCHITECTURE:
 				sequence_Architecture(context, (Architecture) semanticObject); 
 				return; 
@@ -57,8 +64,17 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case SmagsPackage.COMPONENT:
 				sequence_Component(context, (Component) semanticObject); 
 				return; 
+			case SmagsPackage.COMPONENT_INSTANCE:
+				sequence_ComponentInstance(context, (ComponentInstance) semanticObject); 
+				return; 
 			case SmagsPackage.COMPONENT_TYPE:
 				sequence_ComponentType(context, (ComponentType) semanticObject); 
+				return; 
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR:
+				sequence_CreateInstanceOperator(context, (CreateInstanceOperator) semanticObject); 
+				return; 
+			case SmagsPackage.DEPLOYMENT:
+				sequence_Deployment(context, (Deployment) semanticObject); 
 				return; 
 			case SmagsPackage.GENERIC_USE:
 				sequence_GenericUse(context, (GenericUse) semanticObject); 
@@ -106,11 +122,24 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     DeploymentOperator returns ActivateRoleModelOperator
+	 *     ActivateRoleModelOperator returns ActivateRoleModelOperator
+	 *
+	 * Constraint:
+	 *     (roleModel=[RoleModel|EString] (args+=[ComponentInstance|EString] args+=[ComponentInstance|EString]*)?)
+	 */
+	protected void sequence_ActivateRoleModelOperator(ISerializationContext context, ActivateRoleModelOperator semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     SmagsElement returns Architecture
 	 *     Architecture returns Architecture
 	 *
 	 * Constraint:
-	 *     (name=EString type=[MetaArchitecture|EString] typeBindings+=TypeBinding* elements+=ArchitectureElement*)
+	 *     (name=EString type=[MetaArchitecture|EString] namespace=EString? typeBindings+=TypeBinding* elements+=ArchitectureElement*)
 	 */
 	protected void sequence_Architecture(ISerializationContext context, Architecture semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -135,6 +164,27 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getBindOperatorAccess().getToPortTypeEStringParserRuleCall_3_0_1(), semanticObject.getTo());
 		feeder.accept(grammarAccess.getBindOperatorAccess().getSlotRoleModelSlotEStringParserRuleCall_5_0_1(), semanticObject.getSlot());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ComponentInstance returns ComponentInstance
+	 *
+	 * Constraint:
+	 *     (name=EString type=[Component|EString])
+	 */
+	protected void sequence_ComponentInstance(ISerializationContext context, ComponentInstance semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, SmagsPackage.Literals.COMPONENT_INSTANCE__NAME) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SmagsPackage.Literals.COMPONENT_INSTANCE__NAME));
+			if (transientValues.isValueTransient(semanticObject, SmagsPackage.Literals.COMPONENT_INSTANCE__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SmagsPackage.Literals.COMPONENT_INSTANCE__TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getComponentInstanceAccess().getNameEStringParserRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getComponentInstanceAccess().getTypeComponentEStringParserRuleCall_4_0_1(), semanticObject.getType());
 		feeder.finish();
 	}
 	
@@ -171,6 +221,38 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		feeder.accept(grammarAccess.getComponentAccess().getNameEStringParserRuleCall_1_0(), semanticObject.getName());
 		feeder.accept(grammarAccess.getComponentAccess().getTypeComponentTypeEStringParserRuleCall_3_0_1(), semanticObject.getType());
 		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     DeploymentOperator returns CreateInstanceOperator
+	 *     CreateInstanceOperator returns CreateInstanceOperator
+	 *
+	 * Constraint:
+	 *     instance=ComponentInstance
+	 */
+	protected void sequence_CreateInstanceOperator(ISerializationContext context, CreateInstanceOperator semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, SmagsPackage.Literals.CREATE_INSTANCE_OPERATOR__INSTANCE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SmagsPackage.Literals.CREATE_INSTANCE_OPERATOR__INSTANCE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getCreateInstanceOperatorAccess().getInstanceComponentInstanceParserRuleCall_0(), semanticObject.getInstance());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     ArchitectureElement returns Deployment
+	 *     Deployment returns Deployment
+	 *
+	 * Constraint:
+	 *     (name=EString script+=DeploymentOperator*)
+	 */
+	protected void sequence_Deployment(ISerializationContext context, Deployment semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
 	}
 	
 	
@@ -217,7 +299,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     MetaArchitecture returns MetaArchitecture
 	 *
 	 * Constraint:
-	 *     (name=EString types+=Type* elements+=MetaArchitectureElement* initialRoleModel=[RoleModel|EString]?)
+	 *     (name=EString namespace=EString? types+=Type* elements+=MetaArchitectureElement*)
 	 */
 	protected void sequence_MetaArchitecture(ISerializationContext context, MetaArchitecture semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -342,7 +424,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     TypeBinding returns TypeBinding
 	 *
 	 * Constraint:
-	 *     (type=[Type|EString] implementation=EString)
+	 *     (type=[Type|ID] implementation=EString)
 	 */
 	protected void sequence_TypeBinding(ISerializationContext context, TypeBinding semanticObject) {
 		if (errorAcceptor != null) {
@@ -352,7 +434,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SmagsPackage.Literals.TYPE_BINDING__IMPLEMENTATION));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getTypeBindingAccess().getTypeTypeEStringParserRuleCall_0_0_1(), semanticObject.getType());
+		feeder.accept(grammarAccess.getTypeBindingAccess().getTypeTypeIDTerminalRuleCall_0_0_1(), semanticObject.getType());
 		feeder.accept(grammarAccess.getTypeBindingAccess().getImplementationEStringParserRuleCall_2_0(), semanticObject.getImplementation());
 		feeder.finish();
 	}
@@ -363,7 +445,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     Type returns Type
 	 *
 	 * Constraint:
-	 *     name=EString
+	 *     name=ID
 	 */
 	protected void sequence_Type(ISerializationContext context, Type semanticObject) {
 		if (errorAcceptor != null) {
@@ -371,7 +453,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, SmagsPackage.Literals.TYPE__NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getTypeAccess().getNameEStringParserRuleCall_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getTypeAccess().getNameIDTerminalRuleCall_2_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	
@@ -382,7 +464,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     PortTypeElement returns Variable
 	 *
 	 * Constraint:
-	 *     (type=TypeUse name=EString)
+	 *     (type=TypeUse name=ID)
 	 */
 	protected void sequence_Variable(ISerializationContext context, Variable semanticObject) {
 		if (errorAcceptor != null) {
@@ -393,7 +475,7 @@ public class DSLSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getVariableAccess().getTypeTypeUseParserRuleCall_0_0(), semanticObject.getType());
-		feeder.accept(grammarAccess.getVariableAccess().getNameEStringParserRuleCall_1_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getVariableAccess().getNameIDTerminalRuleCall_1_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	

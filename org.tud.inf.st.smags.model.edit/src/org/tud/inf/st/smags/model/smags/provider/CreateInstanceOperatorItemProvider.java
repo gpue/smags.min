@@ -11,29 +11,27 @@ import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
-import org.tud.inf.st.smags.model.smags.MetaArchitecture;
+import org.tud.inf.st.smags.model.smags.CreateInstanceOperator;
 import org.tud.inf.st.smags.model.smags.SmagsFactory;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
 
 /**
- * This is the item provider adapter for a {@link org.tud.inf.st.smags.model.smags.MetaArchitecture} object.
+ * This is the item provider adapter for a {@link org.tud.inf.st.smags.model.smags.CreateInstanceOperator} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
+public class CreateInstanceOperatorItemProvider extends DeploymentOperatorItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public MetaArchitectureItemProvider(AdapterFactory adapterFactory) {
+	public CreateInstanceOperatorItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -48,54 +46,8 @@ public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addNamePropertyDescriptor(object);
-			addNamespacePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
-	}
-
-	/**
-	 * This adds a property descriptor for the Name feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addNamePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MetaArchitecture_name_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MetaArchitecture_name_feature", "_UI_MetaArchitecture_type"),
-				 SmagsPackage.Literals.META_ARCHITECTURE__NAME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Namespace feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addNamespacePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_MetaArchitecture_namespace_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_MetaArchitecture_namespace_feature", "_UI_MetaArchitecture_type"),
-				 SmagsPackage.Literals.META_ARCHITECTURE__NAMESPACE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
 	}
 
 	/**
@@ -110,8 +62,7 @@ public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(SmagsPackage.Literals.META_ARCHITECTURE__ELEMENTS);
-			childrenFeatures.add(SmagsPackage.Literals.META_ARCHITECTURE__TYPES);
+			childrenFeatures.add(SmagsPackage.Literals.CREATE_INSTANCE_OPERATOR__INSTANCE);
 		}
 		return childrenFeatures;
 	}
@@ -130,14 +81,14 @@ public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
 	}
 
 	/**
-	 * This returns MetaArchitecture.gif.
+	 * This returns CreateInstanceOperator.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/MetaArchitecture"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/CreateInstanceOperator"));
 	}
 
 	/**
@@ -148,10 +99,7 @@ public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((MetaArchitecture)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_MetaArchitecture_type") :
-			getString("_UI_MetaArchitecture_type") + " " + label;
+		return getString("_UI_CreateInstanceOperator_type");
 	}
 	
 
@@ -166,13 +114,8 @@ public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
 
-		switch (notification.getFeatureID(MetaArchitecture.class)) {
-			case SmagsPackage.META_ARCHITECTURE__NAME:
-			case SmagsPackage.META_ARCHITECTURE__NAMESPACE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-			case SmagsPackage.META_ARCHITECTURE__ELEMENTS:
-			case SmagsPackage.META_ARCHITECTURE__TYPES:
+		switch (notification.getFeatureID(CreateInstanceOperator.class)) {
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -192,23 +135,8 @@ public class MetaArchitectureItemProvider extends SmagsElementItemProvider {
 
 		newChildDescriptors.add
 			(createChildParameter
-				(SmagsPackage.Literals.META_ARCHITECTURE__ELEMENTS,
-				 SmagsFactory.eINSTANCE.createComponentType()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SmagsPackage.Literals.META_ARCHITECTURE__ELEMENTS,
-				 SmagsFactory.eINSTANCE.createPortType()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SmagsPackage.Literals.META_ARCHITECTURE__ELEMENTS,
-				 SmagsFactory.eINSTANCE.createRoleModel()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(SmagsPackage.Literals.META_ARCHITECTURE__TYPES,
-				 SmagsFactory.eINSTANCE.createType()));
+				(SmagsPackage.Literals.CREATE_INSTANCE_OPERATOR__INSTANCE,
+				 SmagsFactory.eINSTANCE.createComponentInstance()));
 	}
 
 }

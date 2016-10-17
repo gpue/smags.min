@@ -128,10 +128,6 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 				return createComponentInstanceAdapter();
 			}
 			@Override
-			public Adapter casePortInstance(PortInstance object) {
-				return createPortInstanceAdapter();
-			}
-			@Override
 			public Adapter caseCompositionOperator(CompositionOperator object) {
 				return createCompositionOperatorAdapter();
 			}
@@ -166,6 +162,22 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseGenericUse(GenericUse object) {
 				return createGenericUseAdapter();
+			}
+			@Override
+			public Adapter caseDeploymentOperator(DeploymentOperator object) {
+				return createDeploymentOperatorAdapter();
+			}
+			@Override
+			public Adapter caseDeployment(Deployment object) {
+				return createDeploymentAdapter();
+			}
+			@Override
+			public Adapter caseCreateInstanceOperator(CreateInstanceOperator object) {
+				return createCreateInstanceOperatorAdapter();
+			}
+			@Override
+			public Adapter caseActivateRoleModelOperator(ActivateRoleModelOperator object) {
+				return createActivateRoleModelOperatorAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -398,20 +410,6 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.PortInstance <em>Port Instance</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.tud.inf.st.smags.model.smags.PortInstance
-	 * @generated
-	 */
-	public Adapter createPortInstanceAdapter() {
-		return null;
-	}
-
-	/**
 	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.CompositionOperator <em>Composition Operator</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -534,6 +532,62 @@ public class SmagsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createGenericUseAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.DeploymentOperator <em>Deployment Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.DeploymentOperator
+	 * @generated
+	 */
+	public Adapter createDeploymentOperatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.Deployment <em>Deployment</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.Deployment
+	 * @generated
+	 */
+	public Adapter createDeploymentAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.CreateInstanceOperator <em>Create Instance Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.CreateInstanceOperator
+	 * @generated
+	 */
+	public Adapter createCreateInstanceOperatorAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator <em>Activate Role Model Operator</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator
+	 * @generated
+	 */
+	public Adapter createActivateRoleModelOperatorAdapter() {
 		return null;
 	}
 

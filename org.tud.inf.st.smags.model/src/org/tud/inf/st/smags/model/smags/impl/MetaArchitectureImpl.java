@@ -13,12 +13,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
 import org.tud.inf.st.smags.model.smags.MetaArchitectureElement;
-import org.tud.inf.st.smags.model.smags.RoleModel;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
 import org.tud.inf.st.smags.model.smags.Type;
 
@@ -33,7 +33,7 @@ import org.tud.inf.st.smags.model.smags.Type;
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getElements <em>Elements</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getName <em>Name</em>}</li>
  *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getTypes <em>Types</em>}</li>
- *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getInitialRoleModel <em>Initial Role Model</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.impl.MetaArchitectureImpl#getNamespace <em>Namespace</em>}</li>
  * </ul>
  *
  * @generated
@@ -80,14 +80,24 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 	protected EList<Type> types;
 
 	/**
-	 * The cached value of the '{@link #getInitialRoleModel() <em>Initial Role Model</em>}' reference.
+	 * The default value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getInitialRoleModel()
+	 * @see #getNamespace()
 	 * @generated
 	 * @ordered
 	 */
-	protected RoleModel initialRoleModel;
+	protected static final String NAMESPACE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getNamespace() <em>Namespace</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getNamespace()
+	 * @generated
+	 * @ordered
+	 */
+	protected String namespace = NAMESPACE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -158,16 +168,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RoleModel getInitialRoleModel() {
-		if (initialRoleModel != null && initialRoleModel.eIsProxy()) {
-			InternalEObject oldInitialRoleModel = (InternalEObject)initialRoleModel;
-			initialRoleModel = (RoleModel)eResolveProxy(oldInitialRoleModel);
-			if (initialRoleModel != oldInitialRoleModel) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL, oldInitialRoleModel, initialRoleModel));
-			}
-		}
-		return initialRoleModel;
+	public String getNamespace() {
+		return namespace;
 	}
 
 	/**
@@ -175,20 +177,11 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public RoleModel basicGetInitialRoleModel() {
-		return initialRoleModel;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setInitialRoleModel(RoleModel newInitialRoleModel) {
-		RoleModel oldInitialRoleModel = initialRoleModel;
-		initialRoleModel = newInitialRoleModel;
+	public void setNamespace(String newNamespace) {
+		String oldNamespace = namespace;
+		namespace = newNamespace;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL, oldInitialRoleModel, initialRoleModel));
+			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.META_ARCHITECTURE__NAMESPACE, oldNamespace, namespace));
 	}
 
 	/**
@@ -221,9 +214,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 				return getName();
 			case SmagsPackage.META_ARCHITECTURE__TYPES:
 				return getTypes();
-			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
-				if (resolve) return getInitialRoleModel();
-				return basicGetInitialRoleModel();
+			case SmagsPackage.META_ARCHITECTURE__NAMESPACE:
+				return getNamespace();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -248,8 +240,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 				getTypes().clear();
 				getTypes().addAll((Collection<? extends Type>)newValue);
 				return;
-			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
-				setInitialRoleModel((RoleModel)newValue);
+			case SmagsPackage.META_ARCHITECTURE__NAMESPACE:
+				setNamespace((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -272,8 +264,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 			case SmagsPackage.META_ARCHITECTURE__TYPES:
 				getTypes().clear();
 				return;
-			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
-				setInitialRoleModel((RoleModel)null);
+			case SmagsPackage.META_ARCHITECTURE__NAMESPACE:
+				setNamespace(NAMESPACE_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -293,8 +285,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case SmagsPackage.META_ARCHITECTURE__TYPES:
 				return types != null && !types.isEmpty();
-			case SmagsPackage.META_ARCHITECTURE__INITIAL_ROLE_MODEL:
-				return initialRoleModel != null;
+			case SmagsPackage.META_ARCHITECTURE__NAMESPACE:
+				return NAMESPACE_EDEFAULT == null ? namespace != null : !NAMESPACE_EDEFAULT.equals(namespace);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -311,6 +303,8 @@ public class MetaArchitectureImpl extends SmagsElementImpl implements MetaArchit
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", namespace: ");
+		result.append(namespace);
 		result.append(')');
 		return result.toString();
 	}

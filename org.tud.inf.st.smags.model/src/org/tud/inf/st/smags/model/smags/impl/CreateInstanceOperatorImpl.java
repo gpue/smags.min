@@ -10,40 +10,40 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.tud.inf.st.smags.model.smags.ComponentInstance;
+import org.tud.inf.st.smags.model.smags.CreateInstanceOperator;
 import org.tud.inf.st.smags.model.smags.SmagsPackage;
-import org.tud.inf.st.smags.model.smags.TypeUse;
-import org.tud.inf.st.smags.model.smags.Variable;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variable</b></em>'.
+ * An implementation of the model object '<em><b>Create Instance Operator</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link org.tud.inf.st.smags.model.smags.impl.VariableImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.tud.inf.st.smags.model.smags.impl.CreateInstanceOperatorImpl#getInstance <em>Instance</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class VariableImpl extends PortTypeElementImpl implements Variable {
+public class CreateInstanceOperatorImpl extends DeploymentOperatorImpl implements CreateInstanceOperator {
 	/**
-	 * The cached value of the '{@link #getType() <em>Type</em>}' containment reference.
+	 * The cached value of the '{@link #getInstance() <em>Instance</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getType()
+	 * @see #getInstance()
 	 * @generated
 	 * @ordered
 	 */
-	protected TypeUse type;
+	protected ComponentInstance instance;
 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VariableImpl() {
+	protected CreateInstanceOperatorImpl() {
 		super();
 	}
 
@@ -54,7 +54,7 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	 */
 	@Override
 	protected EClass eStaticClass() {
-		return SmagsPackage.Literals.VARIABLE;
+		return SmagsPackage.Literals.CREATE_INSTANCE_OPERATOR;
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public TypeUse getType() {
-		return type;
+	public ComponentInstance getInstance() {
+		return instance;
 	}
 
 	/**
@@ -71,11 +71,11 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetType(TypeUse newType, NotificationChain msgs) {
-		TypeUse oldType = type;
-		type = newType;
+	public NotificationChain basicSetInstance(ComponentInstance newInstance, NotificationChain msgs) {
+		ComponentInstance oldInstance = instance;
+		instance = newInstance;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SmagsPackage.VARIABLE__TYPE, oldType, newType);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE, oldInstance, newInstance);
 			if (msgs == null) msgs = notification; else msgs.add(notification);
 		}
 		return msgs;
@@ -86,18 +86,18 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setType(TypeUse newType) {
-		if (newType != type) {
+	public void setInstance(ComponentInstance newInstance) {
+		if (newInstance != instance) {
 			NotificationChain msgs = null;
-			if (type != null)
-				msgs = ((InternalEObject)type).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SmagsPackage.VARIABLE__TYPE, null, msgs);
-			if (newType != null)
-				msgs = ((InternalEObject)newType).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SmagsPackage.VARIABLE__TYPE, null, msgs);
-			msgs = basicSetType(newType, msgs);
+			if (instance != null)
+				msgs = ((InternalEObject)instance).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE, null, msgs);
+			if (newInstance != null)
+				msgs = ((InternalEObject)newInstance).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE, null, msgs);
+			msgs = basicSetInstance(newInstance, msgs);
 			if (msgs != null) msgs.dispatch();
 		}
 		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.VARIABLE__TYPE, newType, newType));
+			eNotify(new ENotificationImpl(this, Notification.SET, SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE, newInstance, newInstance));
 	}
 
 	/**
@@ -108,8 +108,8 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case SmagsPackage.VARIABLE__TYPE:
-				return basicSetType(null, msgs);
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE:
+				return basicSetInstance(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -122,8 +122,8 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case SmagsPackage.VARIABLE__TYPE:
-				return getType();
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE:
+				return getInstance();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -136,8 +136,8 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case SmagsPackage.VARIABLE__TYPE:
-				setType((TypeUse)newValue);
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE:
+				setInstance((ComponentInstance)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -151,8 +151,8 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case SmagsPackage.VARIABLE__TYPE:
-				setType((TypeUse)null);
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE:
+				setInstance((ComponentInstance)null);
 				return;
 		}
 		super.eUnset(featureID);
@@ -166,10 +166,10 @@ public class VariableImpl extends PortTypeElementImpl implements Variable {
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case SmagsPackage.VARIABLE__TYPE:
-				return type != null;
+			case SmagsPackage.CREATE_INSTANCE_OPERATOR__INSTANCE:
+				return instance != null;
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //VariableImpl
+} //CreateInstanceOperatorImpl
