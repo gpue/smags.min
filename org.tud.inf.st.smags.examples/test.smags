@@ -1,0 +1,39 @@
+MetaArchitecture test
+	with namespace 'de.smags.test'
+{
+
+}{
+	ComponentType TextOutput provides Sink;
+	ComponentType TextInput provides Source;
+	
+	PortType Sink{
+		String consume(String str);
+	}
+	
+	PortType Source{
+		String next();
+	}
+	
+	RoleModel io(TextInput in, TextOutput out){
+		bind role Source to in;
+		bind role Sink to out;		
+	}
+}
+
+Architecture testInJava::test 
+	with namespace 'de.smags.test.java'
+{
+	
+}{
+	Component JavaTextOutput::"test.TextOutput";
+	Component JavaTextInout::"test.TextInput";
+	
+	Port JavaSink::"test.Sink";
+	Port JavaSource::"test.Source";
+	
+	Deployment Startup{
+		val out = new JavaTextOutput();
+		val in = new JavaTextInout();
+		"test.io"(in,out);
+	} 
+}
