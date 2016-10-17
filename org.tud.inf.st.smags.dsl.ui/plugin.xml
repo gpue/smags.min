@@ -4,12 +4,13 @@
 	<extension
 		point="org.eclipse.ui.editors">
 		<editor
-			class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
-			contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
-			default="true"
-			extensions="smags"
-			id="org.tud.inf.st.smags.dsl.DSL"
-			name="DSL Editor">
+        class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.eclipse.xtext.ui.editor.XtextEditor"
+        contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+        default="true"
+        extensions="smags"
+        icon="icons/smags.png"
+        id="org.tud.inf.st.smags.dsl.DSL"
+        name="DSL Editor">
 		</editor>
 	</extension>
 	<extension
@@ -309,9 +310,13 @@
 			name="Quick Outline">
 		</command>
 		<command
-            id="org.tud.inf.st.smags.dsl.ui.handler.GenerationCommand"
-            name="Generate code">
+            id="org.tud.inf.st.smags.dsl.ui.handler.GenerateSingleJavaProject"
+            name="Single Java project">
       </command>
+  <command
+        id="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinox"
+        name="Equinox infrastructure">
+  </command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution
@@ -327,22 +332,32 @@
 		  <menuContribution
 	        allPopups="false"
 	        locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
-		     <command
-		           commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerationCommand"
-		           style="push">
-		        <visibleWhen
-		              checkEnabled="false">
-		           <iterate>
-		              <adapt
-		                    type="org.eclipse.core.resources.IResource">
-		                 <test
-		                       property="org.eclipse.core.resources.name"
-		                       value="*.smags">
-		                 </test>
-		              </adapt>
-		           </iterate>
-		        </visibleWhen>
-		     </command>
+       <menu
+             icon="icons/smags.png"
+             label="Generate SMAGS code">
+          <command
+                commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateSingleJavaProject"
+                icon="icons/smags.png"
+                style="push">
+          </command>
+          <command
+                commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinox"
+                icon="icons/smags.png"
+                style="push">
+          </command>
+          <visibleWhen
+                checkEnabled="false">
+             <iterate>
+                <adapt
+                      type="org.eclipse.core.resources.IResource">
+                   <test
+                         property="org.eclipse.core.resources.name"
+                         value="*.smags">
+                   </test>
+                </adapt>
+             </iterate>
+          </visibleWhen>
+       </menu>
 	  	</menuContribution>
 	</extension>
 	<!-- quickfix marker resolution generator for org.tud.inf.st.smags.dsl.DSL -->
@@ -385,9 +400,13 @@
 			</activeWhen>
 		</handler>
 	     <handler
-	           class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.tud.inf.st.smags.dsl.ui.handler.GenerationHandler"
-	           commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerationCommand">
+	           class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.tud.inf.st.smags.dsl.ui.handler.GenerateSingleJavaProjectHandler"
+	           commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateSingleJavaProject">
 	     </handler>
+      <handler
+            class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinoxHandler"
+            commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinox">
+      </handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
 		<menuContribution

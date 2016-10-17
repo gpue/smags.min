@@ -25,7 +25,7 @@ import org.eclipse.xtext.resource.IResourceDescriptions;
 import org.eclipse.xtext.ui.resource.IResourceSetProvider;
 
 
-public class GenerationHandler extends AbstractHandler implements IHandler {
+public class GenerateSingleJavaProjectHandler extends AbstractHandler implements IHandler {
     @Inject
     private IGenerator2 generator;
  
