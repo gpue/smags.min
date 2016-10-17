@@ -58,20 +58,36 @@ public abstract class SmagsGenerationHandler extends AbstractHandler implements 
                 
  
                 final EclipseResourceFileSystemAccess2 fsa = fileAccessProvider.get();
-                fsa.setProject(project);
-                fsa.setOutputPath(srcGenFolder.getProjectRelativePath().toString());
+                configureFileSystemAccess(file, fsa);
                 fsa.setMonitor(new NullProgressMonitor());
                  
                 URI uri = URI.createPlatformResourceURI(file.getFullPath().toString(), true);
                 ResourceSet rs = resourceSetProvider.get(project);
                 Resource r = rs.getResource(uri, true);
-                generator.doGenerate(r, fsa, createContext());                 
+                generator.doGenerate(r, fsa, createContext(project));                 
             }
         }
         return null;
 	}
 
-	protected abstract GeneratorContext createContext();
+	protected void configureFileSystemAccess(IFile file,
+			final EclipseResourceFileSystemAccess2 fsa) {		
+        IProject project = file.getProject();
+        IFolder srcGenFolder = project.getFolder("src-gen");
+        if (!srcGenFolder.exists()) {
+            try {
+                srcGenFolder.create(true, true,
+                        new NullProgressMonitor());
+            } catch (CoreException e) {
+                throw new RuntimeException(e);
+            }
+        }
+		
+		fsa.setProject(project);
+		fsa.setOutputPath(srcGenFolder.getProjectRelativePath().toString());
+	}
+
+	protected abstract GeneratorContext createContext(IProject project);
 
 	@Override
 	public boolean isEnabled() {

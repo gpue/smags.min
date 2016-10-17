@@ -1,5 +1,8 @@
 package org.tud.inf.st.smags.dsl.ui.handler;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.generator.GeneratorContext;
 import org.tud.inf.st.smags.dsl.generator.EquinoxGenerator;
 import org.tud.inf.st.smags.dsl.generator.SmagsGeneratorContext;
@@ -7,7 +10,13 @@ import org.tud.inf.st.smags.dsl.generator.SmagsGeneratorContext;
 
 public class GenerateEquinoxHandler extends SmagsGenerationHandler{
 	@Override
-	protected GeneratorContext createContext() {
-		return new SmagsGeneratorContext(EquinoxGenerator.class);
+	protected GeneratorContext createContext(IProject project) {
+		return new SmagsGeneratorContext(EquinoxGenerator.class,project);
+	}
+	
+	@Override
+	protected void configureFileSystemAccess(IFile file, EclipseResourceFileSystemAccess2 fsa) {					
+		fsa.setProject(file.getProject());
+		fsa.setOutputPath(file.getProject().getProjectRelativePath().toString());
 	}
 }

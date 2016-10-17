@@ -5,22 +5,43 @@ package org.tud.inf.st.smags.dsl.generator;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jdt.launching.LibraryLocation;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Conversions;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
+import org.tud.inf.st.smags.dsl.generator.SmagsGeneratorContext;
 import org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator;
 import org.tud.inf.st.smags.model.smags.Architecture;
 import org.tud.inf.st.smags.model.smags.ArchitectureElement;
@@ -55,9 +76,14 @@ import org.tud.inf.st.smags.model.smags.Variable;
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 @SuppressWarnings("all")
-public class SingleJavaProjectGenerator extends AbstractGenerator {
+public class JavaProjectGenerator extends AbstractGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
+    if ((context instanceof SmagsGeneratorContext)) {
+      final IProject project = ((SmagsGeneratorContext) context).getProject();
+      final IJavaProject java = this.extendToJava(project);
+      this.addSoureFolder(java, "src-gen");
+    }
     EList<EObject> _contents = resource.getContents();
     Iterable<SmagsModel> _filter = Iterables.<SmagsModel>filter(_contents, SmagsModel.class);
     for (final SmagsModel m : _filter) {
@@ -1284,5 +1310,83 @@ public class SingleJavaProjectGenerator extends AbstractGenerator {
     _builder.append(");");
     _builder.newLineIfNotEmpty();
     return _builder;
+  }
+  
+  public IJavaProject extendToJava(final IProject project) {
+    try {
+      final IProjectDescription description = project.getDescription();
+      description.setNatureIds(((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(JavaCore.NATURE_ID)), String.class)));
+      project.setDescription(description, null);
+      final IJavaProject javaProject = JavaCore.create(project);
+      final IFolder binFolder = project.getFolder("bin");
+      boolean _exists = binFolder.exists();
+      boolean _not = (!_exists);
+      if (_not) {
+        binFolder.create(false, true, null);
+      }
+      IPath _fullPath = binFolder.getFullPath();
+      javaProject.setOutputLocation(_fullPath, null);
+      final ArrayList<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+      final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
+      final LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
+      for (final LibraryLocation element : locations) {
+        IPath _systemLibraryPath = element.getSystemLibraryPath();
+        IClasspathEntry _newLibraryEntry = JavaCore.newLibraryEntry(_systemLibraryPath, null, null);
+        entries.add(_newLibraryEntry);
+      }
+      int _size = entries.size();
+      IClasspathEntry[] _newArrayOfSize = new IClasspathEntry[_size];
+      IClasspathEntry[] _array = entries.<IClasspathEntry>toArray(_newArrayOfSize);
+      NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
+      javaProject.setRawClasspath(_array, _nullProgressMonitor);
+      return javaProject;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  public void addSoureFolder(final IJavaProject javaProject, final String path) {
+    try {
+      IProject _project = javaProject.getProject();
+      final IFolder sourceFolder = _project.getFolder(path);
+      boolean _exists = sourceFolder.exists();
+      boolean _not = (!_exists);
+      if (_not) {
+        sourceFolder.create(false, true, null);
+      }
+      final IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
+      final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
+      int _length = oldEntries.length;
+      int _plus = (_length + 1);
+      final IClasspathEntry[] newEntries = new IClasspathEntry[_plus];
+      int _length_1 = oldEntries.length;
+      System.arraycopy(oldEntries, 0, newEntries, 0, _length_1);
+      int _length_2 = oldEntries.length;
+      IPath _path = root.getPath();
+      IClasspathEntry _newSourceEntry = JavaCore.newSourceEntry(_path);
+      newEntries[_length_2] = _newSourceEntry;
+      javaProject.setRawClasspath(newEntries, null);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  public IProject createProject(final String name) {
+    try {
+      IWorkspace _workspace = ResourcesPlugin.getWorkspace();
+      IWorkspaceRoot _root = _workspace.getRoot();
+      final IProject project = _root.getProject(name);
+      boolean _exists = project.exists();
+      boolean _not = (!_exists);
+      if (_not) {
+        NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
+        project.create(_nullProgressMonitor);
+      }
+      NullProgressMonitor _nullProgressMonitor_1 = new NullProgressMonitor();
+      project.open(_nullProgressMonitor_1);
+      return project;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
 }

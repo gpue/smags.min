@@ -3,9 +3,17 @@
  */
 package org.tud.inf.st.smags.dsl.generator
 
+import java.util.ArrayList
 import java.util.HashSet
 import java.util.Set
+import org.eclipse.core.resources.IProject
+import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.jdt.core.IClasspathEntry
+import org.eclipse.jdt.core.IJavaProject
+import org.eclipse.jdt.core.JavaCore
+import org.eclipse.jdt.launching.JavaRuntime
 import org.eclipse.xtext.generator.AbstractGenerator
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
@@ -33,9 +41,15 @@ import org.tud.inf.st.smags.model.smags.Variable
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
-class SingleJavaProjectGenerator extends AbstractGenerator {
+class JavaProjectGenerator extends AbstractGenerator {
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		
+		if (context instanceof SmagsGeneratorContext) {
+			val project = (context as SmagsGeneratorContext).project;
+			val java = project.extendToJava;
+			addSoureFolder(java,"src-gen");			
+		}
 
 		for (m : resource.contents.filter(SmagsModel)) {
 			for (a : m.elements.filter(MetaArchitecture)) {
@@ -360,4 +374,48 @@ class SingleJavaProjectGenerator extends AbstractGenerator {
 		architecture.activate«o.roleModel.name
 			.toFirstUpper»(«o.args.map[ci | '('+ci.type.name.toFirstUpper+')architecture.getInstance("'+ci.name+'")'].commaList»);
 	'''
+	
+	def extendToJava(IProject project) {
+		val description = project.getDescription();
+		description.setNatureIds(#{JavaCore.NATURE_ID});
+		project.setDescription(description, null)
+
+		val javaProject = JavaCore.create(project);
+		val binFolder = project.getFolder("bin");
+		if(!binFolder.exists)
+			binFolder.create(false, true, null);
+		javaProject.setOutputLocation(binFolder.getFullPath(), null);
+
+		val entries = new ArrayList<IClasspathEntry>();
+		val vmInstall = JavaRuntime.getDefaultVMInstall();
+		val locations = JavaRuntime.getLibraryLocations(vmInstall);
+		for (element : locations) {
+			entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
+		}
+
+		javaProject.setRawClasspath(entries.toArray(newArrayOfSize(entries.size())), new NullProgressMonitor);
+		
+		return javaProject;
+	}
+	
+	def addSoureFolder(IJavaProject javaProject, String path){
+		val sourceFolder = javaProject.project.getFolder(path);
+		if(!sourceFolder.exists)
+			sourceFolder.create(false, true, null);
+		
+		val root = javaProject.getPackageFragmentRoot(sourceFolder);
+		val oldEntries = javaProject.getRawClasspath();
+		val newEntries = <IClasspathEntry>newArrayOfSize(oldEntries.length + 1);
+		System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
+		newEntries.set(oldEntries.length, JavaCore.newSourceEntry(root.getPath()));
+		javaProject.setRawClasspath(newEntries, null);
+	}
+
+	def createProject(String name) {
+		val project = ResourcesPlugin.workspace.root.getProject(name);
+		if (!project.exists)
+			project.create(new NullProgressMonitor);
+		project.open(new NullProgressMonitor);
+		return project;
+	}
 }
