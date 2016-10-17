@@ -3,13 +3,23 @@
  */
 package org.tud.inf.st.smags.dsl.generator;
 
+import com.google.common.collect.Iterables;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IGeneratorContext;
 import org.tud.inf.st.smags.dsl.generator.JavaProjectGenerator;
+import org.tud.inf.st.smags.model.smags.Architecture;
+import org.tud.inf.st.smags.model.smags.ArchitectureElement;
+import org.tud.inf.st.smags.model.smags.Component;
+import org.tud.inf.st.smags.model.smags.MetaArchitecture;
+import org.tud.inf.st.smags.model.smags.SmagsElement;
+import org.tud.inf.st.smags.model.smags.SmagsModel;
 
 /**
  * Generates code from your model files on save.
@@ -22,14 +32,111 @@ public class EquinoxGenerator extends JavaProjectGenerator {
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     if ((fsa instanceof EclipseResourceFileSystemAccess2)) {
       final EclipseResourceFileSystemAccess2 eclipseFsa = ((EclipseResourceFileSystemAccess2) fsa);
-      IProject _createProject = this.createProject("core");
-      eclipseFsa.setProject(_createProject);
-      ((EclipseResourceFileSystemAccess2)fsa).generateFile("test.txt", "test");
-      final IProject project = this.createProject("plugin");
-      eclipseFsa.setProject(project);
-      IJavaProject _extendToJava = this.extendToJava(project);
-      this.addSoureFolder(_extendToJava, "src");
-      ((EclipseResourceFileSystemAccess2)fsa).generateFile("test.txt", "test");
+      EList<EObject> _contents = resource.getContents();
+      Iterable<SmagsModel> _filter = Iterables.<SmagsModel>filter(_contents, SmagsModel.class);
+      for (final SmagsModel m : _filter) {
+        {
+          EList<SmagsElement> _elements = m.getElements();
+          Iterable<MetaArchitecture> _filter_1 = Iterables.<MetaArchitecture>filter(_elements, MetaArchitecture.class);
+          for (final MetaArchitecture a : _filter_1) {
+            {
+              String _pkg = this.pkg(a);
+              final IProject project = this.createProject(_pkg);
+              eclipseFsa.setProject(project);
+              IJavaProject _extendToJava = this.extendToJava(project);
+              this.addSoureFolder(_extendToJava, "src-gen");
+              this.addNature(project, "org.eclipse.pde.PluginNature");
+              eclipseFsa.setOutputPath(".");
+              CharSequence _buildProperties = this.buildProperties();
+              ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
+              String _name = a.getName();
+              String _pkg_1 = this.pkg(a);
+              CharSequence _manifest = this.manifest(_name, _pkg_1);
+              ((EclipseResourceFileSystemAccess2)fsa).generateFile("META-INF/MANIFEST.MF", _manifest);
+              eclipseFsa.setOutputPath("src-gen");
+              this.generateMetaArchitectureFiles(a, fsa);
+            }
+          }
+          EList<SmagsElement> _elements_1 = m.getElements();
+          Iterable<Architecture> _filter_2 = Iterables.<Architecture>filter(_elements_1, Architecture.class);
+          for (final Architecture a_1 : _filter_2) {
+            EList<ArchitectureElement> _elements_2 = a_1.getElements();
+            Iterable<Component> _filter_3 = Iterables.<Component>filter(_elements_2, Component.class);
+            for (final Component c : _filter_3) {
+              {
+                String _pkg = this.pkg(a_1);
+                String _plus = (_pkg + ".");
+                String _name = c.getName();
+                String _lowerCase = _name.toLowerCase();
+                final String pkg = (_plus + _lowerCase);
+                final IProject project = this.createProject(pkg);
+                eclipseFsa.setProject(project);
+                IJavaProject _extendToJava = this.extendToJava(project);
+                this.addSoureFolder(_extendToJava, "src-gen");
+                this.addNature(project, "org.eclipse.pde.PluginNature");
+                eclipseFsa.setOutputPath(".");
+                CharSequence _buildProperties = this.buildProperties();
+                ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
+                String _name_1 = c.getName();
+                MetaArchitecture _type = a_1.getType();
+                String _pkg_1 = this.pkg(_type);
+                CharSequence _manifest = this.manifest(_name_1, pkg, _pkg_1);
+                ((EclipseResourceFileSystemAccess2)fsa).generateFile("META-INF/MANIFEST.MF", _manifest);
+                eclipseFsa.setOutputPath("src-gen");
+              }
+            }
+          }
+        }
+      }
     }
+  }
+  
+  protected CharSequence manifest(final String name, final String symbolic, final String... requires) {
+    StringConcatenation _builder = new StringConcatenation();
+    CharSequence _manifest = this.manifest(name, symbolic);
+    _builder.append(_manifest, "");
+    _builder.newLineIfNotEmpty();
+    {
+      for(final String r : requires) {
+        _builder.append("Require-Bundle: ");
+        _builder.append(r, "");
+        _builder.append(";bundle-version=\"1.0.0\"");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    return _builder;
+  }
+  
+  protected CharSequence manifest(final String name, final String symbolic) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("Manifest-Version: 1.0");
+    _builder.newLine();
+    _builder.append("Bundle-ManifestVersion: 2");
+    _builder.newLine();
+    _builder.append("Bundle-Name: ");
+    _builder.append(name, "");
+    _builder.newLineIfNotEmpty();
+    _builder.append("Bundle-SymbolicName: ");
+    _builder.append(symbolic, "");
+    _builder.newLineIfNotEmpty();
+    _builder.append("Bundle-Version: 1.0.0.qualifier");
+    _builder.newLine();
+    _builder.append("Bundle-RequiredExecutionEnvironment: JavaSE-1.8\t");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence buildProperties() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("source.. = src-gen/");
+    _builder.newLine();
+    _builder.append("output.. = bin/");
+    _builder.newLine();
+    _builder.append("bin.includes = META-INF/,\\");
+    _builder.newLine();
+    _builder.append("               ");
+    _builder.append(".");
+    _builder.newLine();
+    return _builder;
   }
 }

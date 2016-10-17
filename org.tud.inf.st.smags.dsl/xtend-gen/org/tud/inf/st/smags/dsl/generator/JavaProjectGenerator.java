@@ -6,7 +6,6 @@ package org.tud.inf.st.smags.dsl.generator;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -91,50 +90,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
         EList<SmagsElement> _elements = m.getElements();
         Iterable<MetaArchitecture> _filter_1 = Iterables.<MetaArchitecture>filter(_elements, MetaArchitecture.class);
         for (final MetaArchitecture a : _filter_1) {
-          {
-            final String package_ = this.pkg(a);
-            String _name = a.getName();
-            String _firstUpper = StringExtensions.toFirstUpper(_name);
-            final String portTypeMarkerName = (_firstUpper + "PortType");
-            String _replaceAll = package_.replaceAll("\\.", "/");
-            String _plus = (_replaceAll + "/");
-            String _name_1 = a.getName();
-            String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
-            String _plus_1 = (_plus + _firstUpper_1);
-            String _plus_2 = (_plus_1 + "MetaArchitecture.java");
-            CharSequence _compile = this.compile(package_, a);
-            fsa.generateFile(_plus_2, _compile);
-            String _replaceAll_1 = package_.replaceAll("\\.", "/");
-            String _plus_3 = (_replaceAll_1 + "/");
-            String _plus_4 = (_plus_3 + portTypeMarkerName);
-            String _plus_5 = (_plus_4 + ".java");
-            CharSequence _marker = this.marker(package_, portTypeMarkerName);
-            fsa.generateFile(_plus_5, _marker);
-            EList<MetaArchitectureElement> _elements_1 = a.getElements();
-            Iterable<ComponentType> _filter_2 = Iterables.<ComponentType>filter(_elements_1, ComponentType.class);
-            for (final ComponentType c : _filter_2) {
-              String _replaceAll_2 = package_.replaceAll("\\.", "/");
-              String _plus_6 = (_replaceAll_2 + "/");
-              String _name_2 = c.getName();
-              String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
-              String _plus_7 = (_plus_6 + _firstUpper_2);
-              String _plus_8 = (_plus_7 + ".java");
-              CharSequence _compile_1 = this.compile(package_, c, portTypeMarkerName);
-              fsa.generateFile(_plus_8, _compile_1);
-            }
-            EList<MetaArchitectureElement> _elements_2 = a.getElements();
-            Iterable<PortType> _filter_3 = Iterables.<PortType>filter(_elements_2, PortType.class);
-            for (final PortType p : _filter_3) {
-              String _replaceAll_3 = package_.replaceAll("\\.", "/");
-              String _plus_9 = (_replaceAll_3 + "/");
-              String _name_3 = p.getName();
-              String _firstUpper_3 = StringExtensions.toFirstUpper(_name_3);
-              String _plus_10 = (_plus_9 + _firstUpper_3);
-              String _plus_11 = (_plus_10 + ".java");
-              CharSequence _compile_2 = this.compile(package_, p, portTypeMarkerName);
-              fsa.generateFile(_plus_11, _compile_2);
-            }
-          }
+          this.generateMetaArchitectureFiles(a, fsa);
         }
         EList<SmagsElement> _elements_1 = m.getElements();
         Iterable<Architecture> _filter_2 = Iterables.<Architecture>filter(_elements_1, Architecture.class);
@@ -191,7 +147,52 @@ public class JavaProjectGenerator extends AbstractGenerator {
     }
   }
   
-  public String pkg(final MetaArchitecture a) {
+  protected void generateMetaArchitectureFiles(final MetaArchitecture a, final IFileSystemAccess2 fsa) {
+    final String package_ = this.pkg(a);
+    String _name = a.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    final String portTypeMarkerName = (_firstUpper + "PortType");
+    String _replaceAll = package_.replaceAll("\\.", "/");
+    String _plus = (_replaceAll + "/");
+    String _name_1 = a.getName();
+    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+    String _plus_1 = (_plus + _firstUpper_1);
+    String _plus_2 = (_plus_1 + "MetaArchitecture.java");
+    CharSequence _compile = this.compile(package_, a);
+    fsa.generateFile(_plus_2, _compile);
+    String _replaceAll_1 = package_.replaceAll("\\.", "/");
+    String _plus_3 = (_replaceAll_1 + "/");
+    String _plus_4 = (_plus_3 + portTypeMarkerName);
+    String _plus_5 = (_plus_4 + ".java");
+    CharSequence _marker = this.marker(package_, portTypeMarkerName);
+    fsa.generateFile(_plus_5, _marker);
+    EList<MetaArchitectureElement> _elements = a.getElements();
+    Iterable<ComponentType> _filter = Iterables.<ComponentType>filter(_elements, ComponentType.class);
+    for (final ComponentType c : _filter) {
+      String _replaceAll_2 = package_.replaceAll("\\.", "/");
+      String _plus_6 = (_replaceAll_2 + "/");
+      String _name_2 = c.getName();
+      String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
+      String _plus_7 = (_plus_6 + _firstUpper_2);
+      String _plus_8 = (_plus_7 + ".java");
+      CharSequence _compile_1 = this.compile(package_, c, portTypeMarkerName);
+      fsa.generateFile(_plus_8, _compile_1);
+    }
+    EList<MetaArchitectureElement> _elements_1 = a.getElements();
+    Iterable<PortType> _filter_1 = Iterables.<PortType>filter(_elements_1, PortType.class);
+    for (final PortType p : _filter_1) {
+      String _replaceAll_3 = package_.replaceAll("\\.", "/");
+      String _plus_9 = (_replaceAll_3 + "/");
+      String _name_3 = p.getName();
+      String _firstUpper_3 = StringExtensions.toFirstUpper(_name_3);
+      String _plus_10 = (_plus_9 + _firstUpper_3);
+      String _plus_11 = (_plus_10 + ".java");
+      CharSequence _compile_2 = this.compile(package_, p, portTypeMarkerName);
+      fsa.generateFile(_plus_11, _compile_2);
+    }
+  }
+  
+  protected String pkg(final MetaArchitecture a) {
     String _namespace = a.getNamespace();
     boolean _equals = Objects.equal(_namespace, null);
     if (_equals) {
@@ -202,7 +203,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     }
   }
   
-  public String pkg(final Architecture a) {
+  protected String pkg(final Architecture a) {
     String _namespace = a.getNamespace();
     boolean _equals = Objects.equal(_namespace, null);
     if (_equals) {
@@ -213,7 +214,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     }
   }
   
-  public String commaList(final Iterable<String> list) {
+  protected String commaList(final Iterable<String> list) {
     final StringBuffer out = new StringBuffer();
     final Iterator<String> i = list.iterator();
     while (i.hasNext()) {
@@ -229,7 +230,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return out.toString();
   }
   
-  public Set<Type> usedTypes(final PortType p) {
+  protected Set<Type> usedTypes(final PortType p) {
     final HashSet<Type> used = new HashSet<Type>();
     EList<PortTypeElement> _elements = p.getElements();
     Iterable<Variable> _filter = Iterables.<Variable>filter(_elements, Variable.class);
@@ -253,7 +254,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return used;
   }
   
-  public Set<Type> usedTypes(final Method m) {
+  protected Set<Type> usedTypes(final Method m) {
     final HashSet<Type> used = new HashSet<Type>();
     TypeUse _returnType = m.getReturnType();
     if ((_returnType instanceof GenericUse)) {
@@ -276,7 +277,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return used;
   }
   
-  public String binding(final Type t, final Architecture a) {
+  protected String binding(final Type t, final Architecture a) {
     EList<TypeBinding> _typeBindings = a.getTypeBindings();
     final Function1<TypeBinding, Boolean> _function = (TypeBinding b) -> {
       Type _type = b.getType();
@@ -286,7 +287,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _findFirst.getImplementation();
   }
   
-  public String binding(final TypeUse t, final Architecture a) {
+  protected String binding(final TypeUse t, final Architecture a) {
     if ((t instanceof GenericUse)) {
       Type _type = ((GenericUse) t).getType();
       return this.binding(_type, a);
@@ -295,7 +296,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     }
   }
   
-  public CharSequence marker(final String pkg, final String name) {
+  protected CharSequence marker(final String pkg, final String name) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -313,7 +314,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final TypeUse t) {
+  protected CharSequence compile(final TypeUse t) {
     CharSequence _xifexpression = null;
     if ((t instanceof GenericUse)) {
       StringConcatenation _builder = new StringConcatenation();
@@ -329,7 +330,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _xifexpression;
   }
   
-  public CharSequence compile(final Variable v) {
+  protected CharSequence compile(final Variable v) {
     StringConcatenation _builder = new StringConcatenation();
     TypeUse _type = v.getType();
     CharSequence _compile = this.compile(_type);
@@ -340,7 +341,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compileInterface(final Method m) {
+  protected CharSequence compileInterface(final Method m) {
     StringConcatenation _builder = new StringConcatenation();
     TypeUse _returnType = m.getReturnType();
     CharSequence _compile = this.compile(_returnType);
@@ -362,7 +363,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compileImpl(final Method m, final Architecture a) {
+  protected CharSequence compileImpl(final Method m, final Architecture a) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("@Override");
     _builder.newLine();
@@ -407,7 +408,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compileDelegate(final Method m) {
+  protected CharSequence compileDelegate(final Method m) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("public ");
     TypeUse _returnType = m.getReturnType();
@@ -466,7 +467,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence genericName(final MetaArchitecture a) {
+  protected CharSequence genericName(final MetaArchitecture a) {
     StringConcatenation _builder = new StringConcatenation();
     String _name = a.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);
@@ -504,7 +505,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence genericName(final ComponentType c) {
+  protected CharSequence genericName(final ComponentType c) {
     StringConcatenation _builder = new StringConcatenation();
     String _name = c.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);
@@ -539,7 +540,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence genericName(final PortType p) {
+  protected CharSequence genericName(final PortType p) {
     StringConcatenation _builder = new StringConcatenation();
     String _name = p.getName();
     String _firstUpper = StringExtensions.toFirstUpper(_name);
@@ -565,7 +566,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final MetaArchitecture a) {
+  protected CharSequence compile(final String pkg, final MetaArchitecture a) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -653,7 +654,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final ComponentType c, final String portTypeMarker) {
+  protected CharSequence compile(final String pkg, final ComponentType c, final String portTypeMarker) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -825,7 +826,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final PortType p, final String portTypeMarker) {
+  protected CharSequence compile(final String pkg, final PortType p, final String portTypeMarker) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -854,7 +855,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence boundParentName(final Architecture a) {
+  protected CharSequence boundParentName(final Architecture a) {
     StringConcatenation _builder = new StringConcatenation();
     MetaArchitecture _type = a.getType();
     String _name = _type.getName();
@@ -894,7 +895,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence boundParentName(final Component c) {
+  protected CharSequence boundParentName(final Component c) {
     StringConcatenation _builder = new StringConcatenation();
     ComponentType _type = c.getType();
     String _name = _type.getName();
@@ -932,7 +933,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence boundParentName(final Port p) {
+  protected CharSequence boundParentName(final Port p) {
     StringConcatenation _builder = new StringConcatenation();
     PortType _type = p.getType();
     String _name = _type.getName();
@@ -960,7 +961,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final Architecture a) {
+  protected CharSequence compile(final String pkg, final Architecture a) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -1078,7 +1079,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final Component c) {
+  protected CharSequence compile(final String pkg, final Component c) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -1114,7 +1115,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final Port p) {
+  protected CharSequence compile(final String pkg, final Port p) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -1188,7 +1189,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final String pkg, final Deployment d) {
+  protected CharSequence compile(final String pkg, final Deployment d) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("package ");
     _builder.append(pkg, "");
@@ -1268,7 +1269,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final CreateInstanceOperator o) {
+  protected CharSequence compile(final CreateInstanceOperator o) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("architecture.registerInstance(\"");
     ComponentInstance _instance = o.getInstance();
@@ -1285,7 +1286,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public CharSequence compile(final ActivateRoleModelOperator o) {
+  protected CharSequence compile(final ActivateRoleModelOperator o) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("architecture.activate");
     RoleModel _roleModel = o.getRoleModel();
@@ -1312,11 +1313,23 @@ public class JavaProjectGenerator extends AbstractGenerator {
     return _builder;
   }
   
-  public IJavaProject extendToJava(final IProject project) {
+  protected void addNature(final IProject project, final String nature) {
     try {
       final IProjectDescription description = project.getDescription();
-      description.setNatureIds(((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(JavaCore.NATURE_ID)), String.class)));
-      project.setDescription(description, null);
+      String[] _natureIds = description.getNatureIds();
+      final ArrayList<String> natures = CollectionLiterals.<String>newArrayList(_natureIds);
+      natures.add(nature);
+      description.setNatureIds(((String[])Conversions.unwrapArray(natures, String.class)));
+      NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
+      project.setDescription(description, _nullProgressMonitor);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  protected IJavaProject extendToJava(final IProject project) {
+    try {
+      this.addNature(project, JavaCore.NATURE_ID);
       final IJavaProject javaProject = JavaCore.create(project);
       final IFolder binFolder = project.getFolder("bin");
       boolean _exists = binFolder.exists();
@@ -1345,7 +1358,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     }
   }
   
-  public void addSoureFolder(final IJavaProject javaProject, final String path) {
+  protected void addSoureFolder(final IJavaProject javaProject, final String path) {
     try {
       IProject _project = javaProject.getProject();
       final IFolder sourceFolder = _project.getFolder(path);
@@ -1371,7 +1384,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     }
   }
   
-  public IProject createProject(final String name) {
+  protected IProject createProject(final String name) {
     try {
       IWorkspace _workspace = ResourcesPlugin.getWorkspace();
       IWorkspaceRoot _root = _workspace.getRoot();

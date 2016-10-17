@@ -43,7 +43,7 @@ import org.tud.inf.st.smags.model.smags.Variable
  */
 class JavaProjectGenerator extends AbstractGenerator {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+	override doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		
 		if (context instanceof SmagsGeneratorContext) {
 			val project = (context as SmagsGeneratorContext).project;
@@ -53,22 +53,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 
 		for (m : resource.contents.filter(SmagsModel)) {
 			for (a : m.elements.filter(MetaArchitecture)) {
-				val package = a.pkg;
-				val portTypeMarkerName = a.name.toFirstUpper + "PortType";
-
-				fsa.generateFile(package.replaceAll("\\.",'/') + "/" + a.name.toFirstUpper + "MetaArchitecture.java", compile(package, a));
-
-				fsa.generateFile(package.replaceAll("\\.",'/') + "/" + portTypeMarkerName + ".java", marker(package, portTypeMarkerName));
-
-				for (c : a.elements.filter(ComponentType)) {
-					fsa.generateFile(package.replaceAll("\\.",'/') + "/" + c.name.toFirstUpper + ".java",
-						compile(package, c, portTypeMarkerName));
-				}
-
-				for (p : a.elements.filter(PortType)) {
-					fsa.generateFile(package.replaceAll("\\.",'/') + "/" + p.name.toFirstUpper + ".java",
-						compile(package, p, portTypeMarkerName));
-				}
+				generateMetaArchitectureFiles(a, fsa)
 			}
 
 			for (a : m.elements.filter(Architecture)) {
@@ -92,21 +77,40 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	}
 	
-	def pkg(MetaArchitecture a) {
+	protected def void generateMetaArchitectureFiles(MetaArchitecture a, IFileSystemAccess2 fsa) {
+		val package = a.pkg;
+		val portTypeMarkerName = a.name.toFirstUpper + "PortType";
+		
+		fsa.generateFile(package.replaceAll("\\.",'/') + "/" + a.name.toFirstUpper + "MetaArchitecture.java", compile(package, a));
+		
+		fsa.generateFile(package.replaceAll("\\.",'/') + "/" + portTypeMarkerName + ".java", marker(package, portTypeMarkerName));
+		
+		for (c : a.elements.filter(ComponentType)) {
+			fsa.generateFile(package.replaceAll("\\.",'/') + "/" + c.name.toFirstUpper + ".java",
+				compile(package, c, portTypeMarkerName));
+		}
+		
+		for (p : a.elements.filter(PortType)) {
+			fsa.generateFile(package.replaceAll("\\.",'/') + "/" + p.name.toFirstUpper + ".java",
+				compile(package, p, portTypeMarkerName));
+		}
+	}
+	
+	protected def pkg(MetaArchitecture a) {
 		if(a.namespace==null)
 			return a.name.toLowerCase
 		else
 			return a.namespace;
 	}
 	
-	def pkg(Architecture a) {
+	protected def pkg(Architecture a) {
 		if(a.namespace==null)
 			return a.name.toLowerCase
 		else
 			return a.namespace;
 	}
 
-	def String commaList(Iterable<String> list) {
+	protected def String commaList(Iterable<String> list) {
 		val out = new StringBuffer();
 		val i = list.iterator;
 
@@ -120,14 +124,14 @@ class JavaProjectGenerator extends AbstractGenerator {
 		return out.toString;
 	}
 
-	def Set<Type> usedTypes(PortType p) {
+	protected def Set<Type> usedTypes(PortType p) {
 		val used = new HashSet<Type>();
 		p.elements.filter(Variable).filter[v | v.type instanceof GenericUse].forEach([v|used.add((v as GenericUse).type)]);
 		p.elements.filter(Method).forEach([m|used.addAll(usedTypes(m))]);
 		return used;
 	}
 
-	def Set<Type> usedTypes(Method m) {
+	protected def Set<Type> usedTypes(Method m) {
 		val used = new HashSet<Type>();
 		if(m.returnType instanceof GenericUse)
 		used.add((m.returnType as GenericUse).type);
@@ -135,18 +139,18 @@ class JavaProjectGenerator extends AbstractGenerator {
 		return used;
 	}
 	
-	def String binding(Type t, Architecture a) {
+	protected def String binding(Type t, Architecture a) {
 		a.typeBindings.findFirst[b|b.type == t].implementation;
 	}
 	
-	def String binding(TypeUse t, Architecture a) {
+	protected def String binding(TypeUse t, Architecture a) {
 		if(t instanceof GenericUse)
 			return binding((t as GenericUse).type,a)
 		else 
 			return (t as PrimitiveUse).type;
 	}
 
-	def marker(String pkg, String name) '''
+	protected def marker(String pkg, String name) '''
 		package «pkg»;
 		
 		public interface «name»{
@@ -154,21 +158,21 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 	
-	def compile(TypeUse t) {
+	protected def compile(TypeUse t) {
 		if(t instanceof GenericUse)
 		'''T«(t as GenericUse).type.name.toFirstUpper»'''
 		else
 		(t as PrimitiveUse).type
 	}
 
-	def compile(Variable v) '''
+	protected def compile(Variable v) '''
 		«v.type.compile» «v.name»'''
 
-	def compileInterface(Method m) '''
+	protected def compileInterface(Method m) '''
 		«m.returnType.compile» «m.name»(«m.args.map[a | a.compile.toString].commaList»);
 	'''
 	
-	def compileImpl(Method m, Architecture a) '''
+	protected def compileImpl(Method m, Architecture a) '''
 		@Override
 		public «binding(m.returnType,a)» «m.name»(«m.args.map[e | binding(e.type,a)+ ' '+e.name].commaList»){
 			//TODO implement
@@ -176,24 +180,24 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 	
-	def compileDelegate(Method m) '''
+	protected def compileDelegate(Method m) '''
 		public «m.returnType.compile» «m.name»(«m.args.map[a | a.compile.toString].commaList»){
 			Method m = Arrays.stream(«(m.eContainer as PortType).name.toFirstUpper».class.getMethods()).filter(e -> e.getName().equals("«m.name»")).findFirst().get();
 			return («m.returnType.compile»)delegate(m«IF m.args.size>0»,«m.args.map[a | a.name].commaList»«ENDIF»);
 		}
 	'''
 
-	def genericName(MetaArchitecture a) '''«a.name.toFirstUpper»MetaArchitecture«IF a.elements
+	protected def genericName(MetaArchitecture a) '''«a.name.toFirstUpper»MetaArchitecture«IF a.elements
 			.filter(PortType).exists[pt | pt.usedTypes.size>0]»<«a.elements
 				.filter(PortType).map[pt | pt.usedTypes].flatten.map[t | "T"+t.name].toSet.commaList»>«ENDIF»'''
 				
-	def genericName(ComponentType c) '''«c.name.toFirstUpper»«IF c.provides
+	protected def genericName(ComponentType c) '''«c.name.toFirstUpper»«IF c.provides
 				.exists[pt | pt.usedTypes.size>0]»<«c.provides
 					.map[pt | pt.usedTypes].flatten.map[t | "T"+t.name].toSet.commaList»>«ENDIF»'''
 					
-	def genericName(PortType p) '''«p.name.toFirstUpper»«IF !p.usedTypes.empty»<«p.usedTypes.map[t | "T"+t.name].toSet.commaList»>«ENDIF»'''
+	protected def genericName(PortType p) '''«p.name.toFirstUpper»«IF !p.usedTypes.empty»<«p.usedTypes.map[t | "T"+t.name].toSet.commaList»>«ENDIF»'''
 
-	def compile(String pkg, MetaArchitecture a) '''
+	protected def compile(String pkg, MetaArchitecture a) '''
 		package «pkg»;
 		
 		public abstract class «a.genericName» {
@@ -211,7 +215,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 
-	def compile(String pkg, ComponentType c, String portTypeMarker) '''
+	protected def compile(String pkg, ComponentType c, String portTypeMarker) '''
 		package «pkg»;
 		
 		import java.util.Stack;
@@ -261,7 +265,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 
-	def compile(String pkg, PortType p,
+	protected def compile(String pkg, PortType p,
 		String portTypeMarker) '''
 		package «pkg»;
 		
@@ -272,21 +276,21 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 	
-	def boundParentName(Architecture a) '''«a.type.name.toFirstUpper»MetaArchitecture«IF a.type.elements
+	protected def boundParentName(Architecture a) '''«a.type.name.toFirstUpper»MetaArchitecture«IF a.type.elements
 			.filter(PortType).exists[pt | pt.usedTypes.size>0]»<«a.type.elements
 				.filter(PortType).map[pt | pt.usedTypes].flatten.map[t | binding(t,a)]
 				.toSet.commaList»>«ENDIF»'''
 					
-	def boundParentName(Component c) '''«c.type.name.toFirstUpper»«IF c.type.provides
+	protected def boundParentName(Component c) '''«c.type.name.toFirstUpper»«IF c.type.provides
 				.exists[pt | pt.usedTypes.size>0]»<«c.type.provides
 					.map[pt | pt.usedTypes].flatten.toSet
 					.map[t | binding(t,c.eContainer as Architecture)]
 					.commaList»>«ENDIF»'''
 	
-	def boundParentName(Port p) '''«p.type.name.toFirstUpper»«IF p.type.usedTypes.size>0»<«p.type.usedTypes
+	protected def boundParentName(Port p) '''«p.type.name.toFirstUpper»«IF p.type.usedTypes.size>0»<«p.type.usedTypes
 				.map[t | binding(t,p.eContainer as Architecture)].commaList»>«ENDIF»'''
 
-	def compile(String pkg, Architecture a) '''
+	protected def compile(String pkg, Architecture a) '''
 		package «pkg»;
 		
 		import «a.type.pkg».«a.type.name.toFirstUpper»MetaArchitecture;
@@ -318,7 +322,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 
-	def compile(String pkg, Component c) '''
+	protected def compile(String pkg, Component c) '''
 		package «pkg»;
 		
 		import «(c.type.eContainer as MetaArchitecture).pkg».«c.type.name.toFirstUpper»;
@@ -328,7 +332,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 
-	def compile(String pkg, Port p) '''
+	protected def compile(String pkg, Port p) '''
 		package «pkg»;
 		
 		import «(p.type.eContainer as MetaArchitecture).pkg».«p.type.name.toFirstUpper»;
@@ -347,7 +351,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 	
-	def compile(String pkg, Deployment d)'''
+	protected def compile(String pkg, Deployment d)'''
 		package «pkg»;
 			
 		public class «d.name.toFirstUpper»{
@@ -366,19 +370,25 @@ class JavaProjectGenerator extends AbstractGenerator {
 		}
 	'''
 	
-	def compile(CreateInstanceOperator o) '''
+	protected def compile(CreateInstanceOperator o) '''
 		architecture.registerInstance("«o.instance.name»",new «o.instance.type.name.toFirstUpper»());
 	'''
 	
-	def compile(ActivateRoleModelOperator o) '''
+	protected def compile(ActivateRoleModelOperator o) '''
 		architecture.activate«o.roleModel.name
 			.toFirstUpper»(«o.args.map[ci | '('+ci.type.name.toFirstUpper+')architecture.getInstance("'+ci.name+'")'].commaList»);
 	'''
 	
-	def extendToJava(IProject project) {
+	protected def addNature(IProject project, String nature){
 		val description = project.getDescription();
-		description.setNatureIds(#{JavaCore.NATURE_ID});
-		project.setDescription(description, null)
+		val natures = newArrayList(description.natureIds);
+		natures.add(nature);
+		description.natureIds = natures;
+		project.setDescription(description, new NullProgressMonitor);
+	}
+	
+	protected def extendToJava(IProject project) {
+		addNature(project, JavaCore.NATURE_ID);
 
 		val javaProject = JavaCore.create(project);
 		val binFolder = project.getFolder("bin");
@@ -398,7 +408,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		return javaProject;
 	}
 	
-	def addSoureFolder(IJavaProject javaProject, String path){
+	protected def addSoureFolder(IJavaProject javaProject, String path){
 		val sourceFolder = javaProject.project.getFolder(path);
 		if(!sourceFolder.exists)
 			sourceFolder.create(false, true, null);
@@ -411,7 +421,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		javaProject.setRawClasspath(newEntries, null);
 	}
 
-	def createProject(String name) {
+	protected def createProject(String name) {
 		val project = ResourcesPlugin.workspace.root.getProject(name);
 		if (!project.exists)
 			project.create(new NullProgressMonitor);

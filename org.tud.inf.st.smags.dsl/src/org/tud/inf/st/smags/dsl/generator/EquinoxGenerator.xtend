@@ -7,6 +7,10 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.tud.inf.st.smags.model.smags.MetaArchitecture
+import org.tud.inf.st.smags.model.smags.SmagsModel
+import org.tud.inf.st.smags.model.smags.Architecture
+import org.tud.inf.st.smags.model.smags.Component
 
 /**
  * Generates code from your model files on save.
@@ -15,19 +19,65 @@ import org.eclipse.xtext.generator.IGeneratorContext
  */
 class EquinoxGenerator extends JavaProjectGenerator {
 
-	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
+	override doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		if (fsa instanceof EclipseResourceFileSystemAccess2) {
+
 			val eclipseFsa = fsa as EclipseResourceFileSystemAccess2;
 
-			eclipseFsa.project = "core".createProject;
+			for (m : resource.contents.filter(SmagsModel)) {
+				for (a : m.elements.filter(MetaArchitecture)) {
+					val project = a.pkg.createProject;
+					eclipseFsa.project = project;
+					addSoureFolder(project.extendToJava, "src-gen");
+					addNature(project, "org.eclipse.pde.PluginNature");
 
-			fsa.generateFile("test.txt", "test");
+					eclipseFsa.outputPath = ".";
+					fsa.generateFile("build.properties", buildProperties);
+					fsa.generateFile("META-INF/MANIFEST.MF", manifest(a.name, a.pkg));
 
-			val project = "plugin".createProject;
-			eclipseFsa.project = project;
-			addSoureFolder(project.extendToJava,"src");
+					eclipseFsa.outputPath = "src-gen";
+					generateMetaArchitectureFiles(a, fsa)
+				}
 
-			fsa.generateFile("test.txt", "test");
+				for (a : m.elements.filter(Architecture)) {
+					for (c : a.elements.filter(Component)) {
+						val pkg = a.pkg+'.'+c.name.toLowerCase;
+						val project = pkg.createProject;
+						eclipseFsa.project = project;
+						addSoureFolder(project.extendToJava, "src-gen");
+						addNature(project, "org.eclipse.pde.PluginNature");
+
+						eclipseFsa.outputPath = ".";
+						fsa.generateFile("build.properties", buildProperties);
+						fsa.generateFile("META-INF/MANIFEST.MF", manifest(c.name, pkg, a.type.pkg));
+
+						eclipseFsa.outputPath = "src-gen";
+					}
+				}
+			}
 		}
 	}
+	
+	protected def manifest(String name, String symbolic, String... requires) '''
+		«manifest(name,symbolic)»
+		«FOR r:requires»
+		Require-Bundle: «r»;bundle-version="1.0.0"
+		«ENDFOR»
+	'''
+
+	protected def manifest(String name, String symbolic) '''
+		Manifest-Version: 1.0
+		Bundle-ManifestVersion: 2
+		Bundle-Name: «name»
+		Bundle-SymbolicName: «symbolic»
+		Bundle-Version: 1.0.0.qualifier
+		Bundle-RequiredExecutionEnvironment: JavaSE-1.8	
+	'''
+
+	protected def buildProperties() '''
+		source.. = src-gen/
+		output.. = bin/
+		bin.includes = META-INF/,\
+		               .
+	'''
 }
