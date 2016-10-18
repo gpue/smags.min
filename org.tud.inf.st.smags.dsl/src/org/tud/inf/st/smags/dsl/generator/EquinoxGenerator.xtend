@@ -3,14 +3,22 @@
  */
 package org.tud.inf.st.smags.dsl.generator
 
+import org.eclipse.core.resources.IProject
+import org.eclipse.core.runtime.CoreException
+import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.pde.core.plugin.PluginRegistry
+import org.eclipse.pde.core.project.IBundleProjectService
+import org.eclipse.pde.internal.core.ClasspathComputer
 import org.eclipse.xtext.builder.EclipseResourceFileSystemAccess2
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.tud.inf.st.smags.model.smags.MetaArchitecture
-import org.tud.inf.st.smags.model.smags.SmagsModel
+import org.osgi.framework.Version
 import org.tud.inf.st.smags.model.smags.Architecture
 import org.tud.inf.st.smags.model.smags.Component
+import org.tud.inf.st.smags.model.smags.MetaArchitecture
+import org.tud.inf.st.smags.model.smags.SmagsModel
+import org.tud.inf.st.smags.dsl.Activator;
 
 /**
  * Generates code from your model files on save.
@@ -33,7 +41,7 @@ class EquinoxGenerator extends JavaProjectGenerator {
 
 					eclipseFsa.outputPath = ".";
 					fsa.generateFile("build.properties", buildProperties);
-					fsa.generateFile("META-INF/MANIFEST.MF", manifest(a.name, a.pkg));
+					project.extendToPlugin("org.eclipse.osgi")
 
 					eclipseFsa.outputPath = "src-gen";
 					generateMetaArchitectureFiles(a, fsa)
@@ -41,37 +49,63 @@ class EquinoxGenerator extends JavaProjectGenerator {
 
 				for (a : m.elements.filter(Architecture)) {
 					for (c : a.elements.filter(Component)) {
-						val pkg = a.pkg+'.'+c.name.toLowerCase;
-						val project = pkg.createProject;
+						val project = c.pkg.createProject;
 						eclipseFsa.project = project;
 						addSoureFolder(project.extendToJava, "src-gen");
-						addNature(project, "org.eclipse.pde.PluginNature");
 
 						eclipseFsa.outputPath = ".";
 						fsa.generateFile("build.properties", buildProperties);
-						fsa.generateFile("META-INF/MANIFEST.MF", manifest(c.name, pkg, a.type.pkg));
+						project.extendToPlugin(a.type.pkg,"org.eclipse.osgi");						
 
 						eclipseFsa.outputPath = "src-gen";
+						fsa.generateFile(c.pkg.replaceAll("\\.","/")+'/'+c.name.toFirstUpper+".java", c.activator);
+						
+						//TODO generate services for roles
+						
+						//TODO generate run config
 					}
 				}
 			}
 		}
 	}
 	
+	def extendToPlugin(IProject project, String... deps) throws CoreException {
+		addNature(project, "org.eclipse.pde.PluginNature");		
+		
+		val monitor = new NullProgressMonitor();
+
+		val context = Activator.getDefault().getContext();
+
+		val bundleProjectServiceRef = context
+				.getServiceReference(typeof(IBundleProjectService));
+		val bps = context.getService(bundleProjectServiceRef);
+
+		val bpd = bps.getDescription(project);
+		
+		val requiredStrs = newArrayList(deps);
+		requiredStrs.add(Activator.PLUGIN_ID);
+
+		val required = requiredStrs.map[s |
+				bps.newRequiredBundle(s, null, false, false)];
+
+		bpd.setRequiredBundles(required);
+		
+		bpd.setSymbolicName(project.getName());
+		bpd.setBundleVersion(new Version("0.1"));
+
+		bpd.apply(monitor);
+		
+		val model = PluginRegistry.findModel(project);
+		ClasspathComputer.setClasspath(project, model);
+	}
+	
+	protected def pkg(Component c) {
+		return (c.eContainer as Architecture).pkg+'.'+c.name.toLowerCase
+	}
+	
 	protected def manifest(String name, String symbolic, String... requires) '''
 		«manifest(name,symbolic)»
-		«FOR r:requires»
-		Require-Bundle: «r»;bundle-version="1.0.0"
-		«ENDFOR»
-	'''
-
-	protected def manifest(String name, String symbolic) '''
-		Manifest-Version: 1.0
-		Bundle-ManifestVersion: 2
-		Bundle-Name: «name»
-		Bundle-SymbolicName: «symbolic»
-		Bundle-Version: 1.0.0.qualifier
-		Bundle-RequiredExecutionEnvironment: JavaSE-1.8	
+		Require-Bundle: org.eclipse.osgi«FOR r:requires»,«"\n"» «r»«ENDFOR»
 	'''
 
 	protected def buildProperties() '''
@@ -79,5 +113,22 @@ class EquinoxGenerator extends JavaProjectGenerator {
 		output.. = bin/
 		bin.includes = META-INF/,\
 		               .
+	'''
+	
+	protected def activator(Component c) '''
+		package «c.pkg»;
+		
+		import org.osgi.framework.BundleActivator;
+		import org.osgi.framework.BundleContext;
+		
+		public class «c.name.toFirstUpper» implements BundleActivator{
+			public void start(BundleContext context) throws Exception {
+				
+			}
+			
+			public void stop(BundleContext context) throws Exception {
+				
+			}			
+		}		
 	'''
 }

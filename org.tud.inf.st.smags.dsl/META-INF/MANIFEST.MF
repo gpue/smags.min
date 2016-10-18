@@ -30,3 +30,4 @@ Export-Package: org.tud.inf.st.smags.dsl,
  org.tud.inf.st.smags.dsl.services,
  org.tud.inf.st.smags.dsl.validation
 Import-Package: org.apache.log4j
+Bundle-Activator: org.tud.inf.st.smags.dsl.Activator
