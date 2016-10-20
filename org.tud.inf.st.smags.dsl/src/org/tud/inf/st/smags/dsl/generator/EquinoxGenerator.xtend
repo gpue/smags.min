@@ -19,6 +19,15 @@ import org.tud.inf.st.smags.model.smags.Component
 import org.tud.inf.st.smags.model.smags.MetaArchitecture
 import org.tud.inf.st.smags.model.smags.SmagsModel
 import org.tud.inf.st.smags.dsl.Activator;
+import org.tud.inf.st.smags.model.smags.Port
+import org.tud.inf.st.smags.model.smags.ArchitectureElement
+import org.eclipse.jdt.core.IJavaProject
+import java.util.ArrayList
+import org.eclipse.jdt.core.IClasspathEntry
+import org.eclipse.jdt.core.JavaCore
+import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.jdt.core.IAccessRule
+import org.eclipse.core.runtime.Path
 
 /**
  * Generates code from your model files on save.
@@ -41,35 +50,70 @@ class EquinoxGenerator extends JavaProjectGenerator {
 
 					eclipseFsa.outputPath = ".";
 					fsa.generateFile("build.properties", buildProperties);
-					project.extendToPlugin("org.eclipse.osgi")
+					project.extendToPlugin(#{a.pkg},a.pkg+'.'+a.name.toFirstUpper,"org.eclipse.osgi")
 
 					eclipseFsa.outputPath = "src-gen";
 					generateMetaArchitectureFiles(a, fsa)
 				}
 
 				for (a : m.elements.filter(Architecture)) {
+					val plugins = newArrayList(a.type.pkg,"org.eclipse.osgi");
+					
+					for (p : a.elements.filter(Port)) {
+						plugins.add(p.pkg);
+						
+						val project = p.pkg.createProject;
+						eclipseFsa.project = project;
+						addSoureFolder(project.extendToJava, "src-gen");
+
+						eclipseFsa.outputPath = ".";
+						fsa.generateFile("build.properties", buildProperties);
+						project.extendToPlugin(#{p.pkg},p.pkg+'.'+p.name.toFirstUpper,a.pkg,"org.eclipse.osgi");						
+
+						eclipseFsa.outputPath = "src-gen";
+						fsa.generateFile(p.pkg.replaceAll("\\.","/")+'/'+p.name.toFirstUpper+".java", p.activator);
+					}
+					
 					for (c : a.elements.filter(Component)) {
+						plugins.add(c.pkg);
+						
 						val project = c.pkg.createProject;
 						eclipseFsa.project = project;
 						addSoureFolder(project.extendToJava, "src-gen");
 
 						eclipseFsa.outputPath = ".";
 						fsa.generateFile("build.properties", buildProperties);
-						project.extendToPlugin(a.type.pkg,"org.eclipse.osgi");						
+						project.extendToPlugin(#{c.pkg},a.pkg+"."+c.name.toFirstUpper,a.type.pkg,"org.eclipse.osgi");						
 
 						eclipseFsa.outputPath = "src-gen";
 						fsa.generateFile(c.pkg.replaceAll("\\.","/")+'/'+c.name.toFirstUpper+".java", c.activator);
 						
-						//TODO generate services for roles
 						
-						//TODO generate run config
+						fsa.generateFile(c.pkg.replaceAll("\\.",'/') + "/" + c.name.toFirstUpper + ".java", compile(c.pkg, c));
 					}
+					
+					//generate architecture plugin
+					val project = a.pkg.createProject;
+					val jproject = project.extendToJava;
+					eclipseFsa.project = project;
+					addSoureFolder(jproject, "src-gen");
+
+					eclipseFsa.outputPath = ".";
+					fsa.generateFile("build.properties", buildProperties);
+					project.extendToPlugin(#{a.pkg},a.pkg+"."+a.name.toFirstUpper+"Architecture",plugins);						
+
+					jproject.publishAllLibs
+
+					eclipseFsa.outputPath = "src-gen";
+					fsa.generateFile(a.pkg.replaceAll("\\.","/")+'/'+a.name.toFirstUpper+"Architecture.java", a.activator);
+					
+					//TODO generate run configs for deployments					
 				}
 			}
 		}
 	}
 	
-	def extendToPlugin(IProject project, String... deps) throws CoreException {
+	protected def extendToPlugin(IProject project, String[] exported, String activatorClassName, String... deps) throws CoreException {
 		addNature(project, "org.eclipse.pde.PluginNature");		
 		
 		val monitor = new NullProgressMonitor();
@@ -83,7 +127,6 @@ class EquinoxGenerator extends JavaProjectGenerator {
 		val bpd = bps.getDescription(project);
 		
 		val requiredStrs = newArrayList(deps);
-		requiredStrs.add(Activator.PLUGIN_ID);
 
 		val required = requiredStrs.map[s |
 				bps.newRequiredBundle(s, null, false, false)];
@@ -92,27 +135,56 @@ class EquinoxGenerator extends JavaProjectGenerator {
 		
 		bpd.setSymbolicName(project.getName());
 		bpd.setBundleVersion(new Version("0.1"));
-
-		bpd.apply(monitor);
+		
+		bpd.activator = activatorClassName;
+		
+		bpd.packageExports = exported.map[ex | bps.newPackageExport(ex,null,true,null)]
+		
+		bpd.apply(monitor);		
 		
 		val model = PluginRegistry.findModel(project);
 		ClasspathComputer.setClasspath(project, model);
 	}
 	
-	protected def pkg(Component c) {
-		return (c.eContainer as Architecture).pkg+'.'+c.name.toLowerCase
+	protected def publishAllLibs(IJavaProject jproject) {//TODO use
+		val classPath = jproject.rawClasspath;		
+		
+		val entries = new ArrayList<IClasspathEntry>();
+		for (element : classPath) {
+			entries.add(JavaCore.newLibraryEntry(element.path,null,null,#{JavaCore.newAccessRule(new Path("**"),IAccessRule.K_ACCESSIBLE)},null,true));
+		}
+		
+		jproject.setRawClasspath(entries.toArray(newArrayOfSize(entries.size())), new NullProgressMonitor);
+		
+		return jproject;
 	}
 	
-	protected def manifest(String name, String symbolic, String... requires) '''
-		«manifest(name,symbolic)»
-		Require-Bundle: org.eclipse.osgi«FOR r:requires»,«"\n"» «r»«ENDFOR»
-	'''
+	protected def pkg(ArchitectureElement e) {
+		return (e.eContainer as Architecture).pkg+'.'+e.name.toLowerCase
+	}
 
 	protected def buildProperties() '''
 		source.. = src-gen/
 		output.. = bin/
 		bin.includes = META-INF/,\
 		               .
+	'''	
+	
+	protected def activator(Port p) '''
+		package «p.pkg»;
+		
+		import org.osgi.framework.BundleActivator;
+		import org.osgi.framework.BundleContext;
+		
+		public class «p.name.toFirstUpper» implements BundleActivator{
+			public void start(BundleContext context) throws Exception {
+				
+			}
+			
+			public void stop(BundleContext context) throws Exception {
+				
+			}			
+		}		
 	'''
 	
 	protected def activator(Component c) '''
@@ -122,6 +194,23 @@ class EquinoxGenerator extends JavaProjectGenerator {
 		import org.osgi.framework.BundleContext;
 		
 		public class «c.name.toFirstUpper» implements BundleActivator{
+			public void start(BundleContext context) throws Exception {
+				
+			}
+			
+			public void stop(BundleContext context) throws Exception {
+				
+			}			
+		}		
+	'''
+	
+	protected def activator(Architecture a) '''
+		package «a.pkg»;
+		
+		import org.osgi.framework.BundleActivator;
+		import org.osgi.framework.BundleContext;
+		
+		public class «a.name.toFirstUpper»Architecture implements BundleActivator{
 			public void start(BundleContext context) throws Exception {
 				
 			}

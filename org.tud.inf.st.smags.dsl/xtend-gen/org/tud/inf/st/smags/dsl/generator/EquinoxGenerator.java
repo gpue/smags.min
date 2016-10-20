@@ -5,18 +5,25 @@ package org.tud.inf.st.smags.dsl.generator;
 
 import com.google.common.collect.Iterables;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.jdt.core.IAccessRule;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.plugin.PluginRegistry;
 import org.eclipse.pde.core.project.IBundleProjectDescription;
 import org.eclipse.pde.core.project.IBundleProjectService;
+import org.eclipse.pde.core.project.IPackageExportDescription;
 import org.eclipse.pde.core.project.IRequiredBundleDescription;
 import org.eclipse.pde.internal.core.ClasspathComputer;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -38,6 +45,7 @@ import org.tud.inf.st.smags.model.smags.Architecture;
 import org.tud.inf.st.smags.model.smags.ArchitectureElement;
 import org.tud.inf.st.smags.model.smags.Component;
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
+import org.tud.inf.st.smags.model.smags.Port;
 import org.tud.inf.st.smags.model.smags.SmagsElement;
 import org.tud.inf.st.smags.model.smags.SmagsModel;
 
@@ -70,7 +78,13 @@ public class EquinoxGenerator extends JavaProjectGenerator {
                 eclipseFsa.setOutputPath(".");
                 CharSequence _buildProperties = this.buildProperties();
                 ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
-                this.extendToPlugin(project, "org.eclipse.osgi");
+                String _pkg_1 = this.pkg(a);
+                String _pkg_2 = this.pkg(a);
+                String _plus = (_pkg_2 + ".");
+                String _name = a.getName();
+                String _firstUpper = StringExtensions.toFirstUpper(_name);
+                String _plus_1 = (_plus + _firstUpper);
+                this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_1)), String.class)), _plus_1, "org.eclipse.osgi");
                 eclipseFsa.setOutputPath("src-gen");
                 this.generateMetaArchitectureFiles(a, fsa);
               }
@@ -78,32 +92,116 @@ public class EquinoxGenerator extends JavaProjectGenerator {
             EList<SmagsElement> _elements_1 = m.getElements();
             Iterable<Architecture> _filter_2 = Iterables.<Architecture>filter(_elements_1, Architecture.class);
             for (final Architecture a_1 : _filter_2) {
-              EList<ArchitectureElement> _elements_2 = a_1.getElements();
-              Iterable<Component> _filter_3 = Iterables.<Component>filter(_elements_2, Component.class);
-              for (final Component c : _filter_3) {
-                {
-                  String _pkg = this.pkg(c);
-                  final IProject project = this.createProject(_pkg);
-                  eclipseFsa.setProject(project);
-                  IJavaProject _extendToJava = this.extendToJava(project);
-                  this.addSoureFolder(_extendToJava, "src-gen");
-                  eclipseFsa.setOutputPath(".");
-                  CharSequence _buildProperties = this.buildProperties();
-                  ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
-                  MetaArchitecture _type = a_1.getType();
-                  String _pkg_1 = this.pkg(_type);
-                  this.extendToPlugin(project, _pkg_1, "org.eclipse.osgi");
-                  eclipseFsa.setOutputPath("src-gen");
-                  String _pkg_2 = this.pkg(c);
-                  String _replaceAll = _pkg_2.replaceAll("\\.", "/");
-                  String _plus = (_replaceAll + "/");
-                  String _name = c.getName();
-                  String _firstUpper = StringExtensions.toFirstUpper(_name);
-                  String _plus_1 = (_plus + _firstUpper);
-                  String _plus_2 = (_plus_1 + ".java");
-                  CharSequence _activator = this.activator(c);
-                  ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_2, _activator);
+              {
+                MetaArchitecture _type = a_1.getType();
+                String _pkg = this.pkg(_type);
+                final ArrayList<String> plugins = CollectionLiterals.<String>newArrayList(_pkg, "org.eclipse.osgi");
+                EList<ArchitectureElement> _elements_2 = a_1.getElements();
+                Iterable<Port> _filter_3 = Iterables.<Port>filter(_elements_2, Port.class);
+                for (final Port p : _filter_3) {
+                  {
+                    String _pkg_1 = this.pkg(p);
+                    plugins.add(_pkg_1);
+                    String _pkg_2 = this.pkg(p);
+                    final IProject project = this.createProject(_pkg_2);
+                    eclipseFsa.setProject(project);
+                    IJavaProject _extendToJava = this.extendToJava(project);
+                    this.addSoureFolder(_extendToJava, "src-gen");
+                    eclipseFsa.setOutputPath(".");
+                    CharSequence _buildProperties = this.buildProperties();
+                    ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
+                    String _pkg_3 = this.pkg(p);
+                    String _pkg_4 = this.pkg(p);
+                    String _plus = (_pkg_4 + ".");
+                    String _name = p.getName();
+                    String _firstUpper = StringExtensions.toFirstUpper(_name);
+                    String _plus_1 = (_plus + _firstUpper);
+                    String _pkg_5 = this.pkg(a_1);
+                    this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_3)), String.class)), _plus_1, _pkg_5, "org.eclipse.osgi");
+                    eclipseFsa.setOutputPath("src-gen");
+                    String _pkg_6 = this.pkg(p);
+                    String _replaceAll = _pkg_6.replaceAll("\\.", "/");
+                    String _plus_2 = (_replaceAll + "/");
+                    String _name_1 = p.getName();
+                    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+                    String _plus_3 = (_plus_2 + _firstUpper_1);
+                    String _plus_4 = (_plus_3 + ".java");
+                    CharSequence _activator = this.activator(p);
+                    ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_4, _activator);
+                  }
                 }
+                EList<ArchitectureElement> _elements_3 = a_1.getElements();
+                Iterable<Component> _filter_4 = Iterables.<Component>filter(_elements_3, Component.class);
+                for (final Component c : _filter_4) {
+                  {
+                    String _pkg_1 = this.pkg(c);
+                    plugins.add(_pkg_1);
+                    String _pkg_2 = this.pkg(c);
+                    final IProject project = this.createProject(_pkg_2);
+                    eclipseFsa.setProject(project);
+                    IJavaProject _extendToJava = this.extendToJava(project);
+                    this.addSoureFolder(_extendToJava, "src-gen");
+                    eclipseFsa.setOutputPath(".");
+                    CharSequence _buildProperties = this.buildProperties();
+                    ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
+                    String _pkg_3 = this.pkg(c);
+                    String _pkg_4 = this.pkg(a_1);
+                    String _plus = (_pkg_4 + ".");
+                    String _name = c.getName();
+                    String _firstUpper = StringExtensions.toFirstUpper(_name);
+                    String _plus_1 = (_plus + _firstUpper);
+                    MetaArchitecture _type_1 = a_1.getType();
+                    String _pkg_5 = this.pkg(_type_1);
+                    this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_3)), String.class)), _plus_1, _pkg_5, "org.eclipse.osgi");
+                    eclipseFsa.setOutputPath("src-gen");
+                    String _pkg_6 = this.pkg(c);
+                    String _replaceAll = _pkg_6.replaceAll("\\.", "/");
+                    String _plus_2 = (_replaceAll + "/");
+                    String _name_1 = c.getName();
+                    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+                    String _plus_3 = (_plus_2 + _firstUpper_1);
+                    String _plus_4 = (_plus_3 + ".java");
+                    CharSequence _activator = this.activator(c);
+                    ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_4, _activator);
+                    String _pkg_7 = this.pkg(c);
+                    String _replaceAll_1 = _pkg_7.replaceAll("\\.", "/");
+                    String _plus_5 = (_replaceAll_1 + "/");
+                    String _name_2 = c.getName();
+                    String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
+                    String _plus_6 = (_plus_5 + _firstUpper_2);
+                    String _plus_7 = (_plus_6 + ".java");
+                    String _pkg_8 = this.pkg(c);
+                    CharSequence _compile = this.compile(_pkg_8, c);
+                    ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_7, _compile);
+                  }
+                }
+                String _pkg_1 = this.pkg(a_1);
+                final IProject project = this.createProject(_pkg_1);
+                final IJavaProject jproject = this.extendToJava(project);
+                eclipseFsa.setProject(project);
+                this.addSoureFolder(jproject, "src-gen");
+                eclipseFsa.setOutputPath(".");
+                CharSequence _buildProperties = this.buildProperties();
+                ((EclipseResourceFileSystemAccess2)fsa).generateFile("build.properties", _buildProperties);
+                String _pkg_2 = this.pkg(a_1);
+                String _pkg_3 = this.pkg(a_1);
+                String _plus = (_pkg_3 + ".");
+                String _name = a_1.getName();
+                String _firstUpper = StringExtensions.toFirstUpper(_name);
+                String _plus_1 = (_plus + _firstUpper);
+                String _plus_2 = (_plus_1 + "Architecture");
+                this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_2)), String.class)), _plus_2, ((String[])Conversions.unwrapArray(plugins, String.class)));
+                this.publishAllLibs(jproject);
+                eclipseFsa.setOutputPath("src-gen");
+                String _pkg_4 = this.pkg(a_1);
+                String _replaceAll = _pkg_4.replaceAll("\\.", "/");
+                String _plus_3 = (_replaceAll + "/");
+                String _name_1 = a_1.getName();
+                String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+                String _plus_4 = (_plus_3 + _firstUpper_1);
+                String _plus_5 = (_plus_4 + "Architecture.java");
+                CharSequence _activator = this.activator(a_1);
+                ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_5, _activator);
               }
             }
           }
@@ -114,7 +212,7 @@ public class EquinoxGenerator extends JavaProjectGenerator {
     }
   }
   
-  public void extendToPlugin(final IProject project, final String... deps) throws CoreException {
+  protected void extendToPlugin(final IProject project, final String[] exported, final String activatorClassName, final String... deps) throws CoreException {
     this.addNature(project, "org.eclipse.pde.PluginNature");
     final NullProgressMonitor monitor = new NullProgressMonitor();
     Activator _default = Activator.getDefault();
@@ -123,7 +221,6 @@ public class EquinoxGenerator extends JavaProjectGenerator {
     final IBundleProjectService bps = context.<IBundleProjectService>getService(bundleProjectServiceRef);
     final IBundleProjectDescription bpd = bps.getDescription(project);
     final ArrayList<String> requiredStrs = CollectionLiterals.<String>newArrayList(deps);
-    requiredStrs.add(Activator.PLUGIN_ID);
     final Function1<String, IRequiredBundleDescription> _function = (String s) -> {
       return bps.newRequiredBundle(s, null, false, false);
     };
@@ -133,36 +230,46 @@ public class EquinoxGenerator extends JavaProjectGenerator {
     bpd.setSymbolicName(_name);
     Version _version = new Version("0.1");
     bpd.setBundleVersion(_version);
+    bpd.setActivator(activatorClassName);
+    final Function1<String, IPackageExportDescription> _function_1 = (String ex) -> {
+      return bps.newPackageExport(ex, null, true, null);
+    };
+    List<IPackageExportDescription> _map = ListExtensions.<String, IPackageExportDescription>map(((List<String>)Conversions.doWrapArray(exported)), _function_1);
+    bpd.setPackageExports(((IPackageExportDescription[])Conversions.unwrapArray(_map, IPackageExportDescription.class)));
     bpd.apply(monitor);
     final IPluginModelBase model = PluginRegistry.findModel(project);
     ClasspathComputer.setClasspath(project, model);
   }
   
-  protected String pkg(final Component c) {
-    EObject _eContainer = c.eContainer();
-    String _pkg = this.pkg(((Architecture) _eContainer));
-    String _plus = (_pkg + ".");
-    String _name = c.getName();
-    String _lowerCase = _name.toLowerCase();
-    return (_plus + _lowerCase);
+  protected IJavaProject publishAllLibs(final IJavaProject jproject) {
+    try {
+      final IClasspathEntry[] classPath = jproject.getRawClasspath();
+      final ArrayList<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
+      for (final IClasspathEntry element : classPath) {
+        IPath _path = element.getPath();
+        Path _path_1 = new Path("**");
+        IAccessRule _newAccessRule = JavaCore.newAccessRule(_path_1, IAccessRule.K_ACCESSIBLE);
+        IClasspathEntry _newLibraryEntry = JavaCore.newLibraryEntry(_path, null, null, ((IAccessRule[])Conversions.unwrapArray(Collections.<IAccessRule>unmodifiableSet(CollectionLiterals.<IAccessRule>newHashSet(_newAccessRule)), IAccessRule.class)), null, true);
+        entries.add(_newLibraryEntry);
+      }
+      int _size = entries.size();
+      IClasspathEntry[] _newArrayOfSize = new IClasspathEntry[_size];
+      IClasspathEntry[] _array = entries.<IClasspathEntry>toArray(_newArrayOfSize);
+      NullProgressMonitor _nullProgressMonitor = new NullProgressMonitor();
+      jproject.setRawClasspath(_array, _nullProgressMonitor);
+      return jproject;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
   
-  protected Object manifest(final String name, final String symbolic, final String... requires) {
-    StringConcatenation _builder = new StringConcatenation();
-    Object _manifest = this.manifest(name, symbolic);
-    _builder.append(_manifest, "");
-    _builder.newLineIfNotEmpty();
-    _builder.append("Require-Bundle: org.eclipse.osgi");
-    {
-      for(final String r : requires) {
-        _builder.append(",");
-        _builder.append("\n", "");
-        _builder.append(" ");
-        _builder.append(r, "");
-      }
-    }
-    _builder.newLineIfNotEmpty();
-    return _builder;
+  protected String pkg(final ArchitectureElement e) {
+    EObject _eContainer = e.eContainer();
+    String _pkg = this.pkg(((Architecture) _eContainer));
+    String _plus = (_pkg + ".");
+    String _name = e.getName();
+    String _lowerCase = _name.toLowerCase();
+    return (_plus + _lowerCase);
   }
   
   protected CharSequence buildProperties() {
@@ -175,6 +282,48 @@ public class EquinoxGenerator extends JavaProjectGenerator {
     _builder.newLine();
     _builder.append("               ");
     _builder.append(".");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence activator(final Port p) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    String _pkg = this.pkg(p);
+    _builder.append(_pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("import org.osgi.framework.BundleActivator;");
+    _builder.newLine();
+    _builder.append("import org.osgi.framework.BundleContext;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("public class ");
+    String _name = p.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append(" implements BundleActivator{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("public void start(BundleContext context) throws Exception {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void stop(BundleContext context) throws Exception {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}\t\t\t");
+    _builder.newLine();
+    _builder.append("}\t\t");
     _builder.newLine();
     return _builder;
   }
@@ -197,6 +346,48 @@ public class EquinoxGenerator extends JavaProjectGenerator {
     String _firstUpper = StringExtensions.toFirstUpper(_name);
     _builder.append(_firstUpper, "");
     _builder.append(" implements BundleActivator{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("public void start(BundleContext context) throws Exception {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void stop(BundleContext context) throws Exception {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}\t\t\t");
+    _builder.newLine();
+    _builder.append("}\t\t");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence activator(final Architecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    String _pkg = this.pkg(a);
+    _builder.append(_pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("import org.osgi.framework.BundleActivator;");
+    _builder.newLine();
+    _builder.append("import org.osgi.framework.BundleContext;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("public class ");
+    String _name = a.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("Architecture implements BundleActivator{");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.append("public void start(BundleContext context) throws Exception {");
