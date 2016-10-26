@@ -573,11 +573,54 @@ public class JavaProjectGenerator extends AbstractGenerator {
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    _builder.append("public abstract class ");
+    CharSequence _imports = this.imports(a);
+    _builder.append(_imports, "");
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    _builder.append("public ");
+    CharSequence _modifiers = this.modifiers(a);
+    _builder.append(_modifiers, "");
+    _builder.append("class ");
     CharSequence _genericName = this.genericName(a);
     _builder.append(_genericName, "");
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    CharSequence _attributes = this.attributes(a);
+    _builder.append(_attributes, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    CharSequence _constructor = this.constructor(a);
+    _builder.append(_constructor, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void registerInstance(String name, Object instance){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("instances.put(name,instance);\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public Object getInstance(String name){");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("return instances.get(name);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}\t\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
     {
       EList<MetaArchitectureElement> _elements = a.getElements();
       Iterable<RoleModel> _filter = Iterables.<RoleModel>filter(_elements, RoleModel.class);
@@ -635,22 +678,57 @@ public class JavaProjectGenerator extends AbstractGenerator {
       Iterable<PortType> _filter_2 = Iterables.<PortType>filter(_elements_1, PortType.class);
       for(final PortType pt : _filter_2) {
         _builder.append("\t");
-        _builder.append("public abstract ");
-        CharSequence _genericName_1 = this.genericName(pt);
-        _builder.append(_genericName_1, "\t");
-        _builder.append(" create");
-        String _name_4 = pt.getName();
-        String _firstUpper_2 = StringExtensions.toFirstUpper(_name_4);
-        _builder.append(_firstUpper_2, "\t");
-        _builder.append("(");
-        CharSequence _genericName_2 = this.genericName(pt);
-        _builder.append(_genericName_2, "\t");
-        _builder.append(" base);");
+        CharSequence _factoryMethod = this.factoryMethod(pt);
+        _builder.append(_factoryMethod, "\t");
         _builder.newLineIfNotEmpty();
       }
     }
     _builder.append("}");
     _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence modifiers(final MetaArchitecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("abstract ");
+    return _builder;
+  }
+  
+  protected CharSequence imports(final MetaArchitecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("import java.util.HashMap;");
+    _builder.newLine();
+    _builder.append("import java.util.Map;\t");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence constructor(final MetaArchitecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    return _builder;
+  }
+  
+  protected CharSequence attributes(final MetaArchitecture a) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("private Map<String,Object> instances = new HashMap<String,Object>();");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence factoryMethod(final PortType pt) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("public abstract ");
+    CharSequence _genericName = this.genericName(pt);
+    _builder.append(_genericName, "");
+    _builder.append(" create");
+    String _name = pt.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("(");
+    CharSequence _genericName_1 = this.genericName(pt);
+    _builder.append(_genericName_1, "");
+    _builder.append(" base);");
+    _builder.newLineIfNotEmpty();
     return _builder;
   }
   
@@ -997,12 +1075,6 @@ public class JavaProjectGenerator extends AbstractGenerator {
       }
     }
     _builder.newLine();
-    _builder.newLine();
-    _builder.append("import java.util.Map;");
-    _builder.newLine();
-    _builder.append("import java.util.HashMap;");
-    _builder.newLine();
-    _builder.newLine();
     _builder.append("public class ");
     String _name_2 = a.getName();
     String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
@@ -1010,33 +1082,8 @@ public class JavaProjectGenerator extends AbstractGenerator {
     _builder.append("Architecture extends ");
     CharSequence _boundParentName = this.boundParentName(a);
     _builder.append(_boundParentName, "");
-    _builder.append("{");
+    _builder.append("{\t");
     _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.append("private Map<String,Object> instances = new HashMap<String,Object>();");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public void registerInstance(String name, Object instance){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("instances.put(name,instance);\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("public Object getInstance(String name){");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("return instances.get(name);");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
     {
@@ -1162,7 +1209,7 @@ public class JavaProjectGenerator extends AbstractGenerator {
     _builder.append("(");
     CharSequence _boundParentName_2 = this.boundParentName(p);
     _builder.append(_boundParentName_2, "\t");
-    _builder.append("  base){");
+    _builder.append(" base){");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("this.base = base;\t\t\t\t");

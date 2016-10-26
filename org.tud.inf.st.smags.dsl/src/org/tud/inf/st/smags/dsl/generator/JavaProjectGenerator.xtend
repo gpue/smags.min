@@ -200,7 +200,22 @@ class JavaProjectGenerator extends AbstractGenerator {
 	protected def compile(String pkg, MetaArchitecture a) '''
 		package «pkg»;
 		
-		public abstract class «a.genericName» {
+		«a.imports»
+		
+		public «a.modifiers»class «a.genericName» {
+			
+			«a.attributes»
+			
+			«a.constructor»
+				
+			public void registerInstance(String name, Object instance){
+				instances.put(name,instance);	
+			}
+				
+			public Object getInstance(String name){
+				return instances.get(name);
+			}			
+			
 			«FOR rm:a.elements.filter(RoleModel)»
 				public void activate«rm.name.toFirstUpper»(«rm.slots.map[s | s.type.genericName+" "+s.name].commaList»){
 					«FOR op:rm.initialization.filter(BindOperator)»
@@ -210,9 +225,26 @@ class JavaProjectGenerator extends AbstractGenerator {
 			«ENDFOR»
 						
 			«FOR pt:a.elements.filter(PortType)»
-				public abstract «pt.genericName» create«pt.name.toFirstUpper»(«pt.genericName» base);
+			«pt.factoryMethod»
 			«ENDFOR»			
 		}
+	'''
+	
+	protected def modifiers(MetaArchitecture a) '''abstract '''
+	
+	protected def imports(MetaArchitecture a) '''
+		import java.util.HashMap;
+		import java.util.Map;	
+	'''
+	
+	protected def constructor(MetaArchitecture a) ''''''	
+	
+	protected def attributes(MetaArchitecture a) '''
+		private Map<String,Object> instances = new HashMap<String,Object>();
+	'''		
+	
+	protected def factoryMethod(PortType pt) '''
+		public abstract «pt.genericName» create«pt.name.toFirstUpper»(«pt.genericName» base);
 	'''
 
 	protected def compile(String pkg, ComponentType c, String portTypeMarker) '''
@@ -298,20 +330,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 		import «a.type.pkg».«p.type.name.toFirstUpper»;
 		«ENDFOR»
 		
-		
-		import java.util.Map;
-		import java.util.HashMap;
-		
-		public class «a.name.toFirstUpper»Architecture extends «a.boundParentName»{
-			private Map<String,Object> instances = new HashMap<String,Object>();
-			
-			public void registerInstance(String name, Object instance){
-				instances.put(name,instance);	
-			}
-			
-			public Object getInstance(String name){
-				return instances.get(name);
-			}
+		public class «a.name.toFirstUpper»Architecture extends «a.boundParentName»{	
 			
 			«FOR p:a.elements.filter(Port)»
 			@Override
@@ -321,7 +340,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 			«ENDFOR»	
 		}
 	'''
-
+	
 	protected def compile(String pkg, Component c) '''
 		package «pkg»;
 		
@@ -341,7 +360,7 @@ class JavaProjectGenerator extends AbstractGenerator {
 				
 			protected «p.boundParentName» base;
 					
-			public  «p.name.toFirstUpper»(«p.boundParentName»  base){
+			public  «p.name.toFirstUpper»(«p.boundParentName» base){
 				this.base = base;				
 			}
 			
