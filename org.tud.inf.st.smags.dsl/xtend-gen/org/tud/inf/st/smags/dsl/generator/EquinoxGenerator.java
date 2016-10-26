@@ -41,11 +41,14 @@ import org.osgi.framework.ServiceReference;
 import org.osgi.framework.Version;
 import org.tud.inf.st.smags.dsl.Activator;
 import org.tud.inf.st.smags.dsl.generator.JavaProjectGenerator;
+import org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator;
 import org.tud.inf.st.smags.model.smags.Architecture;
 import org.tud.inf.st.smags.model.smags.ArchitectureElement;
 import org.tud.inf.st.smags.model.smags.Component;
 import org.tud.inf.st.smags.model.smags.ComponentType;
+import org.tud.inf.st.smags.model.smags.CreateInstanceOperator;
 import org.tud.inf.st.smags.model.smags.Deployment;
+import org.tud.inf.st.smags.model.smags.DeploymentOperator;
 import org.tud.inf.st.smags.model.smags.MetaArchitecture;
 import org.tud.inf.st.smags.model.smags.Port;
 import org.tud.inf.st.smags.model.smags.PortType;
@@ -88,7 +91,8 @@ public class EquinoxGenerator extends JavaProjectGenerator {
                 String _firstUpper = StringExtensions.toFirstUpper(_name);
                 String _plus_1 = (_plus + _firstUpper);
                 String _plus_2 = (_plus_1 + "Activator");
-                this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_1)), String.class)), _plus_2, "org.eclipse.osgi");
+                this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_1)), String.class)), _plus_2, 
+                  "org.eclipse.osgi");
                 eclipseFsa.setOutputPath("src-gen");
                 String _pkg_3 = this.pkg(a);
                 String _replaceAll = _pkg_3.replaceAll("\\.", "/");
@@ -234,8 +238,8 @@ public class EquinoxGenerator extends JavaProjectGenerator {
                   String _name_1 = d.getName();
                   String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
                   String _plus_3 = (_firstUpper_1 + ".launch");
-                  CharSequence _compile = this.compile(d, ((String[])Conversions.unwrapArray(allDeps, String.class)));
-                  ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_3, _compile);
+                  CharSequence _compileLaunchConfig = this.compileLaunchConfig(d, ((String[])Conversions.unwrapArray(allDeps, String.class)));
+                  ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_3, _compileLaunchConfig);
                 }
                 eclipseFsa.setOutputPath("src-gen");
                 String _pkg_6 = this.pkg(a_1);
@@ -255,8 +259,22 @@ public class EquinoxGenerator extends JavaProjectGenerator {
                 String _plus_8 = (_plus_7 + _firstUpper_3);
                 String _plus_9 = (_plus_8 + "Architecture.java");
                 String _pkg_8 = this.pkg(a_1);
-                CharSequence _compile_1 = this.compile(_pkg_8, a_1);
-                ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_9, _compile_1);
+                CharSequence _compile = this.compile(_pkg_8, a_1);
+                ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_9, _compile);
+                EList<ArchitectureElement> _elements_5 = a_1.getElements();
+                Iterable<Deployment> _filter_6 = Iterables.<Deployment>filter(_elements_5, Deployment.class);
+                for (final Deployment d_1 : _filter_6) {
+                  String _pkg_9 = this.pkg(a_1);
+                  String _replaceAll_2 = _pkg_9.replaceAll("\\.", "/");
+                  String _plus_10 = (_replaceAll_2 + "/");
+                  String _name_4 = d_1.getName();
+                  String _firstUpper_4 = StringExtensions.toFirstUpper(_name_4);
+                  String _plus_11 = (_plus_10 + _firstUpper_4);
+                  String _plus_12 = (_plus_11 + ".java");
+                  String _pkg_10 = this.pkg(a_1);
+                  CharSequence _compile_1 = this.compile(_pkg_10, d_1);
+                  ((EclipseResourceFileSystemAccess2)fsa).generateFile(_plus_12, _compile_1);
+                }
               }
             }
           }
@@ -735,7 +753,61 @@ public class EquinoxGenerator extends JavaProjectGenerator {
     return _builder;
   }
   
-  protected CharSequence compile(final Deployment d, final String... plugins) {
+  @Override
+  protected CharSequence compile(final String pkg, final Deployment d) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("package ");
+    _builder.append(pkg, "");
+    _builder.append(";");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("public class ");
+    String _name = d.getName();
+    String _firstUpper = StringExtensions.toFirstUpper(_name);
+    _builder.append(_firstUpper, "");
+    _builder.append("{");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("public void runScript(");
+    EObject _eContainer = d.eContainer();
+    String _name_1 = ((Architecture) _eContainer).getName();
+    String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+    _builder.append(_firstUpper_1, "\t");
+    _builder.append("Architecture architecture) {");
+    _builder.newLineIfNotEmpty();
+    {
+      EList<DeploymentOperator> _script = d.getScript();
+      for(final DeploymentOperator op : _script) {
+        _builder.append("\t\t");
+        {
+          if ((op instanceof CreateInstanceOperator)) {
+            CharSequence _compile = this.compile(((CreateInstanceOperator) op));
+            _builder.append(_compile, "\t\t");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t");
+        {
+          if ((op instanceof ActivateRoleModelOperator)) {
+            CharSequence _compile_1 = this.compile(((ActivateRoleModelOperator) op));
+            _builder.append(_compile_1, "\t\t");
+          }
+        }
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}\t\t");
+    _builder.newLine();
+    return _builder;
+  }
+  
+  protected CharSequence compileLaunchConfig(final Deployment d, final String... plugins) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
     _builder.newLine();

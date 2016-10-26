@@ -29,6 +29,8 @@ import org.tud.inf.st.smags.model.smags.MetaArchitecture
 import org.tud.inf.st.smags.model.smags.Port
 import org.tud.inf.st.smags.model.smags.PortType
 import org.tud.inf.st.smags.model.smags.SmagsModel
+import org.tud.inf.st.smags.model.smags.CreateInstanceOperator
+import org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator
 
 /**
  * Generates code from your model files on save.
@@ -41,7 +43,7 @@ class EquinoxGenerator extends JavaProjectGenerator {
 		if (fsa instanceof EclipseResourceFileSystemAccess2) {
 
 			val eclipseFsa = fsa as EclipseResourceFileSystemAccess2;
-			
+
 			for (m : resource.contents.filter(SmagsModel)) {
 				for (a : m.elements.filter(MetaArchitecture)) {
 					val project = a.pkg.createProject;
@@ -51,19 +53,20 @@ class EquinoxGenerator extends JavaProjectGenerator {
 
 					eclipseFsa.outputPath = ".";
 					fsa.generateFile("build.properties", buildProperties);
-					project.extendToPlugin(#{a.pkg}, a.pkg + '.' + a.name.toFirstUpper+'Activator', "org.eclipse.osgi")
+					project.extendToPlugin(#{a.pkg}, a.pkg + '.' + a.name.toFirstUpper + 'Activator',
+						"org.eclipse.osgi")
 
 					eclipseFsa.outputPath = "src-gen";
-					
+
 					fsa.generateFile(a.pkg.replaceAll("\\.", "/") + '/' + a.name.toFirstUpper + "Activator.java",
-							a.activator);
-					
+						a.activator);
+
 					generateMetaArchitectureFiles(a, fsa)
 				}
 
 				for (a : m.elements.filter(Architecture)) {
 					val allDeps = newArrayList(a.type.pkg);
-										
+
 					val archDeps = newArrayList(a.type.pkg, "org.eclipse.osgi");
 
 					for (p : a.elements.filter(Port)) {
@@ -120,9 +123,9 @@ class EquinoxGenerator extends JavaProjectGenerator {
 					fsa.generateFile("build.properties", buildProperties);
 					project.extendToPlugin(#{a.pkg}, a.pkg + "." + a.name.toFirstUpper + "ArchitectureActivator",
 						archDeps);
-						
-					for(d : a.elements.filter(Deployment)) {
-						fsa.generateFile(d.name.toFirstUpper+'.launch',d.compile(allDeps));
+
+					for (d : a.elements.filter(Deployment)) {
+						fsa.generateFile(d.name.toFirstUpper + '.launch', d.compileLaunchConfig(allDeps));
 					}
 
 					// jproject.publishAllLibs
@@ -132,7 +135,11 @@ class EquinoxGenerator extends JavaProjectGenerator {
 						a.activator);
 
 						fsa.generateFile(a.pkg.replaceAll("\\.", '/') + "/" + a.name.toFirstUpper + "Architecture.java",
-							compile(a.pkg, a));					
+							compile(a.pkg, a));
+
+						for (d : a.elements.filter(Deployment)) {
+							fsa.generateFile(a.pkg.replaceAll("\\.", '/') + "/" + d.name.toFirstUpper + '.java', compile(a.pkg, d));
+						}
 					}
 				}
 			}
@@ -195,7 +202,7 @@ class EquinoxGenerator extends JavaProjectGenerator {
 			bin.includes = META-INF/,\
 			               .
 		'''
-		
+
 		protected def activator(MetaArchitecture a) '''
 			package «a.pkg»;
 			
@@ -217,25 +224,25 @@ class EquinoxGenerator extends JavaProjectGenerator {
 				}			
 			}		
 		'''
-		
+
 		override protected def attributes(MetaArchitecture a) '''
 			«super.attributes(a)»
 			private BundleContext ctx;
 		'''
-				
-		override protected def constructor(MetaArchitecture a)'''
+
+		override protected def constructor(MetaArchitecture a) '''
 			public «a.name.toFirstUpper»MetaArchitecture(BundleContext ctx){
 				this.ctx = ctx;				
 			}
 		'''
-		
+
 		override protected def imports(MetaArchitecture a) '''
 			import java.util.HashMap;			
 			import java.util.Map;			
 			import org.osgi.framework.BundleContext;			
 			import org.osgi.framework.ServiceReference;			
 		'''
-		
+
 		override protected def factoryMethod(PortType pt) '''
 			public «pt.genericName» create«pt.name.toFirstUpper»(«pt.genericName» base){
 				ServiceReference<?> r = ctx.getServiceReference(«pt.genericName».class);
@@ -249,8 +256,8 @@ class EquinoxGenerator extends JavaProjectGenerator {
 			}		
 				
 		'''
-		
-		override protected def modifiers(MetaArchitecture a) ''''''		
+
+		override protected def modifiers(MetaArchitecture a) ''''''
 
 		protected def activator(Port p) '''
 			package «p.pkg»;
@@ -312,7 +319,7 @@ class EquinoxGenerator extends JavaProjectGenerator {
 				}			
 			}		
 		'''
-		
+
 		override protected def compile(String pkg, Architecture a) '''
 			package «pkg»;
 			
@@ -325,8 +332,22 @@ class EquinoxGenerator extends JavaProjectGenerator {
 				}	
 			}		
 		'''
-		
-		protected def compile(Deployment d, String... plugins)'''
+
+		override protected def compile(String pkg, Deployment d) '''
+			package «pkg»;
+				
+			public class «d.name.toFirstUpper»{
+				
+				public void runScript(«(d.eContainer as Architecture).name.toFirstUpper»Architecture architecture) {
+					«FOR op : d.script»
+						«IF op instanceof CreateInstanceOperator»«(op as CreateInstanceOperator).compile»«ENDIF»
+						«IF op instanceof ActivateRoleModelOperator»«(op as ActivateRoleModelOperator).compile»«ENDIF»
+					«ENDFOR»				
+				}
+			}		
+		'''
+
+		protected def compileLaunchConfig(Deployment d, String... plugins) '''
 			<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 			<launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
 				<booleanAttribute key="append.args" value="true" />
@@ -362,4 +383,5 @@ class EquinoxGenerator extends JavaProjectGenerator {
 					value="«plugins.map[p | p+'@default:default'].commaList»" />
 			</launchConfiguration>			
 		'''
-}
+	}
+	
