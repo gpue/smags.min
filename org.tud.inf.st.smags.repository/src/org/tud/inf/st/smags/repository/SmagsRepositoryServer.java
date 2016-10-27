@@ -35,7 +35,6 @@ public class SmagsRepositoryServer extends Thread {
 			}
 		});
 		
-		
 		server.setHandler(root);
 		
 		try {
