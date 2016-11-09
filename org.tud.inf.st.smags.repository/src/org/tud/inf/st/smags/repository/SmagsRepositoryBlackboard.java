@@ -16,7 +16,7 @@ public class SmagsRepositoryBlackboard {
 	public void unregisterPort(String port, ISmagsEndpoint endpoint) {
 		Optional<PortEntry> opt = entries.stream()
 				.filter(o -> o.getPort().equals(port) && o.getEndpoint().equals(endpoint)).findFirst();
-		if(opt.isPresent())
+		if (opt.isPresent())
 			entries.remove(opt.get());
 	}
 
@@ -24,16 +24,21 @@ public class SmagsRepositoryBlackboard {
 		Optional<ISmagsEndpoint> opt = endpoints.stream().filter(e -> e.getId().equals(endpointId)).findAny();
 		return opt.isPresent() ? opt.get() : null;
 	}
-	
-	public List<String> getEndpoints(){
+
+	public List<String> getEndpoints() {
 		return endpoints.stream().map(e -> e.getId()).collect(Collectors.toList());
 	}
-	
-	public void registerEndpoint(ISmagsEndpoint endpoint){
+
+	public void registerEndpoint(ISmagsEndpoint endpoint) {
 		endpoints.add(endpoint);
 	}
-	
-	public void unregisterEndpoint(ISmagsEndpoint endpoint){
+
+	public void unregisterEndpoint(ISmagsEndpoint endpoint) {
 		endpoints.remove(endpoint);
+	}
+
+	public List<String> getPorts(String endpoint) {
+		return entries.stream().filter(pe -> pe.getEndpoint().getId().equals(endpoint)).map(pe -> pe.getPort())
+				.collect(Collectors.toList());
 	}
 }

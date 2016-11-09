@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.logging.Logger;
 
 import org.eclipse.jetty.websocket.WebSocket;
+import org.tud.inf.st.smags.repository.messages.RPCRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -18,35 +20,49 @@ public class SmagsRepositoryHandler extends Observable implements ISmagsReposito
 	private SmagsRepositoryBlackboard blackboard;
 	private Connection connection;
 	private BlockingQueue<JsonObject> responseQueue = new LinkedBlockingQueue<>();
+	private Logger log;
 
-	public SmagsRepositoryHandler(SmagsRepositoryBlackboard blackboard) {
+	private int rpcId = 0;
+
+	public SmagsRepositoryHandler(SmagsRepositoryBlackboard blackboard, String from) {
 		this.blackboard = blackboard;
+		log = Logger.getLogger(from);
 	}
 
 	@Override
 	public void registerPort(String portType, String port) {
 		blackboard.registerPort(portType, port, this);
+		log.info("registered new port: "+port+" of type "+portType);
 	}
 
 	@Override
 	public void unregisterPort(String port) {
 		blackboard.unregisterPort(port, this);
+		log.info("unregistered port: "+port);
 	}
 
 	@Override
-	public String createInstance(String port, String endpointId) {
-		return blackboard.getEndpoint(endpointId).createInstance(port);
+	public void createInstance(String port, String endpointId) {
+		blackboard.getEndpoint(endpointId).createInstance(port);
+		log.info("requesting port "+port+" at endpoint "+endpointId);
 	}
 
 	@Override
 	public List<String> getEndpoints() {
 		return blackboard.getEndpoints();
 	}
+	
+	@Override
+	public List<String> getPorts(String endointId) {
+		return blackboard.getPorts(endointId);
+
+	}
 
 	@Override
 	public void onClose(int arg0, String arg1) {
 		blackboard.unregisterEndpoint(this);
 		this.connection = null;
+		log.info("closed");
 	}
 	
 	public void sendMessage(String msg){
@@ -56,11 +72,16 @@ public class SmagsRepositoryHandler extends Observable implements ISmagsReposito
 			throw new RuntimeException(e);
 		}
 	}
-
+	
+	public void sendMessage(Object o){
+		sendMessage(GSON.toJson(o));
+	}
+	
 	@Override
 	public void onOpen(Connection con) {
 		this.connection = con;
 		blackboard.registerEndpoint(this);
+		log.info("opened");
 	}
 
 	@Override
@@ -70,34 +91,25 @@ public class SmagsRepositoryHandler extends Observable implements ISmagsReposito
 	}
 
 	@Override
-	public String createInstance(String port) {
-		// TODO Auto-generated method stub
-		return null;
+	public void createInstance(String port) {
+		delegate("createInstance",port);
+		log.info("creating instance of "+port);
 	}
 
 	@Override
-	public void delegate(String instanceId, String method, Object... args) {
-		// TODO Auto-generated method stub
-	}
+	public Object delegate(String method, Object... args) {		
+		log.info("calling method "+method+" with args "+args);
+		sendMessage(new RPCRequest(rpcId ++, method, args));
+		return null;	}
 
 	@Override
 	public boolean matches(String description) {
-		// TODO Auto-generated method stub
-		return false;
+		return (Boolean)delegate("matches",description); 
 	}
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return (String)delegate("getId"); 
+
 	}
-
-	@Override
-	public List<String> getPorts(String endointId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 }

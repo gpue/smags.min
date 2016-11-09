@@ -309,13 +309,21 @@
 			id="org.eclipse.xtext.ui.editor.outline.QuickOutline"
 			name="Quick Outline">
 		</command>
+  <command
+        id="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinoxMeta"
+        name="Java/Equinox MetaArchitecture Project">
+  </command>
 		<command
             id="org.tud.inf.st.smags.dsl.ui.handler.GenerateSingleJavaProject"
-            name="Single Java project">
+            name="Single Java Architecture Project">
       </command>
   <command
         id="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinox"
-        name="Equinox infrastructure">
+        name="Equinox Architecture Infrastructure">
+  </command>
+  <command
+        id="org.tud.inf.st.smags.dsl.ui.handler.GenerateJavaScriptWeb"
+        name="JavaScript/Web Architecture Project">
   </command>
 	</extension>
 	<extension point="org.eclipse.ui.menus">
@@ -336,12 +344,22 @@
              icon="icons/smags.png"
              label="Generate SMAGS code">
           <command
+                commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinoxMeta"
+                icon="icons/smags.png"
+                style="push">
+          </command>
+          <command
                 commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateSingleJavaProject"
                 icon="icons/smags.png"
                 style="push">
           </command>
           <command
                 commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinox"
+                icon="icons/smags.png"
+                style="push">
+          </command>
+          <command
+                commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateJavaScriptWeb"
                 icon="icons/smags.png"
                 style="push">
           </command>
@@ -406,6 +424,14 @@
       <handler
             class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinoxHandler"
             commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinox">
+      </handler>
+      <handler
+            class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.tud.inf.st.smags.dsl.ui.handler.GenerateJavaScriptWebHandler"
+            commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateJavaScriptWeb">
+      </handler>
+      <handler
+            class="org.tud.inf.st.smags.dsl.ui.DSLExecutableExtensionFactory:org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinoxMetaHandler"
+            commandId="org.tud.inf.st.smags.dsl.ui.handler.GenerateEquinoxMeta">
       </handler>
 	</extension>
 	<extension point="org.eclipse.ui.menus">

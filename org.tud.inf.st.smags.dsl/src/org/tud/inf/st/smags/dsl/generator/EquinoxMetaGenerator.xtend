@@ -37,7 +37,7 @@ import org.tud.inf.st.smags.model.smags.ActivateRoleModelOperator
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
-class EquinoxGenerator extends JavaProjectGenerator {
+class EquinoxMetaGenerator extends JavaProjectGenerator {
 
 	override doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		if(fsa instanceof EclipseResourceFileSystemAccess2) doGenerate(resource,
@@ -47,86 +47,24 @@ class EquinoxGenerator extends JavaProjectGenerator {
 	protected def doGenerate(Resource resource, EclipseResourceFileSystemAccess2 fsa, IGeneratorContext context) {
 
 		for (m : resource.contents.filter(SmagsModel)) {
-			for (a : m.elements.filter(Architecture)) {
-				val allDeps = newArrayList(a.type.pkg);
-
-				val archDeps = newArrayList(a.type.pkg, "org.eclipse.osgi");
-
-				for (p : a.elements.filter(Port)) {
-					archDeps.add(p.pkg);
-					allDeps.add(p.pkg);
-
-					val project = p.pkg.createProject;
-					fsa.project = project;
-					addSoureFolder(project.extendToJava, "src-gen");
-
-					fsa.outputPath = ".";
-					fsa.generateFile("build.properties", buildProperties);
-					project.extendToPlugin(#{p.pkg}, p.pkg + '.' + p.name.toFirstUpper + 'Activator', a.type.pkg,
-						"org.eclipse.osgi");
-
-					fsa.outputPath = "src-gen";
-					fsa.generateFile(p.pkg.replaceAll("\\.", "/") + '/' + p.name.toFirstUpper + "Activator.java",
-						p.activator);
-
-					fsa.generateFile(p.pkg.replaceAll("\\.", '/') + "/" + p.name.toFirstUpper + ".java",
-						compile(p.pkg, p));
-				}
-
-				for (c : a.elements.filter(Component)) {
-					archDeps.add(c.pkg);
-					allDeps.add(c.pkg);
-
-					val project = c.pkg.createProject;
-					fsa.project = project;
-					addSoureFolder(project.extendToJava, "src-gen");
-
-					fsa.outputPath = ".";
-					fsa.generateFile("build.properties", buildProperties);
-					project.extendToPlugin(#{c.pkg}, a.pkg + "." + c.name.toFirstUpper + 'Activator', a.type.pkg,
-						"org.eclipse.osgi");
-
-					fsa.outputPath = "src-gen";
-					fsa.generateFile(c.pkg.replaceAll("\\.", "/") + '/' + c.name.toFirstUpper + "Activator.java",
-						c.activator);
-
-					fsa.generateFile(c.pkg.replaceAll("\\.", '/') + "/" + c.name.toFirstUpper + ".java",
-						compile(c.pkg, c));
-				}
-
-				// generate architecture plugin
-				allDeps.add(a.pkg);
-
+			for (a : m.elements.filter(MetaArchitecture)) {
 				val project = a.pkg.createProject;
-				val jproject = project.extendToJava;
 				fsa.project = project;
-				addSoureFolder(jproject, "src-gen");
+				addSoureFolder(project.extendToJava, "src-gen");
 
 				fsa.outputPath = ".";
 				fsa.generateFile("build.properties", buildProperties);
-				project.extendToPlugin(#{a.pkg}, a.pkg + "." + a.name.toFirstUpper + "ArchitectureActivator", archDeps);
+				project.extendToPlugin(#{a.pkg}, a.pkg + '.' + a.name.toFirstUpper + 'Activator', "org.eclipse.osgi")
 
-				for (d : a.elements.filter(Deployment)) {
-					fsa.generateFile(d.name.toFirstUpper + '.launch', d.compileLaunchConfig(allDeps));
-				}
-
-				// jproject.publishAllLibs
 				fsa.outputPath = "src-gen";
-				fsa.generateFile(
-					a.pkg.replaceAll("\\.", "/") + '/' + a.name.toFirstUpper + "ArchitectureActivator.java",
+
+				fsa.generateFile(a.pkg.replaceAll("\\.", "/") + '/' + a.name.toFirstUpper + "Activator.java",
 					a.activator);
 
-					fsa.generateFile(a.pkg.replaceAll("\\.", '/') + "/" + a.name.toFirstUpper + "Architecture.java",
-						compile(a.pkg, a));
-
-					for (d : a.elements.filter(Deployment)) {
-						fsa.generateFile(a.pkg.replaceAll("\\.", '/') + "/" + d.name.toFirstUpper + '.java',
-							compile(a.pkg, d));
-					}
-				}
+				generateMetaArchitectureFiles(a, fsa)
 			}
-
-		}
+		}	
+	}
 
 		protected def extendToPlugin(IProject project, String[] exported, String activatorClassName,
 			String... deps) throws CoreException {

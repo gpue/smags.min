@@ -1,10 +1,11 @@
-package org.tud.inf.st.smags.repository;
+package org.tud.inf.st.smags.repository.client;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.tud.inf.st.smags.repository.SmagsRepositoryHandler;
 import org.tud.inf.st.smags.repository.messages.RPCRequest;
 import org.tud.inf.st.smags.repository.messages.RPCResponse;
 

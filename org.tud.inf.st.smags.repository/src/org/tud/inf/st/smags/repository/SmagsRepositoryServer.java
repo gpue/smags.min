@@ -27,11 +27,10 @@ public class SmagsRepositoryServer extends Thread {
 		
 		ContextHandler root = new ContextHandler("/");
 		root.setAllowNullPathInfo(true);
-		root.setHandler(new WebSocketHandler() {
-			
+		root.setHandler(new WebSocketHandler() {			
 			@Override
 			public WebSocket doWebSocketConnect(HttpServletRequest r, String s) {
-				return new SmagsRepositoryHandler(blackboard);
+				return new SmagsRepositoryHandler(blackboard,r.getRemoteHost());
 			}
 		});
 		

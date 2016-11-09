@@ -12,5 +12,5 @@ public interface ISmagsRepository {
 
 	void unregisterPort(String port);
 	
-	String createInstance(String port, String endpointId);
+	void createInstance(String port, String endpointId);
 }

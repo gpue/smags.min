@@ -61,7 +61,7 @@ import org.tud.inf.st.smags.model.smags.SmagsModel;
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#code-generation
  */
 @SuppressWarnings("all")
-public class EquinoxGenerator extends JavaProjectGenerator {
+public class EquinoxMetaGenerator extends JavaProjectGenerator {
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     if ((fsa instanceof EclipseResourceFileSystemAccess2)) {
@@ -76,174 +76,36 @@ public class EquinoxGenerator extends JavaProjectGenerator {
       Iterable<SmagsModel> _filter = Iterables.<SmagsModel>filter(_contents, SmagsModel.class);
       for (final SmagsModel m : _filter) {
         EList<SmagsElement> _elements = m.getElements();
-        Iterable<Architecture> _filter_1 = Iterables.<Architecture>filter(_elements, Architecture.class);
-        for (final Architecture a : _filter_1) {
+        Iterable<MetaArchitecture> _filter_1 = Iterables.<MetaArchitecture>filter(_elements, MetaArchitecture.class);
+        for (final MetaArchitecture a : _filter_1) {
           {
-            MetaArchitecture _type = a.getType();
-            String _pkg = this.pkg(_type);
-            final ArrayList<String> allDeps = CollectionLiterals.<String>newArrayList(_pkg);
-            MetaArchitecture _type_1 = a.getType();
-            String _pkg_1 = this.pkg(_type_1);
-            final ArrayList<String> archDeps = CollectionLiterals.<String>newArrayList(_pkg_1, "org.eclipse.osgi");
-            EList<ArchitectureElement> _elements_1 = a.getElements();
-            Iterable<Port> _filter_2 = Iterables.<Port>filter(_elements_1, Port.class);
-            for (final Port p : _filter_2) {
-              {
-                String _pkg_2 = this.pkg(p);
-                archDeps.add(_pkg_2);
-                String _pkg_3 = this.pkg(p);
-                allDeps.add(_pkg_3);
-                String _pkg_4 = this.pkg(p);
-                final IProject project = this.createProject(_pkg_4);
-                fsa.setProject(project);
-                IJavaProject _extendToJava = this.extendToJava(project);
-                this.addSoureFolder(_extendToJava, "src-gen");
-                fsa.setOutputPath(".");
-                CharSequence _buildProperties = this.buildProperties();
-                fsa.generateFile("build.properties", _buildProperties);
-                String _pkg_5 = this.pkg(p);
-                String _pkg_6 = this.pkg(p);
-                String _plus = (_pkg_6 + ".");
-                String _name = p.getName();
-                String _firstUpper = StringExtensions.toFirstUpper(_name);
-                String _plus_1 = (_plus + _firstUpper);
-                String _plus_2 = (_plus_1 + "Activator");
-                MetaArchitecture _type_2 = a.getType();
-                String _pkg_7 = this.pkg(_type_2);
-                this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_5)), String.class)), _plus_2, _pkg_7, 
-                  "org.eclipse.osgi");
-                fsa.setOutputPath("src-gen");
-                String _pkg_8 = this.pkg(p);
-                String _replaceAll = _pkg_8.replaceAll("\\.", "/");
-                String _plus_3 = (_replaceAll + "/");
-                String _name_1 = p.getName();
-                String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
-                String _plus_4 = (_plus_3 + _firstUpper_1);
-                String _plus_5 = (_plus_4 + "Activator.java");
-                CharSequence _activator = this.activator(p);
-                fsa.generateFile(_plus_5, _activator);
-                String _pkg_9 = this.pkg(p);
-                String _replaceAll_1 = _pkg_9.replaceAll("\\.", "/");
-                String _plus_6 = (_replaceAll_1 + "/");
-                String _name_2 = p.getName();
-                String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
-                String _plus_7 = (_plus_6 + _firstUpper_2);
-                String _plus_8 = (_plus_7 + ".java");
-                String _pkg_10 = this.pkg(p);
-                CharSequence _compile = this.compile(_pkg_10, p);
-                fsa.generateFile(_plus_8, _compile);
-              }
-            }
-            EList<ArchitectureElement> _elements_2 = a.getElements();
-            Iterable<Component> _filter_3 = Iterables.<Component>filter(_elements_2, Component.class);
-            for (final Component c : _filter_3) {
-              {
-                String _pkg_2 = this.pkg(c);
-                archDeps.add(_pkg_2);
-                String _pkg_3 = this.pkg(c);
-                allDeps.add(_pkg_3);
-                String _pkg_4 = this.pkg(c);
-                final IProject project = this.createProject(_pkg_4);
-                fsa.setProject(project);
-                IJavaProject _extendToJava = this.extendToJava(project);
-                this.addSoureFolder(_extendToJava, "src-gen");
-                fsa.setOutputPath(".");
-                CharSequence _buildProperties = this.buildProperties();
-                fsa.generateFile("build.properties", _buildProperties);
-                String _pkg_5 = this.pkg(c);
-                String _pkg_6 = this.pkg(a);
-                String _plus = (_pkg_6 + ".");
-                String _name = c.getName();
-                String _firstUpper = StringExtensions.toFirstUpper(_name);
-                String _plus_1 = (_plus + _firstUpper);
-                String _plus_2 = (_plus_1 + "Activator");
-                MetaArchitecture _type_2 = a.getType();
-                String _pkg_7 = this.pkg(_type_2);
-                this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_5)), String.class)), _plus_2, _pkg_7, 
-                  "org.eclipse.osgi");
-                fsa.setOutputPath("src-gen");
-                String _pkg_8 = this.pkg(c);
-                String _replaceAll = _pkg_8.replaceAll("\\.", "/");
-                String _plus_3 = (_replaceAll + "/");
-                String _name_1 = c.getName();
-                String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
-                String _plus_4 = (_plus_3 + _firstUpper_1);
-                String _plus_5 = (_plus_4 + "Activator.java");
-                CharSequence _activator = this.activator(c);
-                fsa.generateFile(_plus_5, _activator);
-                String _pkg_9 = this.pkg(c);
-                String _replaceAll_1 = _pkg_9.replaceAll("\\.", "/");
-                String _plus_6 = (_replaceAll_1 + "/");
-                String _name_2 = c.getName();
-                String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
-                String _plus_7 = (_plus_6 + _firstUpper_2);
-                String _plus_8 = (_plus_7 + ".java");
-                String _pkg_10 = this.pkg(c);
-                CharSequence _compile = this.compile(_pkg_10, c);
-                fsa.generateFile(_plus_8, _compile);
-              }
-            }
-            String _pkg_2 = this.pkg(a);
-            allDeps.add(_pkg_2);
-            String _pkg_3 = this.pkg(a);
-            final IProject project = this.createProject(_pkg_3);
-            final IJavaProject jproject = this.extendToJava(project);
+            String _pkg = this.pkg(a);
+            final IProject project = this.createProject(_pkg);
             fsa.setProject(project);
-            this.addSoureFolder(jproject, "src-gen");
+            IJavaProject _extendToJava = this.extendToJava(project);
+            this.addSoureFolder(_extendToJava, "src-gen");
             fsa.setOutputPath(".");
             CharSequence _buildProperties = this.buildProperties();
             fsa.generateFile("build.properties", _buildProperties);
-            String _pkg_4 = this.pkg(a);
-            String _pkg_5 = this.pkg(a);
-            String _plus = (_pkg_5 + ".");
+            String _pkg_1 = this.pkg(a);
+            String _pkg_2 = this.pkg(a);
+            String _plus = (_pkg_2 + ".");
             String _name = a.getName();
             String _firstUpper = StringExtensions.toFirstUpper(_name);
             String _plus_1 = (_plus + _firstUpper);
-            String _plus_2 = (_plus_1 + "ArchitectureActivator");
-            this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_4)), String.class)), _plus_2, ((String[])Conversions.unwrapArray(archDeps, String.class)));
-            EList<ArchitectureElement> _elements_3 = a.getElements();
-            Iterable<Deployment> _filter_4 = Iterables.<Deployment>filter(_elements_3, Deployment.class);
-            for (final Deployment d : _filter_4) {
-              String _name_1 = d.getName();
-              String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
-              String _plus_3 = (_firstUpper_1 + ".launch");
-              CharSequence _compileLaunchConfig = this.compileLaunchConfig(d, ((String[])Conversions.unwrapArray(allDeps, String.class)));
-              fsa.generateFile(_plus_3, _compileLaunchConfig);
-            }
+            String _plus_2 = (_plus_1 + "Activator");
+            this.extendToPlugin(project, ((String[])Conversions.unwrapArray(Collections.<String>unmodifiableSet(CollectionLiterals.<String>newHashSet(_pkg_1)), String.class)), _plus_2, "org.eclipse.osgi");
             fsa.setOutputPath("src-gen");
-            String _pkg_6 = this.pkg(a);
-            String _replaceAll = _pkg_6.replaceAll("\\.", "/");
-            String _plus_4 = (_replaceAll + "/");
-            String _name_2 = a.getName();
-            String _firstUpper_2 = StringExtensions.toFirstUpper(_name_2);
-            String _plus_5 = (_plus_4 + _firstUpper_2);
-            String _plus_6 = (_plus_5 + "ArchitectureActivator.java");
+            String _pkg_3 = this.pkg(a);
+            String _replaceAll = _pkg_3.replaceAll("\\.", "/");
+            String _plus_3 = (_replaceAll + "/");
+            String _name_1 = a.getName();
+            String _firstUpper_1 = StringExtensions.toFirstUpper(_name_1);
+            String _plus_4 = (_plus_3 + _firstUpper_1);
+            String _plus_5 = (_plus_4 + "Activator.java");
             CharSequence _activator = this.activator(a);
-            fsa.generateFile(_plus_6, _activator);
-            String _pkg_7 = this.pkg(a);
-            String _replaceAll_1 = _pkg_7.replaceAll("\\.", "/");
-            String _plus_7 = (_replaceAll_1 + "/");
-            String _name_3 = a.getName();
-            String _firstUpper_3 = StringExtensions.toFirstUpper(_name_3);
-            String _plus_8 = (_plus_7 + _firstUpper_3);
-            String _plus_9 = (_plus_8 + "Architecture.java");
-            String _pkg_8 = this.pkg(a);
-            CharSequence _compile = this.compile(_pkg_8, a);
-            fsa.generateFile(_plus_9, _compile);
-            EList<ArchitectureElement> _elements_4 = a.getElements();
-            Iterable<Deployment> _filter_5 = Iterables.<Deployment>filter(_elements_4, Deployment.class);
-            for (final Deployment d_1 : _filter_5) {
-              String _pkg_9 = this.pkg(a);
-              String _replaceAll_2 = _pkg_9.replaceAll("\\.", "/");
-              String _plus_10 = (_replaceAll_2 + "/");
-              String _name_4 = d_1.getName();
-              String _firstUpper_4 = StringExtensions.toFirstUpper(_name_4);
-              String _plus_11 = (_plus_10 + _firstUpper_4);
-              String _plus_12 = (_plus_11 + ".java");
-              String _pkg_10 = this.pkg(a);
-              CharSequence _compile_1 = this.compile(_pkg_10, d_1);
-              fsa.generateFile(_plus_12, _compile_1);
-            }
+            fsa.generateFile(_plus_5, _activator);
+            this.generateMetaArchitectureFiles(a, fsa);
           }
         }
       }
